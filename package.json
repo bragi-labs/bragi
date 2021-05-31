@@ -11,7 +11,8 @@
     "compile": "cd client && yarn compile && cd ..",
     "client-dev": "cd client && yarn start",
     "dev": "concurrently --kill-others-on-fail \"yarn client-dev\"",
-    "test": "echo \"No test specified\" && exit 1"
+    "test": "echo \"No test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
@@ -29,7 +30,7 @@
   "homepage": "https://github.com/bragi-labs/bragi#readme",
   "devDependencies": {
     "concurrently": "~6.2.0",
-    "husky": "~6.0.0",
+    "husky": "^6.0.0",
     "web-vitals": "^1.1.2"
   }
 }
