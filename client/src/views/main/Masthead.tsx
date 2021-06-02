@@ -45,6 +45,7 @@ export const Masthead = memo(() => {
 		link: {
 			textDecoration: 'none',
 			transition: 'all 0.2s ease-in-out',
+			textShadow: '1px 1px #000',
 			color: '#aaa',
 			'&:hover': {
 				color: '#ccc',
@@ -53,6 +54,7 @@ export const Masthead = memo(() => {
 		currentPath: {
 			textDecoration: 'none',
 			color: theme.palette.text.secondary,
+			textShadow: '1px 1px #000',
 			pointerEvents: 'none',
 		},
 		centerPart: {

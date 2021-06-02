@@ -17,6 +17,7 @@ export const Footer = memo(() => {
 			//transformOrigin: 'top right',
 			fontSize: 13,
 			color: '#999',
+			textShadow: '1px 1px #000',
 		},
 	}));
 	const classes = useStyles();

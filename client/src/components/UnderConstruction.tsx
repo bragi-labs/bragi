@@ -21,6 +21,7 @@ export const UnderConstruction = memo(() => {
 		text: {
 			color: '#fff',
 			fontFamily: 'Share Tech Mono',
+			textShadow: '3px 3px #000',
 		},
 	}));
 	const classes = useStyles();
