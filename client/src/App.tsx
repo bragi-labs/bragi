@@ -1,20 +1,28 @@
-import React, { ReactElement } from 'react';
-import logo from './logo.svg';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { createMyTheme } from './services/themeHelper';
 import './App.css';
+import { AppDataHelper } from './services/appDataHelper';
+import { MainPage } from './views/main/MainPage';
 
 function App(): ReactElement {
+	const [theme] = useState(createMyTheme());
+
+	useEffect(() => {
+		document.title = AppDataHelper.appName;
+	}, []);
+
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-				<a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-					Learn React
-				</a>
-			</header>
-		</div>
+		<>
+			<CssBaseline />
+			<ThemeProvider theme={theme}>
+				<BrowserRouter>
+					<MainPage />
+				</BrowserRouter>
+			</ThemeProvider>
+		</>
 	);
 }
 

@@ -1,6 +1,57 @@
+/* Play font */
+@font-face {
+	font-family: 'Play';
+	font-style: normal;
+	font-weight: 400;
+	src: local(''),
+	url('./fonts/play-v12-latin-ext_latin-regular.woff2') format('woff2'),
+	url('./fonts/play-v12-latin-ext_latin-regular.woff') format('woff');
+}
+@font-face {
+	font-family: 'Play';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Play'),
+	url('./fonts/play-v12-latin-ext_latin-700.woff2') format('woff2'),
+	url('./fonts/play-v12-latin-ext_latin-700.woff') format('woff');
+}
+
+
+/* Share Tech Mono font */
+@font-face {
+	font-family: 'Share Tech Mono';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Share Tech Mono'),
+	url('./fonts/share-tech-mono-v10-latin-regular.woff2') format('woff2'),
+	url('./fonts/share-tech-mono-v10-latin-regular.woff') format('woff');
+}
+
+/* Aguafina Script font */
+@font-face {
+	font-family: 'Aguafina Script';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Aguafina Script'),
+	url('./fonts/aguafina-script-v9-latin-ext_latin-regular.woff2') format('woff2'),
+	url('./fonts/aguafina-script-v9-latin-ext_latin-regular.woff') format('woff');
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+}
+
 body {
+  height: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+	font-family: 'Play', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -10,4 +61,23 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root {
+  height: 100%;
+	background-color: #222;
+	color: #fff;
+}
+
+@keyframes fade-in-animation {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.mono {
+	font-family: "Share Tech Mono", Consolas, monospace !important;
 }
