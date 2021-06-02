@@ -35,7 +35,7 @@ export const MainPage = memo(() => {
 			backgroundImage: 'linear-gradient(135deg, #999 25%, #666 25%, #666 50%, #999 50%, #999 75%, #666 75%, #666 100%)',
 			backgroundSize: '8px 8px',
 			opacity: 0.25,
-			borderBottom: '1px solid #666',
+			borderBottom: '1px solid #000',
 		},
 		bottomBackground: {
 			position: 'absolute',
