@@ -8,8 +8,8 @@ export const Footer = memo(() => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
-			right: 4,
-			bottom: 0,
+			right: 8,
+			bottom: 4,
 			userSelect: 'none',
 		},
 		footer: {
