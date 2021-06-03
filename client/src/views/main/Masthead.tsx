@@ -75,7 +75,7 @@ export const Masthead = memo(() => {
 			position: 'relative',
 			fontFamily: 'Aguafina Script',
 			fontSize: '50px',
-			color: '#bbb',
+			color: '#ddd',
 			textShadow: '2px 2px #000',
 		},
 		rightPart: {
