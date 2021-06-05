@@ -11,15 +11,19 @@ export interface ScoreSettings {
 }
 export interface NoteModel {
 	id: number; //internal
-	name: string; //e.g. F#4
-	duration: number; //e.g. 12
+	name?: string; //e.g. F#4
+	isRest?: boolean; //e.g. false
+	startDiv: number; //e.g. 0
+	durationDivs: number; //e.g. 12
 	isTiedToNext?: boolean; //e.g. false
 	isTiedToPrev?: boolean; //e.g. false
 }
 export interface ChordModel {
 	id: number; //internal
-	name: string; //e.g. Am
-	duration: number; //e.g. 48
+	name?: string; //e.g. Am
+	isRest?: boolean; //e.g. false
+	starDivs: number; //e.g. 0
+	durationDivs: number; //e.g. 48
 }
 export enum VoiceType {
 	FN_LVL_1 = 'FN_LVL_1',
@@ -42,7 +46,7 @@ export interface MeasureModel {
 	scale?: string; //e.g. "Am"
 	timeSignature: string; //e.g. "4/4"
 	tempo?: number; //e.g. 120
-	totalDuration: number; //e.g. 12
+	durationDivs: number; //e.g. 48
 	voices: VoiceModel[];
 }
 export interface PartModel {
