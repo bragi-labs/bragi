@@ -31,7 +31,7 @@ export const MainPage = memo(() => {
 			right: 0,
 			top: 0,
 			height: 100,
-			backgroundColor: '#a60',
+			backgroundColor: '#666',
 			backgroundImage: 'linear-gradient(135deg, #999 25%, #666 25%, #666 50%, #999 50%, #999 75%, #666 75%, #666 100%)',
 			backgroundSize: '8px 8px',
 			opacity: 0.25,
