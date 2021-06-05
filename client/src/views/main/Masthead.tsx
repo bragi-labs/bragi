@@ -65,12 +65,6 @@ export const Masthead = memo(() => {
 			alignItems: 'center',
 			cursor: 'pointer',
 		},
-		appLogo: {
-			height: 80,
-			position: 'relative',
-			top: 16,
-			filter: 'drop-shadow(0 4px 4px #000)',
-		},
 		appTitle: {
 			position: 'relative',
 			fontFamily: 'Aguafina Script',
