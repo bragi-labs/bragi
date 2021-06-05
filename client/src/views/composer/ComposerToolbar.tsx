@@ -1,11 +1,17 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 
-export const ComposerToolbar = memo(() => {
+interface ComposerToolbarProps {
+	onClickNew: () => void;
+	onClickOpen: () => void;
+	onClickSave: () => void;
+}
+
+export const ComposerToolbar = memo(({ onClickNew, onClickOpen, onClickSave }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -43,12 +49,24 @@ export const ComposerToolbar = memo(() => {
 	}));
 	const classes = useStyles();
 
+	const handleClickNew = useCallback(() => {
+		onClickNew();
+	}, [onClickNew]);
+
+	const handleClickOpen = useCallback(() => {
+		onClickOpen();
+	}, [onClickOpen]);
+
+	const handleClickSave = useCallback(() => {
+		onClickSave();
+	}, [onClickSave]);
+
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
 			<Box className={`${classes.panel}`}>
-				<AddCircleOutlineOutlinedIcon className={classes.actionButton} titleAccess="New" />
-				<FolderOpenOutlinedIcon className={`${classes.actionButton} ${classes.actionButtonDisabled}`} titleAccess="Open" />
-				<SaveOutlinedIcon className={`${classes.actionButton} ${classes.actionButtonDisabled}`} titleAccess="Save" />
+				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
+				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
+				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
 			</Box>
 		</Box>
 	);
