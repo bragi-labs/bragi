@@ -73,11 +73,11 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 
 	const handleClickClose = useCallback(() => {
 		onClose();
-	}, []);
+	}, [onClose]);
 
 	const handleClickOK = useCallback(() => {
 		onClose();
-	}, []);
+	}, [onClose]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
