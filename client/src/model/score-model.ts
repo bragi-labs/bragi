@@ -1,8 +1,7 @@
 export interface ScoreInfoModel {
 	scoreName: string; //e.g. "Bohemian Rhapsody"
 	scoreCredits: string; //e.g. "Queen - A Night at the Opera - 1975"
-	creationTime: string; //e.g. "Jan 1, 2022"
-	creatorName: string; //e.g. "Uri Kalish"
+	arrangerName: string; //e.g. "Uri Kalish"
 	softwareName: string; //e.g. "Figurenotes Composer"
 	softwareVersion: string; //e.g. "1.0.0"
 }
