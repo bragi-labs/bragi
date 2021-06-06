@@ -16,10 +16,9 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 			transform: 'translate(-50%, -50%)',
 			borderRadius: 8,
 			backgroundColor: '#000',
-			width: 800,
-			//height: 400,
+			width: 700,
 			display: 'grid',
-			gridTemplate: 'auto 1fr 32px / auto',
+			gridTemplate: 'auto 1fr auto / auto',
 			color: '#fff',
 			opacity: 0.6,
 			padding: 24,
@@ -28,14 +27,16 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 		title: {
 			fontSize: 32,
 			fontFamily: 'Aguafina Script',
+			userSelect: 'none',
 		},
 		body: {
-			margin: '16px 0 32px 24px',
+			margin: '0 0 40px 16px',
 		},
 		form: {
 			display: 'grid',
-			gridTemplate: 'auto / 1fr 1fr',
-			gap: 40,
+			gridTemplateColumns: 'repeat(1, 1fr)',
+			gap: '24px 32px',
+			userSelect: 'none',
 			'& label.Mui-focused': {
 				color: '#fa3',
 			},
@@ -55,20 +56,30 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 	}));
 	const classes = useStyles();
 
-	const [pickupMeasure, setPickupMeasure] = useState('none');
+	const [scoreTitle, setScoreTitle] = useState('');
+	const [scoreCredits, setScoreCredits] = useState('');
+	const [arrangerName, setArrangerName] = useState('');
 	const [timeSignature, setTimeSignature] = useState('4/4');
-	const [tempo, setTempo] = useState('120');
+	const [pickupMeasure, setPickupMeasure] = useState('no');
 
-	const handleChangeTempo = (event: any) => {
-		setTempo(event.target.value);
+	const handleChangeScoreTitle = (event: any) => {
+		setScoreTitle(event.target.value);
 	};
 
-	const handleChangePickupMeasure = (event: any) => {
-		setPickupMeasure(event.target.value);
+	const handleChangeScoreCredits = (event: any) => {
+		setScoreCredits(event.target.value);
+	};
+
+	const handleChangeArrangerName = (event: any) => {
+		setArrangerName(event.target.value);
 	};
 
 	const handleChangeTimeSignature = (event: any) => {
 		setTimeSignature(event.target.value);
+	};
+
+	const handleChangePickupMeasure = (event: any) => {
+		setPickupMeasure(event.target.value);
 	};
 
 	const handleClickClose = useCallback(() => {
@@ -86,10 +97,9 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 			</Box>
 			<Box className={classes.body}>
 				<form className={classes.form} noValidate autoComplete="off">
-					<TextField label="Score Name" placeholder="e.g. Bohemian Rhapsody" />
-					<TextField label="Score Credits" placeholder="e.g. Queen - A Night at the Opera (1975)" />
-					<TextField label="Arranger Name" placeholder="e.g. John Doe" />
-					<TextField label="Tempo (bpm)" value={tempo} onChange={handleChangeTempo} placeholder="e.g. 120" />
+					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" />
+					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Words & Music by Freddie Mercury" />
+					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
@@ -103,9 +113,9 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
-						<InputLabel id="pickup-measure-label">Pickup Measure</InputLabel>
+						<InputLabel id="pickup-measure-label">Pickup Measure (bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
-							<MenuItem value="none">None</MenuItem>
+							<MenuItem value="no">No</MenuItem>
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
