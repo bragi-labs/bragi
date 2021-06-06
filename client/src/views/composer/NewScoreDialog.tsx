@@ -16,7 +16,7 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 			transform: 'translate(-50%, -50%)',
 			borderRadius: 8,
 			backgroundColor: '#000',
-			width: 700,
+			width: 800,
 			display: 'grid',
 			gridTemplate: 'auto 1fr auto / auto',
 			color: '#fff',
@@ -30,12 +30,12 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 			userSelect: 'none',
 		},
 		body: {
-			margin: '0 0 40px 16px',
+			margin: '0 24px 48px 24px',
 		},
 		form: {
 			display: 'grid',
 			gridTemplateColumns: 'repeat(1, 1fr)',
-			gap: '24px 32px',
+			gap: '32px 32px',
 			userSelect: 'none',
 			'& label.Mui-focused': {
 				color: '#fa3',
@@ -113,7 +113,7 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
-						<InputLabel id="pickup-measure-label">Pickup Measure (bar)</InputLabel>
+						<InputLabel id="pickup-measure-label">Pickup Measure (initial bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
 							<MenuItem value="no">No</MenuItem>
 							<MenuItem value="2/4">2/4</MenuItem>
