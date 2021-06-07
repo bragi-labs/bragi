@@ -1,4 +1,3 @@
-import common from '@material-ui/core/colors/common';
 import { createMuiTheme } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 
@@ -17,7 +16,7 @@ export const createMyTheme: () => Theme = () => {
 			secondary: {
 				main: '#d45',
 				dark: '#c45',
-				contrastText: common.white,
+				contrastText: '#fff',
 			},
 		},
 		typography: {

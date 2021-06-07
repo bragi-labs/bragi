@@ -4,10 +4,18 @@ import Box from '@material-ui/core/Box';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
 interface NewScoreDialogProps {
-	onClose: () => void;
+	onDone: (newScoreDialogResult: NewScoreDialogResult | null) => void;
 }
 
-export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
+export interface NewScoreDialogResult {
+	scoreTitle: string;
+	scoreCredits: string;
+	arrangerName: string;
+	timeSignature: string;
+	pickupMeasure: string;
+}
+
+export const NewScoreDialog = memo(({ onDone }: NewScoreDialogProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'fixed',
@@ -82,13 +90,13 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 		setPickupMeasure(event.target.value);
 	};
 
-	const handleClickClose = useCallback(() => {
-		onClose();
-	}, [onClose]);
+	const handleClickCancel = useCallback(() => {
+		onDone(null);
+	}, [onDone]);
 
 	const handleClickOK = useCallback(() => {
-		onClose();
-	}, [onClose]);
+		onDone({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure });
+	}, [onDone, scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
@@ -106,9 +114,11 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
+							<MenuItem value="5/4">5/4</MenuItem>
 							<MenuItem value="8/4">8/4</MenuItem>
 							<MenuItem value="4/8">4/8</MenuItem>
 							<MenuItem value="6/8">6/8</MenuItem>
+							<MenuItem value="7/8">7/8</MenuItem>
 							<MenuItem value="8/8">8/8</MenuItem>
 						</Select>
 					</FormControl>
@@ -119,9 +129,11 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
+							<MenuItem value="5/4">5/4</MenuItem>
 							<MenuItem value="8/4">8/4</MenuItem>
 							<MenuItem value="4/8">4/8</MenuItem>
 							<MenuItem value="6/8">6/8</MenuItem>
+							<MenuItem value="7/8">7/8</MenuItem>
 							<MenuItem value="8/8">8/8</MenuItem>
 						</Select>
 					</FormControl>
@@ -131,7 +143,7 @@ export const NewScoreDialog = memo(({ onClose }: NewScoreDialogProps) => {
 				<Button onClick={handleClickOK} variant="contained" size="small" className={classes.actionButton}>
 					OK
 				</Button>
-				<Button onClick={handleClickClose} variant="contained" size="small" className={classes.actionButton}>
+				<Button onClick={handleClickCancel} variant="contained" size="small" className={classes.actionButton}>
 					Cancel
 				</Button>
 			</Box>
