@@ -36,7 +36,7 @@ export class Measure implements MeasureModel {
 		this.durationDivs = Measure.getMeasureDurationDivs(isPickupMeasure ? newScoreDialogResult.pickupMeasure : newScoreDialogResult.timeSignature);
 		this.voices = [];
 		const voice = new Voice();
-		voice.initFromNewDialog(newScoreDialogResult);
+		voice.initFromNewDialog(/*newScoreDialogResult*/);
 		this.addVoice(voice);
 	}
 
