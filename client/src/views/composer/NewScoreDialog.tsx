@@ -111,11 +111,14 @@ export const NewScoreDialog = memo(({ onDone }: NewScoreDialogProps) => {
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
+							<MenuItem value="2/2">2/2</MenuItem>
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
 							<MenuItem value="5/4">5/4</MenuItem>
+							<MenuItem value="7/4">7/4</MenuItem>
 							<MenuItem value="8/4">8/4</MenuItem>
+							<MenuItem value="3/8">3/8</MenuItem>
 							<MenuItem value="4/8">4/8</MenuItem>
 							<MenuItem value="6/8">6/8</MenuItem>
 							<MenuItem value="7/8">7/8</MenuItem>
@@ -126,11 +129,17 @@ export const NewScoreDialog = memo(({ onDone }: NewScoreDialogProps) => {
 						<InputLabel id="pickup-measure-label">Pickup Measure (initial bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
 							<MenuItem value="no">No</MenuItem>
+							<MenuItem value="1/2">1/2</MenuItem>
+							<MenuItem value="2/2">2/2</MenuItem>
+							<MenuItem value="1/4">1/4</MenuItem>
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
 							<MenuItem value="5/4">5/4</MenuItem>
+							<MenuItem value="7/4">7/4</MenuItem>
 							<MenuItem value="8/4">8/4</MenuItem>
+							<MenuItem value="1/8">1/4</MenuItem>
+							<MenuItem value="3/8">3/8</MenuItem>
 							<MenuItem value="4/8">4/8</MenuItem>
 							<MenuItem value="6/8">6/8</MenuItem>
 							<MenuItem value="7/8">7/8</MenuItem>
