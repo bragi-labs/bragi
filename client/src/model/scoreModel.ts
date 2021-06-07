@@ -1,3 +1,10 @@
+export interface ScoreInfoModel {
+	scoreTitle: string; //e.g. "Bohemian Rhapsody"
+	scoreCredits: string; //e.g. "Queen - A Night at the Opera - 1975"
+	arrangerName: string; //e.g. "Uri Kalish"
+	softwareName: string; //e.g. "Figurenotes Composer"
+	softwareVersion: string; //e.g. "1.0.0"
+}
 export interface NoteModel {
 	id: number; //internal ID
 	name: string; //e.g. "F#4"
@@ -47,10 +54,6 @@ export interface PartModel {
 }
 export interface ScoreModel {
 	id: number; //internal ID
-	scoreTitle: string; //e.g. "Bohemian Rhapsody"
-	scoreCredits: string; //e.g. "Queen - A Night at the Opera - 1975"
-	arrangerName: string; //e.g. "Uri Kalish"
-	softwareName: string; //e.g. "Figurenotes Composer"
-	softwareVersion: string; //e.g. "1.0.0"
+	scoreInfo: ScoreInfoModel;
 	parts: PartModel[];
 }

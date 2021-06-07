@@ -9,12 +9,12 @@ export class Part implements PartModel {
 	measures: Measure[] = [];
 
 	initFromModel(partModel: PartModel) {
-		this.id = partModel.id;
-		this.name = partModel.name;
+		this.id = partModel.id || CommonHelper.getRandomId();
+		this.name = partModel.name || '';
 		this.measures = [];
-		partModel.measures.forEach((measureModel) => {
+		partModel.measures.forEach((m) => {
 			const measure = new Measure();
-			measure.initFromModel(measureModel);
+			measure.initFromModel(m);
 			this.measures.push(measure);
 		});
 	}

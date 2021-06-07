@@ -9,10 +9,10 @@ export class Chord implements ChordModel {
 	durationDivs: number = 96;
 
 	initFromModel(chordModel: ChordModel) {
-		this.id = chordModel.id;
-		this.name = chordModel.name;
-		this.isRest = chordModel.isRest;
-		this.startDiv = chordModel.startDiv;
-		this.durationDivs = chordModel.durationDivs;
+		this.id = chordModel.id || CommonHelper.getRandomId();
+		this.name = chordModel.name || '';
+		this.isRest = chordModel.isRest || false;
+		this.startDiv = chordModel.startDiv || 0;
+		this.durationDivs = chordModel.durationDivs || 96;
 	}
 }

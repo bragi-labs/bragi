@@ -22,9 +22,9 @@ export class Measure implements MeasureModel {
 		this.tempoBpm = measureModel.tempoBpm;
 		this.durationDivs = measureModel.durationDivs;
 		this.voices = [];
-		measureModel.voices.forEach((voiceModel) => {
+		measureModel.voices.forEach((v) => {
 			const voice = new Voice();
-			voice.initFromModel(voiceModel);
+			voice.initFromModel(v);
 			this.voices.push(voice);
 		});
 	}

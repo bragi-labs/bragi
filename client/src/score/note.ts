@@ -11,12 +11,12 @@ export class Note implements NoteModel {
 	isTiedToPrev: boolean = false;
 
 	initFromModel(noteModel: NoteModel) {
-		this.id = noteModel.id;
-		this.name = noteModel.name;
-		this.isRest = noteModel.isRest;
-		this.startDiv = noteModel.startDiv;
-		this.durationDivs = noteModel.durationDivs;
-		this.isTiedToNext = noteModel.isTiedToNext;
-		this.isTiedToPrev = noteModel.isTiedToPrev;
+		this.id = noteModel.id || CommonHelper.getRandomId();
+		this.name = noteModel.name || '';
+		this.isRest = noteModel.isRest || false;
+		this.startDiv = noteModel.startDiv || 0;
+		this.durationDivs = noteModel.durationDivs || 24;
+		this.isTiedToNext = noteModel.isTiedToNext || false;
+		this.isTiedToPrev = noteModel.isTiedToPrev || false;
 	}
 }
