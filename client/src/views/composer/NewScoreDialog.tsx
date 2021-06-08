@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
@@ -15,7 +15,7 @@ export interface NewScoreDialogResult {
 	pickupMeasure: string;
 }
 
-export const NewScoreDialog = memo(({ onDone }: NewScoreDialogProps) => {
+export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps, _ref) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'fixed',
