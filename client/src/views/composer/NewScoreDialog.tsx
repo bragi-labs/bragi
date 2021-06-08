@@ -60,10 +60,14 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 		actionButton: {
 			height: 32,
 			marginLeft: 16,
+			'&.MuiButton-contained.Mui-disabled': {
+				backgroundColor: '#333',
+			},
 		},
 	}));
 	const classes = useStyles();
 
+	const [isOk, setIsOk] = useState(false);
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
 	const [arrangerName, setArrangerName] = useState('');
@@ -72,6 +76,7 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 
 	const handleChangeScoreTitle = (event: any) => {
 		setScoreTitle(event.target.value);
+		setIsOk(!!event.target.value);
 	};
 
 	const handleChangeScoreCredits = (event: any) => {
@@ -105,7 +110,7 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 			</Box>
 			<Box className={classes.body}>
 				<form className={classes.form} noValidate autoComplete="off">
-					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" />
+					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" autoFocus={true} />
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Words & Music by Freddie Mercury" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
 					<FormControl className={classes.formControl}>
@@ -149,7 +154,7 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 				</form>
 			</Box>
 			<Box className={classes.footer}>
-				<Button onClick={handleClickOK} variant="contained" size="small" className={classes.actionButton}>
+				<Button disabled={!isOk} onClick={handleClickOK} variant="contained" size="small" className={classes.actionButton}>
 					OK
 				</Button>
 				<Button onClick={handleClickCancel} variant="contained" size="small" className={classes.actionButton}>

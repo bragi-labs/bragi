@@ -60,6 +60,10 @@ export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarPr
 		setNewScoreDialog(true);
 	}, []);
 
+	const handleCloseNewScoreDialog = useCallback(() => {
+		setNewScoreDialog(false);
+	}, []);
+
 	const handleDoneNewScoreDialog = useCallback<(newScoreDialogResult: NewScoreDialogResult | null) => void>(
 		(newScoreDialogResult: NewScoreDialogResult | null) => {
 			setNewScoreDialog(false);
@@ -101,7 +105,7 @@ export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarPr
 				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
 				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
-				<Modal open={newScoreDialog}>
+				<Modal open={newScoreDialog} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onDone={handleDoneNewScoreDialog} />
 				</Modal>
 				<FileOperations
