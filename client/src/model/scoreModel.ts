@@ -41,10 +41,10 @@ export interface MeasureModel {
 	id: number; //internal ID
 	number: number; //e.g. 1
 	isPickup: boolean; //e.g. false
-	musicalScale: string; //e.g. "Am"
 	timeSignature: string; //e.g. "4/4"
-	tempoBpm: number; //e.g. 120
 	durationDivs: number; //e.g. 96
+	tempoBpm: number; //e.g. 120
+	musicalScale: string; //e.g. "Am"
 	voices: VoiceModel[];
 }
 export interface PartModel {

@@ -17,10 +17,10 @@ export class Measure implements MeasureModel {
 		this.id = measureModel.id;
 		this.number = measureModel.number;
 		this.isPickup = measureModel.isPickup;
-		this.musicalScale = measureModel.musicalScale;
 		this.timeSignature = measureModel.timeSignature;
-		this.tempoBpm = measureModel.tempoBpm;
 		this.durationDivs = measureModel.durationDivs;
+		this.tempoBpm = measureModel.tempoBpm;
+		this.musicalScale = measureModel.musicalScale;
 		this.voices = [];
 		measureModel.voices.forEach((v) => {
 			const voice = new Voice();
@@ -32,8 +32,8 @@ export class Measure implements MeasureModel {
 	initFromNewDialog(newScoreDialogResult: NewScoreDialogResult, isPickupMeasure: boolean) {
 		this.number = isPickupMeasure ? 0 : 1;
 		this.isPickup = isPickupMeasure;
-		this.timeSignature = isPickupMeasure ? newScoreDialogResult.pickupMeasure : newScoreDialogResult.timeSignature;
-		this.durationDivs = Measure.getMeasureDurationDivs(isPickupMeasure ? newScoreDialogResult.pickupMeasure : newScoreDialogResult.timeSignature);
+		this.timeSignature = newScoreDialogResult.timeSignature;
+		this.durationDivs = Measure.getMeasureDurationDivs(newScoreDialogResult.timeSignature);
 		this.voices = [];
 		const voice = new Voice();
 		voice.initFromNewDialog(/*newScoreDialogResult*/);
