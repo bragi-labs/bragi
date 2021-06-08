@@ -1,13 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { Modal } from '@material-ui/core';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+import PrintIcon from '@material-ui/icons/Print';
 import { Score } from '../../score/score';
 import { FileOperations } from './FileOperations';
 import { NewScoreDialog, NewScoreDialogResult } from './NewScoreDialog';
-import { Modal } from '@material-ui/core';
 
 interface ComposerToolbarProps {
 	score: Score;
@@ -99,12 +100,17 @@ export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarPr
 		setSaveScoreDialog(false);
 	}, []);
 
+	const handleClickPrint = useCallback(() => {
+		window.print();
+	}, []);
+
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
 			<Box className={classes.panel}>
 				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
 				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
+				<PrintIcon onClick={handleClickPrint} className={classes.actionButton} titleAccess="Print" />
 				<Modal open={newScoreDialog} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onDone={handleDoneNewScoreDialog} />
 				</Modal>

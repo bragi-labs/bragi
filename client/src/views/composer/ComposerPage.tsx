@@ -11,7 +11,11 @@ export const ComposerPage = memo(() => {
 			height: '100%',
 			userSelect: 'none',
 		},
-		toolbarContainer: {},
+		toolbarContainer: {
+			'@media print': {
+				display: 'none',
+			},
+		},
 	}));
 	const classes = useStyles();
 

@@ -24,6 +24,9 @@ export const Masthead = memo(() => {
 		leftPart: {
 			display: 'flex',
 			alignItems: 'center',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		navLinks: {},
 		list: {
@@ -75,6 +78,9 @@ export const Masthead = memo(() => {
 		rightPart: {
 			display: 'flex',
 			alignItems: 'center',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		actionButton: {
 			marginLeft: 16,
@@ -90,7 +96,7 @@ export const Masthead = memo(() => {
 		{ text: 'About', to: '/about' },
 	];
 
-	const rightLinks: Array<{ text: string; to: string }> = [];
+	// const rightLinks: Array<{ text: string; to: string }> = [];
 
 	const myLocation = useLocation();
 
@@ -130,17 +136,17 @@ export const Masthead = memo(() => {
 					</Typography>
 				</Box>
 				<Box className={classes.rightPart}>
-					<Box className={classes.navLinks}>
-						<List className={classes.list}>
-							{rightLinks.map((link, index) => (
-								<ListItem key={index} className={classes.listItem}>
-									<Link to={link.to} className={link.to === myLocation.pathname ? classes.currentPath : classes.link}>
-										<ListItemText primary={link.text} />
-									</Link>
-								</ListItem>
-							))}
-						</List>
-					</Box>
+					{/*<Box className={classes.navLinks}>*/}
+					{/*	<List className={classes.list}>*/}
+					{/*		{rightLinks.map((link, index) => (*/}
+					{/*			<ListItem key={index} className={classes.listItem}>*/}
+					{/*				<Link to={link.to} className={link.to === myLocation.pathname ? classes.currentPath : classes.link}>*/}
+					{/*					<ListItemText primary={link.text} />*/}
+					{/*				</Link>*/}
+					{/*			</ListItem>*/}
+					{/*		))}*/}
+					{/*	</List>*/}
+					{/*</Box>*/}
 					{/*<Button disabled={true} onClick={handleClickLogin} variant="contained" size="small" className={classes.actionButton}>*/}
 					{/*	Log In*/}
 					{/*</Button>*/}
