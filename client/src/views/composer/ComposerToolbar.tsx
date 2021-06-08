@@ -1,17 +1,20 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+import { Score } from '../../score/score';
+import { FileOperations } from './FileOperations';
+import { NewScoreDialog, NewScoreDialogResult } from './NewScoreDialog';
+import { Modal } from '@material-ui/core';
 
 interface ComposerToolbarProps {
-	onClickNew: () => void;
-	onClickOpen: () => void;
-	onClickSave: () => void;
+	score: Score;
+	onChangeScore: (score: Score) => void;
 }
 
-export const ComposerToolbar = memo(({ onClickNew, onClickOpen, onClickSave }: ComposerToolbarProps) => {
+export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -49,24 +52,65 @@ export const ComposerToolbar = memo(({ onClickNew, onClickOpen, onClickSave }: C
 	}));
 	const classes = useStyles();
 
+	const [newScoreDialog, setNewScoreDialog] = useState(false);
+	const [openScoreDialog, setOpenScoreDialog] = useState(false);
+	const [saveScoreDialog, setSaveScoreDialog] = useState(false);
+
 	const handleClickNew = useCallback(() => {
-		onClickNew();
-	}, [onClickNew]);
+		setNewScoreDialog(true);
+	}, []);
+
+	const handleDoneNewScoreDialog = useCallback<(newScoreDialogResult: NewScoreDialogResult | null) => void>(
+		(newScoreDialogResult: NewScoreDialogResult | null) => {
+			setNewScoreDialog(false);
+			if (!newScoreDialogResult) {
+				return;
+			}
+			const newScore = new Score();
+			newScore.initFromNewDialog(newScoreDialogResult);
+			onChangeScore(newScore);
+		},
+		[onChangeScore],
+	);
 
 	const handleClickOpen = useCallback(() => {
-		onClickOpen();
-	}, [onClickOpen]);
+		setOpenScoreDialog(true);
+	}, []);
+
+	const handleOpenScoreDialogDone = useCallback(
+		(openedScore: Score | null) => {
+			setOpenScoreDialog(false);
+			if (openedScore) {
+				onChangeScore(openedScore);
+			}
+		},
+		[onChangeScore],
+	);
 
 	const handleClickSave = useCallback(() => {
-		onClickSave();
-	}, [onClickSave]);
+		setSaveScoreDialog(true);
+	}, []);
+
+	const handleSaveScoreDialogDone = useCallback(() => {
+		setSaveScoreDialog(false);
+	}, []);
 
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
-			<Box className={`${classes.panel}`}>
+			<Box className={classes.panel}>
 				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
 				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
+				<Modal open={newScoreDialog}>
+					<NewScoreDialog onDone={handleDoneNewScoreDialog} />
+				</Modal>
+				<FileOperations
+					score={score}
+					openDialog={openScoreDialog}
+					onOpenScoreDone={handleOpenScoreDialogDone}
+					saveDialog={saveScoreDialog}
+					onSaveScoreDone={handleSaveScoreDialogDone}
+				/>
 			</Box>
 		</Box>
 	);

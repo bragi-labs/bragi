@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { AppDataHelper } from '../services/appDataHelper';
-import { Score } from '../score/score';
+import { AppDataHelper } from '../../services/appDataHelper';
+import { Score } from '../../score/score';
 
 export interface FileOperationsProps {
 	score: Score;
