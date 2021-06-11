@@ -3,6 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Score } from '../../score/score';
 import { ComposerToolbar } from './ComposerToolbar';
+import { Piano } from './Piano';
 
 export const ComposerPage = memo(() => {
 	const useStyles = makeStyles(() => ({
@@ -29,6 +30,7 @@ export const ComposerPage = memo(() => {
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
 				<ComposerToolbar score={score} onChangeScore={handleChangeScore} />
+				<Piano />
 			</Box>
 		</Box>
 	);
