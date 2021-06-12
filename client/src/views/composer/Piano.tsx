@@ -159,7 +159,7 @@ export const Piano = memo(() => {
 		setPowerOn((status) => !status);
 	}, []);
 
-	const StartNote = useCallback(
+	const startNote = useCallback(
 		(event) => {
 			if (!synth) {
 				return;
@@ -169,7 +169,7 @@ export const Piano = memo(() => {
 		[synth],
 	);
 
-	const StopNote = useCallback(
+	const stopNote = useCallback(
 		(event) => {
 			if (!synth) {
 				return;
@@ -204,10 +204,10 @@ export const Piano = memo(() => {
 						{whiteKeys.map((whiteKey, j) => (
 							<Box
 								key={j}
-								onMouseDown={StartNote}
-								onMouseUp={StopNote}
+								onMouseDown={startNote}
+								onMouseUp={stopNote}
 								onMouseEnter={enterNote}
-								onMouseLeave={StopNote}
+								onMouseLeave={stopNote}
 								data-note-name={whiteKey.noteName}
 								data-octave-number={octave.number}
 								className={`${classes.octaveKey} ${classes.whiteKey}`}
@@ -217,10 +217,10 @@ export const Piano = memo(() => {
 						{blackKeys.map((blackKey, j) => (
 							<Box
 								key={j}
-								onMouseDown={StartNote}
-								onMouseUp={StopNote}
+								onMouseDown={startNote}
+								onMouseUp={stopNote}
 								onMouseEnter={enterNote}
-								onMouseLeave={StopNote}
+								onMouseLeave={stopNote}
 								data-note-name={blackKey.noteName}
 								data-octave-number={octave.number}
 								className={`${classes.octaveKey} ${classes.blackKey}`}
