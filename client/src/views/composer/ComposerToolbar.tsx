@@ -6,16 +6,10 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
-import { Score } from '../../score/score';
 import { FileOperations } from './FileOperations';
-import { NewScoreDialog, NewScoreDialogResult } from './NewScoreDialog';
+import { NewScoreDialog } from './NewScoreDialog';
 
-interface ComposerToolbarProps {
-	score: Score;
-	onChangeScore: (score: Score) => void;
-}
-
-export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarProps) => {
+export const ComposerToolbar = memo(() => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -65,32 +59,17 @@ export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarPr
 		setNewScoreDialog(false);
 	}, []);
 
-	const handleDoneNewScoreDialog = useCallback<(newScoreDialogResult: NewScoreDialogResult | null) => void>(
-		(newScoreDialogResult: NewScoreDialogResult | null) => {
-			setNewScoreDialog(false);
-			if (!newScoreDialogResult) {
-				return;
-			}
-			const newScore = new Score();
-			newScore.initFromNewDialog(newScoreDialogResult);
-			onChangeScore(newScore);
-		},
-		[onChangeScore],
-	);
+	const handleNewScoreDialogDone = useCallback(() => {
+		setNewScoreDialog(false);
+	}, []);
 
 	const handleClickOpen = useCallback(() => {
 		setOpenScoreDialog(true);
 	}, []);
 
-	const handleOpenScoreDialogDone = useCallback(
-		(openedScore: Score | null) => {
-			setOpenScoreDialog(false);
-			if (openedScore) {
-				onChangeScore(openedScore);
-			}
-		},
-		[onChangeScore],
-	);
+	const handleOpenScoreDialogDone = useCallback(() => {
+		setOpenScoreDialog(false);
+	}, []);
 
 	const handleClickSave = useCallback(() => {
 		setSaveScoreDialog(true);
@@ -112,14 +91,13 @@ export const ComposerToolbar = memo(({ score, onChangeScore }: ComposerToolbarPr
 				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
 				<PrintIcon onClick={handleClickPrint} className={classes.actionButton} titleAccess="Print" />
 				<Modal open={newScoreDialog} onClose={handleCloseNewScoreDialog}>
-					<NewScoreDialog onDone={handleDoneNewScoreDialog} />
+					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>
 				<FileOperations
-					score={score}
 					openDialog={openScoreDialog}
-					onOpenScoreDone={handleOpenScoreDialogDone}
+					onOpenScoreDialogDone={handleOpenScoreDialogDone}
 					saveDialog={saveScoreDialog}
-					onSaveScoreDone={handleSaveScoreDialogDone}
+					onSaveScoreDialogDone={handleSaveScoreDialogDone}
 				/>
 			</Box>
 		</Box>

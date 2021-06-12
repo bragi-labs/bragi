@@ -3,16 +3,16 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { AppDataHelper } from '../../services/appDataHelper';
 import { Score } from '../../score/score';
+import { ScoreContextContainer } from '../../hooks/useScoreContext';
 
 export interface FileOperationsProps {
-	score: Score;
 	openDialog: boolean;
-	onOpenScoreDone: (score: Score | null) => void;
+	onOpenScoreDialogDone: () => void;
 	saveDialog: boolean;
-	onSaveScoreDone: () => void;
+	onSaveScoreDialogDone: () => void;
 }
 
-export const FileOperations = memo(({ score, openDialog, onOpenScoreDone, saveDialog, onSaveScoreDone }: FileOperationsProps) => {
+export const FileOperations = memo(({ openDialog, onOpenScoreDialogDone, saveDialog, onSaveScoreDialogDone }: FileOperationsProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'none',
@@ -20,6 +20,7 @@ export const FileOperations = memo(({ score, openDialog, onOpenScoreDone, saveDi
 	}));
 	const classes = useStyles();
 
+	const { score, setScore } = ScoreContextContainer.useContainer();
 	const openInputRef = useRef<any>();
 	const saveLinkRef = useRef<any>();
 
@@ -33,7 +34,7 @@ export const FileOperations = memo(({ score, openDialog, onOpenScoreDone, saveDi
 	const handleChangeOpenFile = useCallback(() => {
 		const openInput: HTMLInputElement = openInputRef.current;
 		if (!openInput.files || openInput.files.length !== 1) {
-			onOpenScoreDone(null);
+			onOpenScoreDialogDone();
 			return;
 		}
 		const fileReader = new FileReader();
@@ -41,23 +42,22 @@ export const FileOperations = memo(({ score, openDialog, onOpenScoreDone, saveDi
 			if (fileReader.result) {
 				const openedScore = new Score();
 				openedScore.initFromModel(JSON.parse(fileReader.result.toString()));
-				onOpenScoreDone(openedScore);
-			} else {
-				onOpenScoreDone(null);
+				setScore(openedScore);
 			}
+			onOpenScoreDialogDone();
 		};
 		fileReader.readAsText(openInput.files[0]);
-	}, [openInputRef, onOpenScoreDone]);
+	}, [openInputRef, setScore, onOpenScoreDialogDone]);
 
 	useEffect(() => {
 		if (saveDialog) {
 			const saveLink: HTMLAnchorElement = saveLinkRef.current;
 			saveLink.setAttribute('href', window.URL.createObjectURL(new Blob([JSON.stringify(score)], { type: 'application/json;charset=utf-8' })));
-			saveLink.setAttribute('download', `${score.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
+			saveLink.setAttribute('download', `${score?.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
 			saveLink.click();
-			onSaveScoreDone();
+			onSaveScoreDialogDone();
 		}
-	}, [score, saveDialog, onSaveScoreDone]);
+	}, [score, saveDialog, onSaveScoreDialogDone]);
 
 	return (
 		<Box id="FileOperations" className={`${classes.root}`}>

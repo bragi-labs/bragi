@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Score } from '../../score/score';
+// import { useScoreContext } from '../../hooks/useScoreContext';
 import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from './Piano';
 
@@ -21,16 +21,12 @@ export const ComposerPage = memo(() => {
 	}));
 	const classes = useStyles();
 
-	const [score, setScore] = useState<Score>(new Score());
-
-	const handleChangeScore = useCallback((s: Score) => {
-		setScore(s);
-	}, []);
+	// const { score, updateScore } = useScoreContext();
 
 	return (
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
-				<ComposerToolbar score={score} onChangeScore={handleChangeScore} />
+				<ComposerToolbar />
 				<Piano />
 			</Box>
 		</Box>

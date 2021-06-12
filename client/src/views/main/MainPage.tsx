@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
+import { ScoreContextContainer } from '../../hooks/useScoreContext';
 import { Masthead } from './Masthead';
 import { VideoLoop } from './VideoLoop';
 import { Footer } from './Footer';
@@ -90,18 +91,20 @@ export const MainPage = memo(() => {
 			{<VideoLoop videoName="purple-bokeh" height="100px" playbackSpeed={1} blurPixels={0} grayscale={true} />}
 			<Box className={classes.topCover} />
 			<Box className={classes.content}>
-				<Box className={classes.mastheadContainer}>
-					<Masthead />
-				</Box>
-				<Box className={classes.pageContainer}>
-					<Switch>
-						<Route path="/home" exact component={HomePage} />
-						<Route path="/composer" exact component={ComposerPage} />
-						<Route path="/help" exact component={HelpPage} />
-						<Route path="/about" exact component={AboutPage} />
-						<Route component={HomePage} />
-					</Switch>
-				</Box>
+				<ScoreContextContainer.Provider>
+					<Box className={classes.mastheadContainer}>
+						<Masthead />
+					</Box>
+					<Box className={classes.pageContainer}>
+						<Switch>
+							<Route path="/home" exact component={HomePage} />
+							<Route path="/composer" exact component={ComposerPage} />
+							<Route path="/help" exact component={HelpPage} />
+							<Route path="/about" exact component={AboutPage} />
+							<Route component={HomePage} />
+						</Switch>
+					</Box>
+				</ScoreContextContainer.Provider>
 			</Box>
 			<Footer />
 		</Box>

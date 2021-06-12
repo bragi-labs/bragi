@@ -2,9 +2,11 @@ import React, { useState, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Score } from '../../score/score';
+import { ScoreContextContainer } from '../../hooks/useScoreContext';
 
 interface NewScoreDialogProps {
-	onDone: (newScoreDialogResult: NewScoreDialogResult | null) => void;
+	onNewScoreDialogDone: () => void;
 }
 
 export interface NewScoreDialogResult {
@@ -15,7 +17,7 @@ export interface NewScoreDialogResult {
 	pickupMeasure: string;
 }
 
-export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps, _ref) => {
+export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewScoreDialogProps, _ref) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'fixed',
@@ -28,7 +30,7 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 			display: 'grid',
 			gridTemplate: 'auto 1fr auto / auto',
 			color: '#fff',
-			opacity: 0.6,
+			opacity: 0.8,
 			padding: 24,
 		},
 		header: {},
@@ -67,6 +69,7 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 	}));
 	const classes = useStyles();
 
+	const { setScore } = ScoreContextContainer.useContainer();
 	const [isOk, setIsOk] = useState(false);
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
@@ -96,12 +99,15 @@ export const NewScoreDialog = React.forwardRef(({ onDone }: NewScoreDialogProps,
 	};
 
 	const handleClickCancel = useCallback(() => {
-		onDone(null);
-	}, [onDone]);
+		onNewScoreDialogDone();
+	}, [onNewScoreDialogDone]);
 
 	const handleClickOK = useCallback(() => {
-		onDone({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure });
-	}, [onDone, scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure]);
+		const newScore = new Score();
+		newScore.initFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure });
+		setScore(newScore);
+		onNewScoreDialogDone();
+	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, setScore, onNewScoreDialogDone]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
