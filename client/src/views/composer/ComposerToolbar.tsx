@@ -6,8 +6,8 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
-import { FileOperations } from './FileOperations';
 import { NewScoreDialog } from './NewScoreDialog';
+import { FileOperations } from './FileOperations';
 
 export const ComposerToolbar = memo(() => {
 	const useStyles = makeStyles(() => ({
@@ -47,36 +47,36 @@ export const ComposerToolbar = memo(() => {
 	}));
 	const classes = useStyles();
 
-	const [newScoreDialog, setNewScoreDialog] = useState(false);
-	const [openScoreDialog, setOpenScoreDialog] = useState(false);
-	const [saveScoreDialog, setSaveScoreDialog] = useState(false);
+	const [newScoreDialogVisible, setNewScoreDialogVisible] = useState(false);
+	const [openScoreDialogVisible, setOpenScoreDialogVisible] = useState(false);
+	const [goDownloadScore, setGoDownloadScore] = useState(false);
 
 	const handleClickNew = useCallback(() => {
-		setNewScoreDialog(true);
+		setNewScoreDialogVisible(true);
 	}, []);
 
 	const handleCloseNewScoreDialog = useCallback(() => {
-		setNewScoreDialog(false);
+		setNewScoreDialogVisible(false);
 	}, []);
 
 	const handleNewScoreDialogDone = useCallback(() => {
-		setNewScoreDialog(false);
+		setNewScoreDialogVisible(false);
 	}, []);
 
 	const handleClickOpen = useCallback(() => {
-		setOpenScoreDialog(true);
+		setOpenScoreDialogVisible(true);
 	}, []);
 
 	const handleOpenScoreDialogDone = useCallback(() => {
-		setOpenScoreDialog(false);
+		setOpenScoreDialogVisible(false);
 	}, []);
 
 	const handleClickSave = useCallback(() => {
-		setSaveScoreDialog(true);
+		setGoDownloadScore(true);
 	}, []);
 
-	const handleSaveScoreDialogDone = useCallback(() => {
-		setSaveScoreDialog(false);
+	const handleDownloadScoreDone = useCallback(() => {
+		setGoDownloadScore(false);
 	}, []);
 
 	const handleClickPrint = useCallback(() => {
@@ -90,14 +90,14 @@ export const ComposerToolbar = memo(() => {
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
 				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
 				<PrintIcon onClick={handleClickPrint} className={classes.actionButton} titleAccess="Print" />
-				<Modal open={newScoreDialog} onClose={handleCloseNewScoreDialog}>
+				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>
 				<FileOperations
-					openDialog={openScoreDialog}
+					openScoreDialogVisible={openScoreDialogVisible}
 					onOpenScoreDialogDone={handleOpenScoreDialogDone}
-					saveDialog={saveScoreDialog}
-					onSaveScoreDialogDone={handleSaveScoreDialogDone}
+					goDownloadScore={goDownloadScore}
+					onDownloadScoreDone={handleDownloadScoreDone}
 				/>
 			</Box>
 		</Box>

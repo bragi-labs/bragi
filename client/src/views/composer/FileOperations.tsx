@@ -6,13 +6,13 @@ import { Score } from '../../score/score';
 import { ScoreContextContainer } from '../../hooks/useScoreContext';
 
 export interface FileOperationsProps {
-	openDialog: boolean;
+	openScoreDialogVisible: boolean;
 	onOpenScoreDialogDone: () => void;
-	saveDialog: boolean;
-	onSaveScoreDialogDone: () => void;
+	goDownloadScore: boolean;
+	onDownloadScoreDone: () => void;
 }
 
-export const FileOperations = memo(({ openDialog, onOpenScoreDialogDone, saveDialog, onSaveScoreDialogDone }: FileOperationsProps) => {
+export const FileOperations = memo(({ openScoreDialogVisible, onOpenScoreDialogDone, goDownloadScore, onDownloadScoreDone }: FileOperationsProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'none',
@@ -22,14 +22,14 @@ export const FileOperations = memo(({ openDialog, onOpenScoreDialogDone, saveDia
 
 	const { score, setScore } = ScoreContextContainer.useContainer();
 	const openInputRef = useRef<any>();
-	const saveLinkRef = useRef<any>();
+	const downloadLinkRef = useRef<any>();
 
 	useEffect(() => {
-		if (openDialog) {
+		if (openScoreDialogVisible) {
 			const openInput: HTMLInputElement = openInputRef.current;
 			openInput.click();
 		}
-	}, [openDialog]);
+	}, [openScoreDialogVisible, openInputRef]);
 
 	const handleChangeOpenFile = useCallback(() => {
 		const openInput: HTMLInputElement = openInputRef.current;
@@ -47,22 +47,22 @@ export const FileOperations = memo(({ openDialog, onOpenScoreDialogDone, saveDia
 			onOpenScoreDialogDone();
 		};
 		fileReader.readAsText(openInput.files[0]);
-	}, [openInputRef, setScore, onOpenScoreDialogDone]);
+	}, [openInputRef, onOpenScoreDialogDone, setScore]);
 
 	useEffect(() => {
-		if (saveDialog) {
-			const saveLink: HTMLAnchorElement = saveLinkRef.current;
-			saveLink.setAttribute('href', window.URL.createObjectURL(new Blob([JSON.stringify(score)], { type: 'application/json;charset=utf-8' })));
-			saveLink.setAttribute('download', `${score?.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
-			saveLink.click();
-			onSaveScoreDialogDone();
+		if (goDownloadScore) {
+			const downloadLink: HTMLAnchorElement = downloadLinkRef.current;
+			downloadLink.setAttribute('href', window.URL.createObjectURL(new Blob([JSON.stringify(score)], { type: 'application/json;charset=utf-8' })));
+			downloadLink.setAttribute('download', `${score?.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
+			downloadLink.click();
+			onDownloadScoreDone();
 		}
-	}, [score, saveDialog, onSaveScoreDialogDone]);
+	}, [downloadLinkRef, score, goDownloadScore, onDownloadScoreDone]);
 
 	return (
 		<Box id="FileOperations" className={`${classes.root}`}>
 			<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
-			<a href="/#" ref={saveLinkRef} style={{ display: 'none' }}>
+			<a href="/#" ref={downloadLinkRef} style={{ display: 'none' }}>
 				save
 			</a>
 		</Box>
