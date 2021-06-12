@@ -39,7 +39,9 @@ export const FileOperations = memo(({ score, openDialog, onOpenScoreDone, saveDi
 		const fileReader = new FileReader();
 		fileReader.onload = () => {
 			if (fileReader.result) {
-				onOpenScoreDone(JSON.parse(fileReader.result.toString()));
+				const openedScore = new Score();
+				openedScore.initFromModel(JSON.parse(fileReader.result.toString()));
+				onOpenScoreDone(openedScore);
 			} else {
 				onOpenScoreDone(null);
 			}
