@@ -13,6 +13,7 @@ export const ComposerPage = memo(() => {
 			userSelect: 'none',
 		},
 		toolbarContainer: {
+			position: 'relative',
 			'@media print': {
 				display: 'none',
 			},
