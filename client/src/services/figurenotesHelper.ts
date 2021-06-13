@@ -75,10 +75,10 @@ export class FigurenotesHelper {
 			}
 			case FnOctaveShape.RHOMBUS: {
 				style = {
-					width: `${size / Math.sqrt(2)}px`,
-					height: `${size / Math.sqrt(2)}px`,
+					width: `${size}px`,
+					height: `${size}px`,
 					backgroundColor: `${noteColor}`,
-					transform: `rotate(45deg)`,
+					transform: `rotate(45deg) scale(0.71)`,
 					transformOrigin: `${size / 2}px ${size / 2}px`,
 				};
 				break;

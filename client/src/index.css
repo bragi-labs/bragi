@@ -81,3 +81,47 @@ code {
 .mono {
 	font-family: "Share Tech Mono", Consolas, monospace !important;
 }
+
+.display-none {
+	display: none !important;
+}
+
+.led {
+	position: relative;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	transition: all 0.5s ease-in-out;
+	cursor: pointer;
+	background-color: #666;
+}
+.led:hover {
+	opacity: 0.8;
+}
+.led::before {
+	content: "";
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	transition: all 0.5s ease-in-out;
+	background-color: #999;
+}
+.led--off {
+	background-color: #c00;
+	box-shadow: 0 0 10px #c00;
+}
+.led--off::before {
+	background-color: #f00;
+	box-shadow: 0 0 4px #f00;
+}
+.led--on {
+	background-color: #0c0;
+	box-shadow: 0 0 10px #0c0;
+}
+.led--on::before {
+	background-color: #0f0;
+	box-shadow: 0 0 4px #0f0;
+}

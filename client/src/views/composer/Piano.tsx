@@ -30,43 +30,28 @@ export const Piano = () => {
 			borderRadius: 4,
 			backgroundColor: '#222',
 		},
-		led: {
-			position: 'relative',
-			margin: '0 4px 0 6px',
-			width: 12,
-			height: 12,
-			borderRadius: '50%',
-			backgroundColor: '#c00',
-			boxShadow: '0 0 10px #c00',
-			transition: 'all 0.5s ease-in-out',
-			cursor: 'pointer',
-			'&:hover': {
-				opacity: 0.8,
-			},
-			'&:before': {
-				content: '""',
-				position: 'absolute',
-				top: 2,
-				left: 2,
-				width: 4,
-				height: 4,
-				borderRadius: '50%',
-				backgroundColor: '#f00',
-				boxShadow: '0 0 4px #f00',
-				transition: 'all 0.5s ease-in-out',
-			},
-		},
-		ledOn: {
-			backgroundColor: '#0c0',
-			boxShadow: '0 0 10px #0c0',
-			'&:before': {
-				backgroundColor: '#0f0',
-				boxShadow: '0 0 4px #0f0',
-			},
+		powerSwitch: {
+			display: 'flex',
+			alignItems: 'center',
 		},
 		powerText: {
+			margin: '0 6px',
 			color: '#ccc',
 			fontSize: 12,
+		},
+		octaveControls: {
+			marginLeft: 40,
+			display: 'flex',
+			alignItems: 'center',
+			height: '100%',
+		},
+		octaveSwitchesText: {
+			margin: '0 6px',
+			color: '#ccc',
+			fontSize: 12,
+		},
+		octaveSwitchLed: {
+			margin: '0 2px',
 		},
 		keyboard: {
 			position: 'relative',
@@ -80,12 +65,16 @@ export const Piano = () => {
 			backgroundImage: 'url("/img/piano-small.jpg")',
 			backgroundPosition: '0 -32px',
 			backgroundRepeat: 'no-repeat',
+			//transition: 'all 0.1s ease',
 			'&:nth-of-type(1)': {
 				borderRadius: '4px 0 0 4px',
 			},
 			'&:nth-of-type(5)': {
 				borderRadius: '0 4px 4px 0',
 			},
+		},
+		hideOctave: {
+			width: 0,
 		},
 		octaveKey: {
 			position: 'absolute',
@@ -117,6 +106,7 @@ export const Piano = () => {
 		figureNoteSymbol: {
 			position: 'absolute',
 			bottom: 4,
+			transition: 'all 1s ease',
 		},
 		keyboardCover: {
 			position: 'absolute',
@@ -136,6 +126,7 @@ export const Piano = () => {
 
 	const [powerOn, setPowerOn] = useState(false);
 	const [synth, setSynth] = useState<any>(null);
+	const [octaves, setOctaves] = useState<boolean[]>([true, true, true, true, true]);
 
 	useEffect(() => {
 		if (powerOn) {
@@ -144,8 +135,6 @@ export const Piano = () => {
 			setSynth(null);
 		}
 	}, [powerOn]);
-
-	const octaves = [2, 3, 4, 5, 6].map((o) => ({ number: o }));
 
 	const whiteKeys = MusicalHelper.getWhiteIndices().map((i, index) => {
 		return {
@@ -163,6 +152,16 @@ export const Piano = () => {
 	const togglePower = useCallback(() => {
 		setPowerOn((status) => !status);
 	}, []);
+
+	const toggleOctave = useCallback(
+		(event) => {
+			const newOctaves = [...octaves];
+			const index = event.currentTarget.dataset['octaveIndex'];
+			newOctaves[index] = !newOctaves[index];
+			setOctaves(newOctaves);
+		},
+		[octaves],
+	);
 
 	const startNote = useCallback(
 		(event) => {
@@ -200,18 +199,35 @@ export const Piano = () => {
 	return (
 		<Box id="Piano" className={classes.root}>
 			<Box className={classes.controls}>
-				<Box onClick={togglePower} className={`${classes.led} ${powerOn ? classes.ledOn : ''}`} />
-				<Typography className={classes.powerText}>Power</Typography>
+				<Box className={classes.powerSwitch}>
+					<Typography className={classes.powerText}>Power</Typography>
+					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
+				</Box>
+				<Box className={classes.octaveControls}>
+					<Typography className={classes.octaveSwitchesText}>Octaves</Typography>
+					{octaves.map((octave, octaveIndex) => (
+						<Box
+							key={octaveIndex}
+							onClick={toggleOctave}
+							data-octave-index={octaveIndex}
+							className={`${classes.octaveSwitchLed} led ${powerOn && octave ? 'led--on' : ''} ${powerOn && !octave ? 'led--off' : ''}`}
+						/>
+					))}
+				</Box>
 			</Box>
 			<Box className={classes.keyboard}>
-				{octaves.map((octave, i) => (
-					<Box key={i} className={classes.octave}>
+				{octaves.map((oct, octaveIndex) => (
+					<Box key={octaveIndex} className={`${classes.octave} ${oct ? '' : classes.hideOctave}`}>
 						{whiteKeys.map((whiteKey, j) => (
 							<Box key={j}>
 								<Box
-									className={classes.figureNoteSymbol}
+									className={`${classes.figureNoteSymbol} ${oct ? '' : 'display-none'}`}
 									style={{
-										...FigurenotesHelper.getSymbolStyle(FigurenotesHelper.getNoteColor(whiteKey.noteName), FigurenotesHelper.getOctaveShape(octave.number), 14),
+										...FigurenotesHelper.getSymbolStyle(
+											FigurenotesHelper.getNoteColor(whiteKey.noteName),
+											FigurenotesHelper.getOctaveShape(octaveIndex + 2),
+											14,
+										),
 										left: whiteKey.left + 4,
 									}}
 								/>
@@ -221,7 +237,7 @@ export const Piano = () => {
 									onMouseEnter={enterNote}
 									onMouseLeave={stopNote}
 									data-note-name={whiteKey.noteName}
-									data-octave-number={octave.number}
+									data-octave-number={octaveIndex + 2}
 									className={`${classes.octaveKey} ${classes.whiteKey}`}
 									style={{ left: whiteKey.left }}
 								/>
@@ -235,7 +251,7 @@ export const Piano = () => {
 								onMouseEnter={enterNote}
 								onMouseLeave={stopNote}
 								data-note-name={blackKey.noteName}
-								data-octave-number={octave.number}
+								data-octave-number={octaveIndex + 2}
 								className={`${classes.octaveKey} ${classes.blackKey}`}
 								style={{ left: blackKey.left }}
 							/>
