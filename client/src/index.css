@@ -93,7 +93,7 @@ code {
 	border-radius: 50%;
 	transition: all 0.5s ease-in-out;
 	cursor: pointer;
-	background-color: #666;
+	background-color: #444;
 }
 .led:hover {
 	opacity: 0.8;
@@ -107,7 +107,7 @@ code {
 	height: 4px;
 	border-radius: 50%;
 	transition: all 0.5s ease-in-out;
-	background-color: #999;
+	background-color: #555;
 }
 .led--off {
 	background-color: #c00;
