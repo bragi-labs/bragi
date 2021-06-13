@@ -5,6 +5,7 @@ import * as Tone from 'tone';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Typography } from '@material-ui/core';
+import { FigurenotesHelper } from '../../services/figurenotesHelper';
 
 export const Piano = () => {
 	const useStyles = makeStyles(() => ({
@@ -113,6 +114,10 @@ export const Piano = () => {
 				opacity: 0.2,
 			},
 		},
+		figureNoteSymbol: {
+			position: 'absolute',
+			bottom: 4,
+		},
 		keyboardCover: {
 			position: 'absolute',
 			left: 0,
@@ -202,17 +207,22 @@ export const Piano = () => {
 				{octaves.map((octave, i) => (
 					<Box key={i} className={classes.octave}>
 						{whiteKeys.map((whiteKey, j) => (
-							<Box
-								key={j}
-								onMouseDown={startNote}
-								onMouseUp={stopNote}
-								onMouseEnter={enterNote}
-								onMouseLeave={stopNote}
-								data-note-name={whiteKey.noteName}
-								data-octave-number={octave.number}
-								className={`${classes.octaveKey} ${classes.whiteKey}`}
-								style={{ left: whiteKey.left }}
-							/>
+							<Box key={j}>
+								<Box
+									className={classes.figureNoteSymbol}
+									style={{ ...FigurenotesHelper.getSymbolStyle(whiteKey.noteName, octave.number, 14), left: whiteKey.left + 4 }}
+								/>
+								<Box
+									onMouseDown={startNote}
+									onMouseUp={stopNote}
+									onMouseEnter={enterNote}
+									onMouseLeave={stopNote}
+									data-note-name={whiteKey.noteName}
+									data-octave-number={octave.number}
+									className={`${classes.octaveKey} ${classes.whiteKey}`}
+									style={{ left: whiteKey.left }}
+								/>
+							</Box>
 						))}
 						{blackKeys.map((blackKey, j) => (
 							<Box
