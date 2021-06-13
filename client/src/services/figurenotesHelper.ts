@@ -34,10 +34,8 @@ export class FigurenotesHelper {
 	static getBlackIndices(): number[] {
 		return [1, 3, 6, 8, 10];
 	}
-	static getSymbolStyle(NoteName: string, octaveNumber: number, size: number) {
+	static getSymbolStyle(noteColor: string, octaveShape: FnOctaveShape, size: number) {
 		let style: any;
-		const octaveShape = FigurenotesHelper.getOctaveShape(octaveNumber);
-		const noteColor = FigurenotesHelper.getNoteColor(NoteName);
 		switch (octaveShape) {
 			case FnOctaveShape.X: {
 				style = {

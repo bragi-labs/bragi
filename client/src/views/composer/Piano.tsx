@@ -210,7 +210,10 @@ export const Piano = () => {
 							<Box key={j}>
 								<Box
 									className={classes.figureNoteSymbol}
-									style={{ ...FigurenotesHelper.getSymbolStyle(whiteKey.noteName, octave.number, 14), left: whiteKey.left + 4 }}
+									style={{
+										...FigurenotesHelper.getSymbolStyle(FigurenotesHelper.getNoteColor(whiteKey.noteName), FigurenotesHelper.getOctaveShape(octave.number), 14),
+										left: whiteKey.left + 4,
+									}}
 								/>
 								<Box
 									onMouseDown={startNote}
