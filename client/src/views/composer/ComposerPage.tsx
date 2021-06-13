@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
+import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 // import { useScoreContext } from '../../hooks/useScoreContext';
 import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from './Piano';
 
-export const ComposerPage = memo(() => {
+export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -31,4 +31,4 @@ export const ComposerPage = memo(() => {
 			</Box>
 		</Box>
 	);
-});
+};

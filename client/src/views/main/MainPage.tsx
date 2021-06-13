@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
@@ -11,7 +11,7 @@ import { ComposerPage } from '../composer/ComposerPage';
 import { HelpPage } from '../help/HelpPage';
 import { AboutPage } from '../about/AboutPage';
 
-export const MainPage = memo(() => {
+export const MainPage = () => {
 	const useStyles = makeStyles((theme) => ({
 		root: {
 			position: 'absolute',
@@ -109,4 +109,4 @@ export const MainPage = memo(() => {
 			<Footer />
 		</Box>
 	);
-});
+};

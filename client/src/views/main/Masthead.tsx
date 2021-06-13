@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import Box from '@material-ui/core/Box/Box';
 import List from '@material-ui/core/List';
@@ -8,7 +8,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
 import { AppDataHelper } from '../../services/appDataHelper';
 
-export const Masthead = memo(() => {
+export const Masthead = () => {
 	const useStyles = makeStyles((theme) => ({
 		root: {
 			position: 'relative',
@@ -154,4 +154,4 @@ export const Masthead = memo(() => {
 			</Box>
 		</Box>
 	);
-});
+};

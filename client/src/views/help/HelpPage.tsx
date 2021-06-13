@@ -1,9 +1,9 @@
-import React, { memo } from 'react';
+import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
 import { UnderConstruction } from '../../components/UnderConstruction';
 
-export const HelpPage = memo(() => {
+export const HelpPage = () => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -18,4 +18,4 @@ export const HelpPage = memo(() => {
 			<UnderConstruction />
 		</Box>
 	);
-});
+};

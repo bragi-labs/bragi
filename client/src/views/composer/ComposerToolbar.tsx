@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Modal } from '@material-ui/core';
@@ -9,7 +9,7 @@ import PrintIcon from '@material-ui/icons/Print';
 import { NewScoreDialog } from './NewScoreDialog';
 import { FileOperations } from './FileOperations';
 
-export const ComposerToolbar = memo(() => {
+export const ComposerToolbar = () => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -102,4 +102,4 @@ export const ComposerToolbar = memo(() => {
 			</Box>
 		</Box>
 	);
-});
+};

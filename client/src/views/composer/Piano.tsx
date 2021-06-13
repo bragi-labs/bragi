@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import * as Tone from 'tone';
@@ -6,7 +6,7 @@ import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Typography } from '@material-ui/core';
 
-export const Piano = memo(() => {
+export const Piano = () => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -233,4 +233,4 @@ export const Piano = memo(() => {
 			</Box>
 		</Box>
 	);
-});
+};

@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { AppDataHelper } from '../../services/appDataHelper';
@@ -12,7 +12,7 @@ export interface FileOperationsProps {
 	onDownloadScoreDone: () => void;
 }
 
-export const FileOperations = memo(({ openScoreDialogVisible, onOpenScoreDialogDone, goDownloadScore, onDownloadScoreDone }: FileOperationsProps) => {
+export const FileOperations = ({ openScoreDialogVisible, onOpenScoreDialogDone, goDownloadScore, onDownloadScoreDone }: FileOperationsProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'none',
@@ -67,4 +67,4 @@ export const FileOperations = memo(({ openScoreDialogVisible, onOpenScoreDialogD
 			</a>
 		</Box>
 	);
-});
+};

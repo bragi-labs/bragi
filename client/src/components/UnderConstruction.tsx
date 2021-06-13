@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
+import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
 import { Typography } from '@material-ui/core';
 
-export const UnderConstruction = memo(() => {
-	const useStyles = makeStyles((theme) => ({
+export const UnderConstruction = () => {
+	const useStyles = makeStyles((/*theme*/) => ({
 		root: {
 			height: '100%',
 			backgroundImage: 'linear-gradient(135deg, #fa3 25%, #333 25%, #333 50%, #fa3 50%, #fa3 75%, #333 75%, #333 100%)',
@@ -35,4 +35,4 @@ export const UnderConstruction = memo(() => {
 			</Box>
 		</Box>
 	);
-});
+};

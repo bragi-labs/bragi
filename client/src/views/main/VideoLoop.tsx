@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Box from '@material-ui/core/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
@@ -11,7 +11,7 @@ interface VideoLoopProps {
 	height?: string;
 }
 
-export const VideoLoop = memo(({ videoName, playbackSpeed = 1, blurPixels = 0, grayscale = false, top = '0', height = '100vh' }: VideoLoopProps) => {
+export const VideoLoop = ({ videoName, playbackSpeed = 1, blurPixels = 0, grayscale = false, top = '0', height = '100vh' }: VideoLoopProps) => {
 	const useStyles = makeStyles((/*theme*/) => ({
 		root: {
 			position: 'absolute',
@@ -54,4 +54,4 @@ export const VideoLoop = memo(({ videoName, playbackSpeed = 1, blurPixels = 0, g
 			</video>
 		</Box>
 	);
-});
+};
