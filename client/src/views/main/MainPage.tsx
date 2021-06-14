@@ -8,6 +8,7 @@ import { VideoLoop } from './VideoLoop';
 import { Footer } from './Footer';
 import { HomePage } from '../home/HomePage';
 import { ComposerPage } from '../composer/ComposerPage';
+import { PlayPage } from '../play/PlayPage';
 import { HelpPage } from '../help/HelpPage';
 import { AboutPage } from '../about/AboutPage';
 
@@ -44,7 +45,7 @@ export const MainPage = () => {
 			right: 0,
 			top: 90,
 			height: 'calc(100% - 90px)',
-			backgroundImage: 'url("/img/music.jpg")',
+			backgroundImage: 'url("/img/music-sheet.jpg")',
 			backgroundSize: 'cover',
 			filter: 'grayscale(1) blur(5px)',
 		},
@@ -99,6 +100,7 @@ export const MainPage = () => {
 						<Switch>
 							<Route path="/home" exact component={HomePage} />
 							<Route path="/composer" exact component={ComposerPage} />
+							<Route path="/play" exact component={PlayPage} />
 							<Route path="/help" exact component={HelpPage} />
 							<Route path="/about" exact component={AboutPage} />
 							<Route component={HomePage} />

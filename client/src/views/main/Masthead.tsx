@@ -92,6 +92,7 @@ export const Masthead = () => {
 	const leftLinks: Array<{ text: string; to: string }> = [
 		{ text: 'Home', to: '/' },
 		{ text: 'Composer', to: '/composer' },
+		{ text: 'Play', to: '/play' },
 		{ text: 'Help', to: '/help' },
 		{ text: 'About', to: '/about' },
 	];

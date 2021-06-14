@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 // import { useScoreContext } from '../../hooks/useScoreContext';
 import { ComposerToolbar } from './ComposerToolbar';
-import { Piano } from './Piano';
+import { Piano } from '../../components/Piano';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -18,6 +18,11 @@ export const ComposerPage = () => {
 				display: 'none',
 			},
 		},
+		pianoContainer: {
+			'@media print': {
+				display: 'none',
+			},
+		},
 	}));
 	const classes = useStyles();
 
@@ -27,7 +32,9 @@ export const ComposerPage = () => {
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
 				<ComposerToolbar />
-				<Piano />
+			</Box>
+			<Box className={classes.pianoContainer}>
+				<Piano smallPiano={true} />
 			</Box>
 		</Box>
 	);
