@@ -1,7 +1,7 @@
 import { CommonHelper } from '../services/commonHelper';
-import { MeasureModel, VoiceModel } from '../model/scoreModel';
+import { MeasureModel, VoiceModel } from './scoreModel';
 import { Voice } from './voice';
-import { NewScoreDialogResult } from '../views/composer/NewScoreDialog';
+import { NewScoreDialogResult } from '../services/newScoreDialogResult';
 
 export class Measure implements MeasureModel {
 	id: number = CommonHelper.getRandomId();

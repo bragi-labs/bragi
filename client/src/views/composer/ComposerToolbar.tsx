@@ -6,10 +6,17 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
+import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
-import { FileOperations } from './FileOperations';
+import { OpenScoreDialog } from './OpenScoreDialog';
+import { SaveScore } from './SaveScore';
 
-export const ComposerToolbar = () => {
+export interface ComposerToolbarProps {
+	score: Score | null;
+	onChangeScore: (score: Score) => void;
+}
+
+export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -49,7 +56,7 @@ export const ComposerToolbar = () => {
 
 	const [newScoreDialogVisible, setNewScoreDialogVisible] = useState(false);
 	const [openScoreDialogVisible, setOpenScoreDialogVisible] = useState(false);
-	const [goDownloadScore, setGoDownloadScore] = useState(false);
+	const [goSaveScore, setGoSaveScore] = useState(false);
 
 	const handleClickNew = useCallback(() => {
 		setNewScoreDialogVisible(true);
@@ -59,24 +66,36 @@ export const ComposerToolbar = () => {
 		setNewScoreDialogVisible(false);
 	}, []);
 
-	const handleNewScoreDialogDone = useCallback(() => {
-		setNewScoreDialogVisible(false);
-	}, []);
+	const handleNewScoreDialogDone = useCallback(
+		(newScore: Score | null) => {
+			setNewScoreDialogVisible(false);
+			if (newScore) {
+				onChangeScore(newScore);
+			}
+		},
+		[onChangeScore],
+	);
 
 	const handleClickOpen = useCallback(() => {
 		setOpenScoreDialogVisible(true);
 	}, []);
 
-	const handleOpenScoreDialogDone = useCallback(() => {
-		setOpenScoreDialogVisible(false);
-	}, []);
+	const handleOpenScoreDialogDone = useCallback(
+		(openedScore: Score | null) => {
+			setOpenScoreDialogVisible(false);
+			if (openedScore) {
+				onChangeScore(openedScore);
+			}
+		},
+		[onChangeScore],
+	);
 
 	const handleClickSave = useCallback(() => {
-		setGoDownloadScore(true);
+		setGoSaveScore(true);
 	}, []);
 
-	const handleDownloadScoreDone = useCallback(() => {
-		setGoDownloadScore(false);
+	const handleSaveScoreDone = useCallback(() => {
+		setGoSaveScore(false);
 	}, []);
 
 	const handleClickPrint = useCallback(() => {
@@ -93,12 +112,8 @@ export const ComposerToolbar = () => {
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>
-				<FileOperations
-					openScoreDialogVisible={openScoreDialogVisible}
-					onOpenScoreDialogDone={handleOpenScoreDialogDone}
-					goDownloadScore={goDownloadScore}
-					onDownloadScoreDone={handleDownloadScoreDone}
-				/>
+				<OpenScoreDialog openScoreDialogVisible={openScoreDialogVisible} onOpenScoreDialogDone={handleOpenScoreDialogDone} />
+				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 			</Box>
 		</Box>
 	);

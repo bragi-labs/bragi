@@ -1,5 +1,5 @@
 import { CommonHelper } from '../services/commonHelper';
-import { ChordModel } from '../model/scoreModel';
+import { ChordModel } from './scoreModel';
 
 export class Chord implements ChordModel {
 	id: number = CommonHelper.getRandomId();

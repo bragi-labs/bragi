@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
-import { ScoreContextContainer } from '../../hooks/useScoreContext';
 import { Masthead } from './Masthead';
 import { VideoLoop } from './VideoLoop';
 import { Footer } from './Footer';
@@ -21,11 +20,14 @@ export const MainPage = () => {
 			top: 0,
 			bottom: 0,
 			overflow: 'hidden',
-			backgroundColor: '#222',
 			color: theme.palette.text.primary,
 			fontFamily: theme.typography.fontFamily,
 			opacity: 0,
 			animation: 'fade-in-animation 1s 1s ease-in-out forwards',
+			backgroundColor: '#222',
+			'@media print': {
+				backgroundColor: '#fff',
+			},
 		},
 		topCover: {
 			position: 'absolute',
@@ -38,6 +40,9 @@ export const MainPage = () => {
 			backgroundSize: '8px 8px',
 			opacity: 0.25,
 			borderBottom: '1px solid #000',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		bottomBackground: {
 			position: 'absolute',
@@ -48,6 +53,9 @@ export const MainPage = () => {
 			backgroundImage: 'url("/img/music-sheet.jpg")',
 			backgroundSize: 'cover',
 			filter: 'grayscale(1) blur(5px)',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		bottomCover: {
 			position: 'absolute',
@@ -57,6 +65,9 @@ export const MainPage = () => {
 			height: 'calc(100% - 90px)',
 			backgroundColor: '#000',
 			opacity: 0.5,
+			'@media print': {
+				display: 'none',
+			},
 		},
 		content: {
 			position: 'absolute',
@@ -73,14 +84,20 @@ export const MainPage = () => {
 			marginLeft: 'auto',
 			marginRight: 'auto',
 			padding: '0 32px',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		pageContainer: {
 			height: 'calc(100% - 100px)',
 			//maxWidth: 1280,
 			marginLeft: 'auto',
 			marginRight: 'auto',
-			padding: '16px 32px 32px 32px',
 			color: theme.palette.text.primary,
+			padding: '16px 32px 32px 32px',
+			'@media print': {
+				padding: 0,
+			},
 		},
 	}));
 	const classes = useStyles();
@@ -92,21 +109,19 @@ export const MainPage = () => {
 			{<VideoLoop videoName="purple-bokeh" height="100px" playbackSpeed={1} blurPixels={0} grayscale={true} />}
 			<Box className={classes.topCover} />
 			<Box className={classes.content}>
-				<ScoreContextContainer.Provider>
-					<Box className={classes.mastheadContainer}>
-						<Masthead />
-					</Box>
-					<Box className={classes.pageContainer}>
-						<Switch>
-							<Route path="/home" exact component={HomePage} />
-							<Route path="/composer" exact component={ComposerPage} />
-							<Route path="/play" exact component={PlayPage} />
-							<Route path="/help" exact component={HelpPage} />
-							<Route path="/about" exact component={AboutPage} />
-							<Route component={HomePage} />
-						</Switch>
-					</Box>
-				</ScoreContextContainer.Provider>
+				<Box className={classes.mastheadContainer}>
+					<Masthead />
+				</Box>
+				<Box className={classes.pageContainer}>
+					<Switch>
+						<Route path="/home" exact component={HomePage} />
+						<Route path="/composer" exact component={ComposerPage} />
+						<Route path="/play" exact component={PlayPage} />
+						<Route path="/help" exact component={HelpPage} />
+						<Route path="/about" exact component={AboutPage} />
+						<Route component={HomePage} />
+					</Switch>
+				</Box>
 			</Box>
 			<Footer />
 		</Box>

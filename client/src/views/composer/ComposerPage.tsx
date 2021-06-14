@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-// import { useScoreContext } from '../../hooks/useScoreContext';
+import { Score } from '../../model/score';
 import { ComposerToolbar } from './ComposerToolbar';
+import { StageComp } from './StageComp';
 import { Piano } from '../../components/Piano';
 
 export const ComposerPage = () => {
@@ -10,6 +11,9 @@ export const ComposerPage = () => {
 		root: {
 			position: 'relative',
 			height: '100%',
+			display: 'grid',
+			gridTemplate: '40px 1fr / 1fr',
+			gap: 16,
 			userSelect: 'none',
 		},
 		toolbarContainer: {
@@ -18,7 +22,14 @@ export const ComposerPage = () => {
 				display: 'none',
 			},
 		},
+		stageContainer: {
+			position: 'relative',
+			minHeight: '100%',
+		},
 		pianoContainer: {
+			position: 'absolute',
+			top: 56,
+			left: '22cm',
 			'@media print': {
 				display: 'none',
 			},
@@ -26,12 +37,19 @@ export const ComposerPage = () => {
 	}));
 	const classes = useStyles();
 
-	// const { score, updateScore } = useScoreContext();
+	const [score, setScore] = useState<Score | null>(null);
+
+	const handleChangeScore = useCallback((changedScore: Score) => {
+		setScore(changedScore);
+	}, []);
 
 	return (
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
-				<ComposerToolbar />
+				<ComposerToolbar score={score} onChangeScore={handleChangeScore} />
+			</Box>
+			<Box className={classes.stageContainer}>
+				<StageComp score={score} />
 			</Box>
 			<Box className={classes.pianoContainer}>
 				<Piano smallPiano={true} />

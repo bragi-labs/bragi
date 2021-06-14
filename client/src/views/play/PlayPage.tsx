@@ -10,7 +10,9 @@ export const PlayPage = () => {
 			height: '100%',
 			userSelect: 'none',
 		},
-		pianoContainer: {},
+		pianoContainer: {
+			marginTop: 16,
+		},
 	}));
 	const classes = useStyles();
 

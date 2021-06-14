@@ -1,5 +1,5 @@
 import { CommonHelper } from '../services/commonHelper';
-import { NoteModel } from '../model/scoreModel';
+import { NoteModel } from './scoreModel';
 
 export class Note implements NoteModel {
 	id: number = CommonHelper.getRandomId();

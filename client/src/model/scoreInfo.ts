@@ -1,6 +1,6 @@
 import { AppDataHelper } from '../services/appDataHelper';
-import { ScoreInfoModel } from '../model/scoreModel';
-import { NewScoreDialogResult } from '../views/composer/NewScoreDialog';
+import { ScoreInfoModel } from './scoreModel';
+import { NewScoreDialogResult } from '../services/newScoreDialogResult';
 
 export class ScoreInfo implements ScoreInfoModel {
 	scoreTitle: string = '';

@@ -20,6 +20,9 @@ export const VideoLoop = ({ videoName, playbackSpeed = 1, blurPixels = 0, graysc
 			minWidth: '100vw',
 			overflow: 'hidden',
 			pointerEvents: 'none',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		video: {
 			position: 'absolute',

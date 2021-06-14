@@ -1,5 +1,5 @@
 import { CommonHelper } from '../services/commonHelper';
-import { ChordModel, NoteModel, VoiceModel, VoiceType } from '../model/scoreModel';
+import { ChordModel, NoteModel, VoiceModel, VoiceType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
 // import { NewScoreDialogResult } from '../views/composer/NewScoreDialog';

@@ -1,8 +1,8 @@
 import { CommonHelper } from '../services/commonHelper';
-import { ScoreModel } from '../model/scoreModel';
+import { ScoreModel } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { Part } from './part';
-import { NewScoreDialogResult } from '../views/composer/NewScoreDialog';
+import { NewScoreDialogResult } from '../services/newScoreDialogResult';
 
 export class Score implements ScoreModel {
 	id: number = CommonHelper.getRandomId();

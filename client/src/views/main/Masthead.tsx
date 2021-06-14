@@ -14,6 +14,9 @@ export const Masthead = () => {
 			position: 'relative',
 			height: '100%',
 			userSelect: 'none',
+			'@media print': {
+				display: 'none',
+			},
 		},
 		content: {
 			height: '100%',
@@ -24,9 +27,6 @@ export const Masthead = () => {
 		leftPart: {
 			display: 'flex',
 			alignItems: 'center',
-			'@media print': {
-				display: 'none',
-			},
 		},
 		navLinks: {},
 		list: {
@@ -78,9 +78,6 @@ export const Masthead = () => {
 		rightPart: {
 			display: 'flex',
 			alignItems: 'center',
-			'@media print': {
-				display: 'none',
-			},
 		},
 		actionButton: {
 			marginLeft: 16,

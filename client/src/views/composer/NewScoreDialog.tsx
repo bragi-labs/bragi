@@ -2,19 +2,10 @@ import React, { useState, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
-import { Score } from '../../score/score';
-import { ScoreContextContainer } from '../../hooks/useScoreContext';
+import { Score } from '../../model/score';
 
 interface NewScoreDialogProps {
-	onNewScoreDialogDone: () => void;
-}
-
-export interface NewScoreDialogResult {
-	scoreTitle: string;
-	scoreCredits: string;
-	arrangerName: string;
-	timeSignature: string;
-	pickupMeasure: string;
+	onNewScoreDialogDone: (newScore: Score | null) => void;
 }
 
 export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewScoreDialogProps, _ref) => {
@@ -69,7 +60,6 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	}));
 	const classes = useStyles();
 
-	const { setScore } = ScoreContextContainer.useContainer();
 	const [isOk, setIsOk] = useState(false);
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
@@ -99,15 +89,14 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	};
 
 	const handleClickCancel = useCallback(() => {
-		onNewScoreDialogDone();
+		onNewScoreDialogDone(null);
 	}, [onNewScoreDialogDone]);
 
 	const handleClickOK = useCallback(() => {
 		const newScore = new Score();
 		newScore.initFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure });
-		setScore(newScore);
-		onNewScoreDialogDone();
-	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, setScore, onNewScoreDialogDone]);
+		onNewScoreDialogDone(newScore);
+	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, onNewScoreDialogDone]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>

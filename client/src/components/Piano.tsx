@@ -16,7 +16,6 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 		root: {
 			position: 'relative',
 			display: 'inline-block',
-			marginTop: 16,
 			opacity: 0.8,
 			backgroundColor: '#111',
 			userSelect: 'none',
