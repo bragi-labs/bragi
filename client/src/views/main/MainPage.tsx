@@ -36,6 +36,7 @@ export const MainPage = () => {
 			top: 0,
 			height: 100,
 			backgroundColor: '#666',
+			//backgroundImage: 'linear-gradient(135deg, #c90 25%, #a60 25%, #a60 50%, #c90 50%, #c90 75%, #a60 75%, #a60 100%)',
 			backgroundImage: 'linear-gradient(135deg, #999 25%, #666 25%, #666 50%, #999 50%, #999 75%, #666 75%, #666 100%)',
 			backgroundSize: '8px 8px',
 			opacity: 0.25,
@@ -106,6 +107,7 @@ export const MainPage = () => {
 		<Box id="MainPage" className={classes.root}>
 			<Box className={classes.bottomBackground} />
 			<Box className={classes.bottomCover} />
+			{/*{<VideoLoop videoName="purple-bokeh" height="100px" playbackSpeed={1} blurPixels={0} grayscale={false} />}*/}
 			{<VideoLoop videoName="purple-bokeh" height="100px" playbackSpeed={1} blurPixels={0} grayscale={true} />}
 			<Box className={classes.topCover} />
 			<Box className={classes.content}>
