@@ -16,7 +16,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 		root: {
 			position: 'relative',
 			display: 'inline-block',
-			opacity: 0.8,
+			opacity: 0.85,
 			backgroundColor: '#111',
 			userSelect: 'none',
 			borderRadius: 8,
@@ -111,7 +111,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 			backgroundColor: '#000',
 			opacity: 0,
 			'&:hover': {
-				opacity: 0.2,
+				opacity: 0.25,
 			},
 		},
 		blackKey: {
@@ -119,7 +119,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 			backgroundColor: '#fff',
 			opacity: 0,
 			'&:hover': {
-				opacity: 0.2,
+				opacity: 0.25,
 			},
 			height: 108,
 			'.small-piano &': {
@@ -139,7 +139,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 			right: 0,
 			top: 0,
 			backgroundColor: '#000',
-			opacity: 0.6,
+			opacity: 0.5,
 			transition: 'all 1s ease',
 			height: 200,
 			'.small-piano &': {

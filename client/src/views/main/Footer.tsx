@@ -1,8 +1,8 @@
 import React from 'react';
 import Box from '@material-ui/core/Box/Box';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Typography } from '@material-ui/core';
-import { AppDataHelper } from '../../services/appDataHelper';
+// import { Typography } from '@material-ui/core';
+// import { AppDataHelper } from '../../services/appDataHelper';
 
 export const Footer = () => {
 	const useStyles = makeStyles(() => ({
@@ -24,9 +24,9 @@ export const Footer = () => {
 
 	return (
 		<Box id="Footer" className={classes.root}>
-			<Typography variant="body1" className={classes.footer}>
-				{`${AppDataHelper.appName}`}
-			</Typography>
+			{/*<Typography variant="body1" className={classes.footer}>*/}
+			{/*	{`${AppDataHelper.appName}`}*/}
+			{/*</Typography>*/}
 		</Box>
 	);
 };

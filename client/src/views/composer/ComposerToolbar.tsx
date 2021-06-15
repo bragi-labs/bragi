@@ -30,9 +30,9 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 			alignItems: 'center',
 			marginRight: 24,
 			height: 32,
-			opacity: 0.5,
+			opacity: 0.85,
 			borderRadius: 16,
-			backgroundColor: '#222',
+			backgroundColor: '#333',
 			padding: '0 4px',
 		},
 		actionButton: {
@@ -46,10 +46,10 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 			'&:hover': {
 				color: '#fff',
 			},
-		},
-		actionButtonDisabled: {
-			pointerEvents: 'none',
-			color: '#666',
+			'&.disabled': {
+				pointerEvents: 'none',
+				color: '#666',
+			},
 		},
 	}));
 	const classes = useStyles();
@@ -107,8 +107,8 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 			<Box className={classes.panel}>
 				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
-				<SaveOutlinedIcon onClick={handleClickSave} className={classes.actionButton} titleAccess="Save" />
-				<PrintIcon onClick={handleClickPrint} className={classes.actionButton} titleAccess="Print" />
+				<SaveOutlinedIcon onClick={handleClickSave} className={`${classes.actionButton} ${score ? '' : 'disabled'}`} titleAccess="Save" />
+				<PrintIcon onClick={handleClickPrint} className={`${classes.actionButton} ${score ? '' : 'disabled'}`} titleAccess="Print" />
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>

@@ -10,7 +10,6 @@ export const UnderConstruction = () => {
 			backgroundImage: 'linear-gradient(135deg, #fa3 25%, #333 25%, #333 50%, #fa3 50%, #fa3 75%, #333 75%, #333 100%)',
 			backgroundSize: '56px 56px',
 			userSelect: 'none',
-			opacity: 0.75,
 		},
 		grid: {
 			height: '100%',

@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Score } from '../../model/score';
 import { ComposerToolbar } from './ComposerToolbar';
-import { StageComp } from './StageComp';
+import { StageUI } from './StageUI';
 import { Piano } from '../../components/Piano';
 
 export const ComposerPage = () => {
@@ -25,6 +25,7 @@ export const ComposerPage = () => {
 		stageContainer: {
 			position: 'relative',
 			minHeight: '100%',
+			maxHeight: '100%',
 		},
 		pianoContainer: {
 			position: 'absolute',
@@ -48,12 +49,16 @@ export const ComposerPage = () => {
 			<Box className={classes.toolbarContainer}>
 				<ComposerToolbar score={score} onChangeScore={handleChangeScore} />
 			</Box>
-			<Box className={classes.stageContainer}>
-				<StageComp score={score} />
-			</Box>
-			<Box className={classes.pianoContainer}>
-				<Piano smallPiano={true} />
-			</Box>
+			{score && (
+				<>
+					<Box className={classes.stageContainer}>
+						<StageUI score={score} />
+					</Box>
+					<Box className={classes.pianoContainer}>
+						<Piano smallPiano={true} />
+					</Box>
+				</>
+			)}
 		</Box>
 	);
 };
