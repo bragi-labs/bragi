@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
 import { Score } from '../../model/score';
 import { AppDataHelper } from '../../services/appDataHelper';
 import { PartUI } from './PartUI';
+import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 
 export interface StageUIProps {
 	score: Score | null;
@@ -63,13 +64,13 @@ export const StageUI = ({ score }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const [stagePadding /*, setStagePadding*/] = useState(1.0);
+	const { stageWidthCm } = SettingsContextContainer.useContainer();
 
 	return (
 		<>
 			{score && (
-				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ padding: `${stagePadding}cm` }}>
-					<Box className={classes.content} style={{ width: `${21 - 2 * stagePadding}cm` }}>
+				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ padding: `${(21 - stageWidthCm) / 2}cm` }}>
+					<Box className={classes.content} style={{ width: `${stageWidthCm}cm` }}>
 						<Box className={classes.stageHeader}>
 							<Typography variant="h4" className={classes.scoreTitle}>
 								{score.scoreInfo.scoreTitle}
