@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Modal } from '@material-ui/core';
@@ -8,8 +8,8 @@ import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
 import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
-import { OpenScoreDialog } from './OpenScoreDialog';
 import { SaveScore } from './SaveScore';
+import { AppDataHelper } from '../../services/appDataHelper';
 
 export interface ComposerToolbarProps {
 	score: Score | null;
@@ -55,7 +55,7 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 	const classes = useStyles();
 
 	const [newScoreDialogVisible, setNewScoreDialogVisible] = useState(false);
-	const [openScoreDialogVisible, setOpenScoreDialogVisible] = useState(false);
+	const openInputRef = useRef<any>();
 	const [goSaveScore, setGoSaveScore] = useState(false);
 
 	const handleClickNew = useCallback(() => {
@@ -77,18 +77,25 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 	);
 
 	const handleClickOpen = useCallback(() => {
-		setOpenScoreDialogVisible(true);
-	}, []);
+		const openInput: HTMLInputElement = openInputRef.current;
+		openInput.click();
+	}, [openInputRef]);
 
-	const handleOpenScoreDialogDone = useCallback(
-		(openedScore: Score | null) => {
-			setOpenScoreDialogVisible(false);
-			if (openedScore) {
+	const handleChangeOpenFile = useCallback(() => {
+		const openInput: HTMLInputElement = openInputRef.current;
+		if (!openInput.files || openInput.files.length !== 1) {
+			return;
+		}
+		const fileReader = new FileReader();
+		fileReader.onload = () => {
+			if (fileReader.result) {
+				const openedScore = new Score();
+				openedScore.initFromModel(JSON.parse(fileReader.result.toString()));
 				onChangeScore(openedScore);
 			}
-		},
-		[onChangeScore],
-	);
+		};
+		fileReader.readAsText(openInput.files[0]);
+	}, [openInputRef, onChangeScore]);
 
 	const handleClickSave = useCallback(() => {
 		setGoSaveScore(true);
@@ -112,7 +119,7 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>
-				<OpenScoreDialog openScoreDialogVisible={openScoreDialogVisible} onOpenScoreDialogDone={handleOpenScoreDialogDone} />
+				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
 				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 			</Box>
 		</Box>
