@@ -2,14 +2,15 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
-import { Masthead } from './Masthead';
 import { VideoLoop } from './VideoLoop';
-import { Footer } from './Footer';
+import { SettingsContextContainer } from '../../hooks/useSettingsContext';
+import { Masthead } from './Masthead';
 import { HomePage } from '../home/HomePage';
 import { ComposerPage } from '../composer/ComposerPage';
 import { PlayPage } from '../play/PlayPage';
 import { HelpPage } from '../help/HelpPage';
 import { AboutPage } from '../about/AboutPage';
+import { Footer } from './Footer';
 
 export const MainPage = () => {
 	const useStyles = makeStyles((theme) => ({
@@ -111,19 +112,21 @@ export const MainPage = () => {
 			{<VideoLoop videoName="purple-bokeh" height="100px" playbackSpeed={1} blurPixels={0} grayscale={true} />}
 			<Box className={classes.topCover} />
 			<Box className={classes.content}>
-				<Box className={classes.mastheadContainer}>
-					<Masthead />
-				</Box>
-				<Box className={classes.pageContainer}>
-					<Switch>
-						<Route path="/home" exact component={HomePage} />
-						<Route path="/composer" exact component={ComposerPage} />
-						<Route path="/play" exact component={PlayPage} />
-						<Route path="/help" exact component={HelpPage} />
-						<Route path="/about" exact component={AboutPage} />
-						<Route component={HomePage} />
-					</Switch>
-				</Box>
+				<SettingsContextContainer.Provider>
+					<Box className={classes.mastheadContainer}>
+						<Masthead />
+					</Box>
+					<Box className={classes.pageContainer}>
+						<Switch>
+							<Route path="/home" exact component={HomePage} />
+							<Route path="/composer" exact component={ComposerPage} />
+							<Route path="/play" exact component={PlayPage} />
+							<Route path="/help" exact component={HelpPage} />
+							<Route path="/about" exact component={AboutPage} />
+							<Route component={HomePage} />
+						</Switch>
+					</Box>
+				</SettingsContextContainer.Provider>
 			</Box>
 			<Footer />
 		</Box>
