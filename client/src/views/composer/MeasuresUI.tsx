@@ -22,7 +22,17 @@ export const MeasuresUI = ({ measures }: MeasuresUIProps) => {
 	return (
 		<Box id="MeasuresUI" className={`${classes.root}`}>
 			{measures.map((measure, i) => (
-				<MeasureUI key={i} measure={measure} />
+				<>
+					{measure.isPickup && (
+						<>
+							<Box />
+							<Box />
+							<Box />
+							<MeasureUI key={i} measure={measure} />
+						</>
+					)}
+					{!measure.isPickup && <MeasureUI key={i} measure={measure} />}
+				</>
 			))}
 		</Box>
 	);
