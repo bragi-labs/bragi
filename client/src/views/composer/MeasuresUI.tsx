@@ -21,12 +21,17 @@ export const MeasuresUI = ({ measures }: MeasuresUIProps) => {
 
 	const { stageWidthCm, totalDurationDivsPerRow } = SettingsContextContainer.useContainer();
 
+	const measureDurationDivs = measures[0].isPickup ? measures[1].durationDivs : measures[0].durationDivs;
+	const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
+	const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
+	const pickupMeasureLeftMarginCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
+
 	return (
 		<Box id="MeasuresUI" className={`${classes.root}`}>
 			{measures.map((measure, i) => (
 				<Box key={i}>
 					{measure.isPickup && (
-						<Box style={{ marginLeft: `${(stageWidthCm * (totalDurationDivsPerRow - measure.durationDivs)) / totalDurationDivsPerRow}cm` }}>
+						<Box style={{ marginLeft: `${pickupMeasureLeftMarginCm}cm` }}>
 							<MeasureUI key={i} measure={measure} />
 						</Box>
 					)}

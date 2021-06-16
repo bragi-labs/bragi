@@ -28,9 +28,12 @@ export const MeasureUI = ({ measure }: MeasureUIProps) => {
 
 	const { stageWidthCm, rowGapCm, totalDurationDivsPerRow } = SettingsContextContainer.useContainer();
 
+	const measureWidthCm = (stageWidthCm * measure.durationDivs) / totalDurationDivsPerRow;
+	const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measure.durationDivs);
+
 	return (
-		<Box id="MeasureUI" className={`${classes.root}`} style={{ width: `${(stageWidthCm * measure.durationDivs) / totalDurationDivsPerRow}cm`, marginBottom: `${rowGapCm}cm` }}>
-			{measure.number % 4 === 1 && (
+		<Box id="MeasureUI" className={`${classes.root}`} style={{ width: `${measureWidthCm}cm`, marginBottom: `${rowGapCm}cm` }}>
+			{measure.number % numberOfMeasuresPerRow === 1 && (
 				<Box className={classes.measureNumber}>
 					<Typography variant="body2">{measure.number}</Typography>
 				</Box>
