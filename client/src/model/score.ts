@@ -2,7 +2,7 @@ import { CommonHelper } from '../services/commonHelper';
 import { ScoreModel } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { Part } from './part';
-import { NewScoreDialogResult } from '../services/newScoreDialogResult';
+import { NewScoreData } from '../services/newScoreData';
 
 export class Score implements ScoreModel {
 	id: number = CommonHelper.getRandomId();
@@ -21,12 +21,12 @@ export class Score implements ScoreModel {
 		});
 	}
 
-	initFromNewDialog(newScoreDialogResult: NewScoreDialogResult) {
+	initFromNewDialog(newScoreData: NewScoreData) {
 		this.scoreInfo = new ScoreInfo();
-		this.scoreInfo.initFromNewDialog(newScoreDialogResult);
+		this.scoreInfo.initFromNewDialog(newScoreData);
 		this.parts = [];
 		const part = new Part();
-		part.initFromNewDialog(newScoreDialogResult);
+		part.initFromNewDialog(newScoreData);
 		this.addPart(part);
 	}
 

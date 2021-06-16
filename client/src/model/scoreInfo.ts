@@ -1,6 +1,6 @@
 import { AppDataHelper } from '../services/appDataHelper';
 import { ScoreInfoModel } from './scoreModel';
-import { NewScoreDialogResult } from '../services/newScoreDialogResult';
+import { NewScoreData } from '../services/newScoreData';
 
 export class ScoreInfo implements ScoreInfoModel {
 	scoreTitle: string = '';
@@ -17,9 +17,9 @@ export class ScoreInfo implements ScoreInfoModel {
 		this.softwareVersion = scoreInfoModel.softwareVersion || AppDataHelper.appVersion;
 	}
 
-	initFromNewDialog(newScoreDialogResult: NewScoreDialogResult) {
-		this.scoreTitle = newScoreDialogResult.scoreTitle || '';
-		this.scoreCredits = newScoreDialogResult.scoreCredits || '';
-		this.arrangerName = newScoreDialogResult.arrangerName || '';
+	initFromNewDialog(newScoreData: NewScoreData) {
+		this.scoreTitle = newScoreData.scoreTitle || '';
+		this.scoreCredits = newScoreData.scoreCredits || '';
+		this.arrangerName = newScoreData.arrangerName || '';
 	}
 }

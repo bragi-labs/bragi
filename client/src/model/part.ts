@@ -1,7 +1,7 @@
 import { CommonHelper } from '../services/commonHelper';
 import { PartModel } from './scoreModel';
 import { Measure } from './measure';
-import { NewScoreDialogResult } from '../services/newScoreDialogResult';
+import { NewScoreData } from '../services/newScoreData';
 
 export class Part implements PartModel {
 	id: number = CommonHelper.getRandomId();
@@ -19,16 +19,18 @@ export class Part implements PartModel {
 		});
 	}
 
-	initFromNewDialog(newScoreDialogResult: NewScoreDialogResult) {
+	initFromNewDialog(newScoreData: NewScoreData) {
 		this.measures = [];
-		if (newScoreDialogResult.pickupMeasure !== 'no') {
+		if (newScoreData.pickupMeasure !== 'no') {
 			const pickupMeasure = new Measure();
-			pickupMeasure.initFromNewDialog(newScoreDialogResult, true);
+			pickupMeasure.initFromNewDialog(newScoreData, true, 0);
 			this.addMeasure(pickupMeasure);
 		}
-		const firstMeasure = new Measure();
-		firstMeasure.initFromNewDialog(newScoreDialogResult, false);
-		this.addMeasure(firstMeasure);
+		for (let i = 1; i <= newScoreData.numberOfMeasures; i++) {
+			const measure = new Measure();
+			measure.initFromNewDialog(newScoreData, false, i);
+			this.addMeasure(measure);
+		}
 	}
 
 	addMeasure(measure: Measure) {

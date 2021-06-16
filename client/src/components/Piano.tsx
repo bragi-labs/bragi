@@ -247,11 +247,11 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 					<Typography className={classes.fnSymbolsSwitchText}>Figurenotes</Typography>
 				</Box>
 				<Box className={classes.octaveSwitches}>
-					{octaves.map((octave, octaveIndex) => (
+					{octaves.map((octave, i) => (
 						<Box
-							key={octaveIndex}
+							key={i}
 							onClick={toggleOctave}
-							data-octave-index={octaveIndex}
+							data-octave-index={i}
 							className={`${classes.octaveSwitchLed} led ${powerOn && octave ? 'led--on' : ''} ${powerOn && !octave ? 'led--off' : ''} ${
 								powerOn ? '' : 'pointer-events-none'
 							}`}
@@ -261,8 +261,8 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 				</Box>
 			</Box>
 			<Box className={classes.keyboard}>
-				{octaves.map((oct, octaveIndex) => (
-					<Box key={octaveIndex} className={`${classes.octave} ${oct ? '' : classes.hideOctave}`}>
+				{octaves.map((oct, i) => (
+					<Box key={i} className={`${classes.octave} ${oct ? '' : classes.hideOctave}`}>
 						{whiteKeys.map((whiteKey, j) => (
 							<Box key={j}>
 								<Box
@@ -270,7 +270,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 									style={{
 										...FigurenotesHelper.getSymbolStyle(
 											FigurenotesHelper.getNoteColor(whiteKey.noteName),
-											FigurenotesHelper.getOctaveShape(octaveIndex + 2),
+											FigurenotesHelper.getOctaveShape(i + 2),
 											smallPiano ? 14 : 28,
 										),
 										left: whiteKey.left + (smallPiano ? 4 : 8),
@@ -282,7 +282,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 									onMouseEnter={enterNote}
 									onMouseLeave={stopNote}
 									data-note-name={whiteKey.noteName}
-									data-octave-number={octaveIndex + 2}
+									data-octave-number={i + 2}
 									className={`${classes.octaveKey} ${classes.whiteKey}`}
 									style={{ left: whiteKey.left }}
 								/>
@@ -296,7 +296,7 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 								onMouseEnter={enterNote}
 								onMouseLeave={stopNote}
 								data-note-name={blackKey.noteName}
-								data-octave-number={octaveIndex + 2}
+								data-octave-number={i + 2}
 								className={`${classes.octaveKey} ${classes.blackKey}`}
 								style={{ left: blackKey.left }}
 							/>

@@ -118,8 +118,8 @@ export const Masthead = () => {
 				<Box className={classes.leftPart}>
 					<Box className={classes.navLinks}>
 						<List className={classes.list}>
-							{leftLinks.map((link, index) => (
-								<ListItem key={index} className={classes.listItem}>
+							{leftLinks.map((link, i) => (
+								<ListItem key={i} className={classes.listItem}>
 									<Link to={link.to} className={isCurrentPathLink(link.to) ? classes.currentPath : classes.link}>
 										<ListItemText primary={link.text} />
 									</Link>
@@ -136,8 +136,8 @@ export const Masthead = () => {
 				<Box className={classes.rightPart}>
 					{/*<Box className={classes.navLinks}>*/}
 					{/*	<List className={classes.list}>*/}
-					{/*		{rightLinks.map((link, index) => (*/}
-					{/*			<ListItem key={index} className={classes.listItem}>*/}
+					{/*		{rightLinks.map((link, i) => (*/}
+					{/*			<ListItem key={i} className={classes.listItem}>*/}
 					{/*				<Link to={link.to} className={link.to === myLocation.pathname ? classes.currentPath : classes.link}>*/}
 					{/*					<ListItemText primary={link.text} />*/}
 					{/*				</Link>*/}

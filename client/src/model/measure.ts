@@ -1,7 +1,8 @@
 import { CommonHelper } from '../services/commonHelper';
 import { MeasureModel, VoiceModel } from './scoreModel';
 import { Voice } from './voice';
-import { NewScoreDialogResult } from '../services/newScoreDialogResult';
+import { NewScoreData } from '../services/newScoreData';
+import { MusicalHelper } from '../services/musicalHelper';
 
 export class Measure implements MeasureModel {
 	id: number = CommonHelper.getRandomId();
@@ -29,14 +30,14 @@ export class Measure implements MeasureModel {
 		});
 	}
 
-	initFromNewDialog(newScoreDialogResult: NewScoreDialogResult, isPickupMeasure: boolean) {
-		this.number = isPickupMeasure ? 0 : 1;
+	initFromNewDialog(newScoreData: NewScoreData, isPickupMeasure: boolean, measureNumber: number) {
+		this.number = measureNumber;
 		this.isPickup = isPickupMeasure;
-		this.timeSignature = newScoreDialogResult.timeSignature;
-		this.durationDivs = Measure.getMeasureDurationDivs(newScoreDialogResult.timeSignature);
+		this.timeSignature = newScoreData.timeSignature;
+		this.durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
 		this.voices = [];
 		const voice = new Voice();
-		voice.initFromNewDialog(/*newScoreDialogResult*/);
+		voice.initFromNewDialog(newScoreData);
 		this.addVoice(voice);
 	}
 

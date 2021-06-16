@@ -32,12 +32,12 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			userSelect: 'none',
 		},
 		body: {
-			margin: '8px 24px 48px 24px',
+			margin: '40px 24px 48px 24px',
 		},
 		form: {
 			display: 'grid',
-			gridTemplateColumns: 'repeat(1, 1fr)',
-			gap: '32px 32px',
+			gridTemplateColumns: 'repeat(2, 1fr)',
+			gap: '40px 40px',
 			userSelect: 'none',
 			'& label.Mui-focused': {
 				color: '#fa3',
@@ -67,6 +67,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	const [arrangerName, setArrangerName] = useState('');
 	const [timeSignature, setTimeSignature] = useState('4/4');
 	const [pickupMeasure, setPickupMeasure] = useState('no');
+	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
 
 	const handleChangeScoreTitle = (event: any) => {
 		setScoreTitle(event.target.value);
@@ -89,15 +90,19 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 		setPickupMeasure(event.target.value);
 	};
 
+	const handleChangeNumberOfMeasurements = (event: any) => {
+		setNumberOfMeasures(event.target.value);
+	};
+
 	const handleClickCancel = useCallback(() => {
 		onNewScoreDialogDone(null);
 	}, [onNewScoreDialogDone]);
 
 	const handleClickOK = useCallback(() => {
 		const newScore = new Score();
-		newScore.initFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure });
+		newScore.initFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures: Number(numberOfMeasures) || 16 });
 		onNewScoreDialogDone(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, onNewScoreDialogDone]);
+	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
@@ -133,6 +138,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 							<MenuItem value="no">No</MenuItem>
 						</Select>
 					</FormControl>
+					<TextField label="Number of Measurements" value={numberOfMeasures} onChange={handleChangeNumberOfMeasurements} placeholder="e.g. 16" />
 				</form>
 			</Box>
 			<Box className={classes.footer}>
