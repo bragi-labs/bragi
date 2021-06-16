@@ -1,9 +1,9 @@
 import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { Measure } from '../../model/measure';
 import { MeasureUI } from './MeasureUI';
-import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 
 export interface MeasuresUIProps {
 	measures: Measure[];
@@ -27,7 +27,7 @@ export const MeasuresUI = ({ measures }: MeasuresUIProps) => {
 	const pickupMeasureLeftMarginCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
 
 	return (
-		<Box id="MeasuresUI" className={`${classes.root}`}>
+		<Box id="MeasuresUI" className={classes.root}>
 			{measures.map((measure, i) => (
 				<Box key={i}>
 					{measure.isPickup && (

@@ -1,5 +1,5 @@
 import { CommonHelper } from '../services/commonHelper';
-import { MeasureModel, VoiceModel } from './scoreModel';
+import { MeasureModel } from './scoreModel';
 import { Voice } from './voice';
 import { NewScoreData } from '../services/newScoreData';
 import { MusicalHelper } from '../services/musicalHelper';
@@ -12,7 +12,7 @@ export class Measure implements MeasureModel {
 	timeSignature: string = '4/4';
 	tempoBpm: number = 120;
 	durationDivs: number = 96;
-	voices: VoiceModel[] = [];
+	voices: Voice[] = [];
 
 	initFromModel(measureModel: MeasureModel) {
 		this.id = measureModel.id;

@@ -1,11 +1,10 @@
 import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
 import { Score } from '../../model/score';
-import { AppDataHelper } from '../../services/appDataHelper';
-import { PartUI } from './PartUI';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
+import { StageHeaderUI } from './StageHeaderUI';
+import { PartUI } from './PartUI';
 
 export interface StageUIProps {
 	score: Score | null;
@@ -71,20 +70,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 			{score && (
 				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ padding: `${(21 - stageWidthCm) / 2}cm` }}>
 					<Box className={classes.content} style={{ width: `${stageWidthCm}cm` }}>
-						<Box className={classes.stageHeader}>
-							<Typography variant="h4" className={classes.scoreTitle}>
-								{score.scoreInfo.scoreTitle}
-							</Typography>
-							<Typography variant="h6" className={classes.scoreCredits}>
-								{score.scoreInfo.scoreCredits}
-							</Typography>
-							<Typography variant="body2" className={classes.arrangerName}>
-								{`Arranged by ${score.scoreInfo.arrangerName}`}
-							</Typography>
-							<Typography variant="body2" className={classes.softwareCredits}>
-								{`${AppDataHelper.appName} v${AppDataHelper.appVersion}`}
-							</Typography>
-						</Box>
+						<StageHeaderUI scoreInfo={score.scoreInfo} />
 						{score.parts.map((part, i) => (
 							<PartUI key={i} part={part} />
 						))}
