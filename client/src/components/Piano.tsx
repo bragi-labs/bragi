@@ -100,16 +100,16 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 			color: '#333',
 			bottom: 0,
 			cursor: 'pointer',
-			width: 318 / 7,
-			'.small-piano &': {
-				width: 159 / 7,
-			},
 		},
 		whiteKey: {
 			top: 0,
 			bottom: 0,
 			backgroundColor: '#000',
 			opacity: 0,
+			width: 318 / 7,
+			'.small-piano &': {
+				width: 159 / 7,
+			},
 			'&:hover': {
 				opacity: 0.25,
 			},
@@ -118,12 +118,14 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 			top: 0,
 			backgroundColor: '#fff',
 			opacity: 0,
-			'&:hover': {
-				opacity: 0.25,
-			},
+			width: 318 / 10,
 			height: 108,
 			'.small-piano &': {
+				width: 159 / 10,
 				height: 54,
+			},
+			'&:hover': {
+				opacity: 0.25,
 			},
 		},
 		figureNoteSymbol: {
