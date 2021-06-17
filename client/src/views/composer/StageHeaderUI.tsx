@@ -11,7 +11,7 @@ export interface StageHeaderUIProps {
 export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
-			paddingBottom: 40,
+			paddingBottom: 32,
 		},
 		scoreTitle: {
 			display: 'flex',
@@ -23,6 +23,16 @@ export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
 			justifyContent: 'center',
 			color: '#666',
 		},
+		arrangerName: {
+			display: 'flex',
+			justifyContent: 'flex-end',
+			color: '#999',
+		},
+		appName: {
+			display: 'flex',
+			justifyContent: 'flex-end',
+			color: '#999',
+		},
 	}));
 	const classes = useStyles();
 
@@ -33,6 +43,14 @@ export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
 			</Typography>
 			<Typography variant="h6" className={classes.scoreCredits}>
 				{scoreInfo.scoreCredits}
+			</Typography>
+			{scoreInfo.arrangerName && (
+				<Typography variant="body2" className={classes.arrangerName}>
+					Arranged by {scoreInfo.arrangerName}
+				</Typography>
+			)}
+			<Typography variant="body2" className={classes.appName}>
+				{`${scoreInfo.softwareName} v${scoreInfo.softwareVersion}`}
 			</Typography>
 		</Box>
 	);

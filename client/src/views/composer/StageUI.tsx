@@ -54,12 +54,12 @@ export const StageUI = ({ score }: StageUIProps) => {
 		arrangerName: {
 			display: 'flex',
 			justifyContent: 'flex-end',
-			color: '#666',
+			color: '#999',
 		},
 		softwareCredits: {
 			display: 'flex',
 			justifyContent: 'flex-end',
-			color: '#666',
+			color: '#999',
 		},
 	}));
 	const classes = useStyles();
@@ -75,7 +75,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 						{score.parts.map((part, i) => (
 							<PartUI key={i} part={part} />
 						))}
-						<StageFooterUI scoreInfo={score.scoreInfo} />
+						<StageFooterUI />
 					</Box>
 				</Box>
 			)}
