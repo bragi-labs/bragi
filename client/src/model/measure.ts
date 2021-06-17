@@ -6,6 +6,8 @@ import { MusicalHelper } from '../services/musicalHelper';
 
 export class Measure implements MeasureModel {
 	id: number = CommonHelper.getRandomId();
+	scoreId: number = 0;
+	partId: number = 0;
 	number: number = -1;
 	isPickup: boolean = false;
 	musicalScale: string = 'C';
@@ -16,6 +18,8 @@ export class Measure implements MeasureModel {
 
 	initFromModel(measureModel: MeasureModel) {
 		this.id = measureModel.id;
+		this.scoreId = measureModel.scoreId;
+		this.partId = measureModel.partId;
 		this.number = measureModel.number;
 		this.isPickup = measureModel.isPickup;
 		this.timeSignature = measureModel.timeSignature;
@@ -37,17 +41,10 @@ export class Measure implements MeasureModel {
 		this.durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
 		this.voices = [];
 		const voice = new Voice();
+		voice.scoreId = this.scoreId;
+		voice.partId = this.partId;
+		voice.measureId = this.id;
 		voice.initFromNewDialog(newScoreData);
-		this.addVoice(voice);
-	}
-
-	static getMeasureDurationDivs(timeSignature: string) {
-		const t1 = parseInt(timeSignature[0]);
-		const t2 = parseInt(timeSignature[2]);
-		return t1 * (96 / t2);
-	}
-
-	addVoice(voice: Voice) {
 		this.voices.push(voice);
 	}
 }

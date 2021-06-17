@@ -26,6 +26,7 @@ export class Score implements ScoreModel {
 		this.scoreInfo.initFromNewDialog(newScoreData);
 		this.parts = [];
 		const part = new Part();
+		part.scoreId = this.id;
 		part.initFromNewDialog(newScoreData);
 		this.addPart(part);
 	}

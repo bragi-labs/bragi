@@ -7,6 +7,9 @@ import { MusicalHelper } from '../services/musicalHelper';
 
 export class Voice implements VoiceModel {
 	id: number = CommonHelper.getRandomId();
+	scoreId: number = 0;
+	partId: number = 0;
+	measureId: number = 0;
 	name: string = '';
 	voiceType: VoiceType = VoiceType.FN_LVL_1;
 	lyrics: string = '';
@@ -14,9 +17,12 @@ export class Voice implements VoiceModel {
 	chords: ChordModel[] = [];
 
 	initFromModel(voiceModel: VoiceModel) {
-		this.id = voiceModel.id || CommonHelper.getRandomId();
+		this.id = voiceModel.id;
+		this.scoreId = voiceModel.scoreId;
+		this.partId = voiceModel.partId;
+		this.measureId = voiceModel.measureId;
 		this.name = voiceModel.name || '';
-		this.voiceType = voiceModel.voiceType || VoiceType.FN_LVL_1;
+		this.voiceType = voiceModel.voiceType;
 		this.lyrics = voiceModel.lyrics || '';
 		this.notes = [];
 		voiceModel.notes.forEach((noteModel) => {
@@ -39,6 +45,10 @@ export class Voice implements VoiceModel {
 		const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
 		for (let i = 0; i < beats; i++) {
 			const note = new Note();
+			note.scoreId = this.scoreId;
+			note.partId = this.partId;
+			note.measureId = this.measureId;
+			note.voiceId = this.id;
 			note.isRest = true;
 			note.startDiv = i * beatDurationDivs;
 			note.durationDivs = beatDurationDivs;
