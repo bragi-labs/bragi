@@ -26,12 +26,12 @@ export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
 		arrangerName: {
 			display: 'flex',
 			justifyContent: 'flex-end',
-			color: '#999',
+			color: '#666',
 		},
 		appName: {
 			display: 'flex',
 			justifyContent: 'flex-end',
-			color: '#999',
+			color: '#666',
 		},
 	}));
 	const classes = useStyles();
