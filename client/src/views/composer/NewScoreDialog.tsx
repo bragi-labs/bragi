@@ -117,7 +117,6 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
-							<MenuItem value="2/2">2/2</MenuItem>
 							<MenuItem value="2/4">2/4</MenuItem>
 							<MenuItem value="3/4">3/4</MenuItem>
 							<MenuItem value="4/4">4/4</MenuItem>
