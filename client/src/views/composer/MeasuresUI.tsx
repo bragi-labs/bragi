@@ -25,9 +25,10 @@ export const MeasuresUI = ({ measures }: MeasuresUIProps) => {
 	const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
 	const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
 	const pickupMeasureLeftMarginCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
+	const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 
 	return (
-		<Box id="MeasuresUI" className={classes.root}>
+		<Box id="MeasuresUI" className={classes.root} style={{ marginLeft: `${leftOverCm}cm` }}>
 			{measures.map((measure, i) => (
 				<Box key={i}>
 					{measure.isPickup && (

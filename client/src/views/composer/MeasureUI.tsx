@@ -14,7 +14,6 @@ export const MeasureUI = ({ measure }: MeasureUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
-			border: '1px solid #ccc',
 		},
 		measureNumber: {
 			position: 'absolute',
