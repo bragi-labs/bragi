@@ -35,7 +35,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 	const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 
 	return (
-		<Box id="PartUI" className={`${classes.root}`}>
+		<Box id="PartUI" className={classes.root}>
 			<Typography variant="h6" className={classes.partName}>
 				{part.name}
 			</Typography>

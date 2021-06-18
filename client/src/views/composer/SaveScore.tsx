@@ -31,7 +31,7 @@ export const SaveScore = ({ score, goSaveScore, onSaveScoreDone }: SaveScoreProp
 	}, [downloadLinkRef, score, goSaveScore, onSaveScoreDone]);
 
 	return (
-		<Box id="SaveScore" className={`${classes.root}`}>
+		<Box id="SaveScore" className={classes.root}>
 			<a href="/#" ref={downloadLinkRef} style={{ display: 'none' }}>
 				save
 			</a>

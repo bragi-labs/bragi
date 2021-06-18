@@ -14,7 +14,7 @@ export const AboutPage = () => {
 	const classes = useStyles();
 
 	return (
-		<Box id="AboutPage" className={`${classes.root}`}>
+		<Box id="AboutPage" className={classes.root}>
 			<UnderConstruction />
 		</Box>
 	);
