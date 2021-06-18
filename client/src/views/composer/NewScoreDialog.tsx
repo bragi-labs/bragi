@@ -99,8 +99,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	}, [onNewScoreDialogDone]);
 
 	const handleClickOK = useCallback(() => {
-		const newScore = new Score();
-		newScore.initFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures: Number(numberOfMeasures) || 16 });
+		const newScore = Score.createFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures: Number(numberOfMeasures) || 16 });
 		onNewScoreDialogDone(newScore);
 	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
 

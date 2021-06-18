@@ -1,26 +1,19 @@
-import { CommonHelper } from '../services/commonHelper';
 import { ChordModel } from './scoreModel';
 
 export class Chord implements ChordModel {
-	id: number = CommonHelper.getRandomId();
-	scoreId: number = 0;
-	partId: number = 0;
-	measureId: number = 0;
-	voiceId: number = 0;
-	name: string = '';
-	isRest: boolean = false;
-	startDiv: number = 0;
-	durationDivs: number = 96;
+	constructor(
+		public id: number,
+		public scoreId: number,
+		public partId: number,
+		public measureId: number,
+		public voiceId: number,
+		public name: string,
+		public isRest: boolean,
+		public startDiv: number,
+		public durationDivs: number,
+	) {}
 
-	initFromModel(chordModel: ChordModel) {
-		this.id = chordModel.id;
-		this.scoreId = chordModel.scoreId;
-		this.partId = chordModel.partId;
-		this.measureId = chordModel.measureId;
-		this.voiceId = chordModel.voiceId;
-		this.name = chordModel.name || '';
-		this.isRest = chordModel.isRest || false;
-		this.startDiv = chordModel.startDiv || 0;
-		this.durationDivs = chordModel.durationDivs || 96;
+	static createFromModel(cm: ChordModel) {
+		return new Chord(cm.id, cm.scoreId, cm.partId, cm.measureId, cm.voiceId, cm.name, cm.isRest, cm.startDiv, cm.durationDivs);
 	}
 }

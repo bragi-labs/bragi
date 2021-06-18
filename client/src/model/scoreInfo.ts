@@ -1,25 +1,15 @@
-import { AppDataHelper } from '../services/appDataHelper';
 import { ScoreInfoModel } from './scoreModel';
 import { NewScoreData } from '../services/newScoreData';
+import { AppDataHelper } from '../services/appDataHelper';
 
 export class ScoreInfo implements ScoreInfoModel {
-	scoreTitle: string = '';
-	scoreCredits: string = '';
-	arrangerName: string = '';
-	softwareName: string = AppDataHelper.appName;
-	softwareVersion: string = AppDataHelper.appVersion;
+	constructor(public scoreTitle: string, public scoreCredits: string, public arrangerName: string, public softwareName: string, public softwareVersion: string) {}
 
-	initFromModel(scoreInfoModel: ScoreInfoModel) {
-		this.scoreTitle = scoreInfoModel.scoreTitle || '';
-		this.scoreCredits = scoreInfoModel.scoreCredits || '';
-		this.arrangerName = scoreInfoModel.arrangerName || '';
-		this.softwareName = scoreInfoModel.softwareName || AppDataHelper.appName;
-		this.softwareVersion = scoreInfoModel.softwareVersion || AppDataHelper.appVersion;
+	static createFromModel(im: ScoreInfoModel) {
+		return new ScoreInfo(im.scoreTitle, im.scoreCredits, im.arrangerName, im.softwareName, im.softwareVersion);
 	}
 
-	initFromNewDialog(newScoreData: NewScoreData) {
-		this.scoreTitle = newScoreData.scoreTitle || '';
-		this.scoreCredits = newScoreData.scoreCredits || '';
-		this.arrangerName = newScoreData.arrangerName || '';
+	static createFromNewDialog(newScoreData: NewScoreData) {
+		return new ScoreInfo(newScoreData.scoreTitle, newScoreData.scoreCredits, newScoreData.arrangerName, AppDataHelper.appName, AppDataHelper.appVersion);
 	}
 }

@@ -1,37 +1,26 @@
-import { CommonHelper } from '../services/commonHelper';
 import { ScoreModel } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { Part } from './part';
 import { NewScoreData } from '../services/newScoreData';
+import { CommonHelper } from '../services/commonHelper';
 
 export class Score implements ScoreModel {
-	id: number = CommonHelper.getRandomId();
-	scoreInfo: ScoreInfo = new ScoreInfo();
-	parts: Part[] = [];
+	constructor(public id: number, public scoreInfo: ScoreInfo, public parts: Part[]) {}
 
-	initFromModel(scoreModel: ScoreModel) {
-		this.id = scoreModel.id;
-		this.scoreInfo = new ScoreInfo();
-		this.scoreInfo.initFromModel(scoreModel.scoreInfo);
-		this.parts = [];
-		scoreModel.parts.forEach((p) => {
-			const part = new Part();
-			part.initFromModel(p);
-			this.parts.push(part);
+	static createFromModel(im: ScoreModel) {
+		const scoreInfo = ScoreInfo.createFromModel(im.scoreInfo);
+		const parts: Part[] = [];
+		im.parts.forEach((pm) => {
+			const part = Part.createFromModel(pm);
+			parts.push(part);
 		});
+		return new Score(im.id, scoreInfo, parts);
 	}
 
-	initFromNewDialog(newScoreData: NewScoreData) {
-		this.scoreInfo = new ScoreInfo();
-		this.scoreInfo.initFromNewDialog(newScoreData);
-		this.parts = [];
-		const part = new Part();
-		part.scoreId = this.id;
-		part.initFromNewDialog(newScoreData);
-		this.addPart(part);
-	}
-
-	addPart(part: Part) {
-		this.parts.push(part);
+	static createFromNewDialog(newScoreData: NewScoreData) {
+		const id = CommonHelper.getRandomId();
+		const scoreInfo = ScoreInfo.createFromNewDialog(newScoreData);
+		const part = Part.createFromNewDialog(id, newScoreData);
+		return new Score(id, scoreInfo, [part]);
 	}
 }

@@ -1,50 +1,36 @@
-import { CommonHelper } from '../services/commonHelper';
-import { MeasureModel } from './scoreModel';
+import { MeasureModel, VoiceType } from './scoreModel';
 import { Voice } from './voice';
 import { NewScoreData } from '../services/newScoreData';
+import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 
 export class Measure implements MeasureModel {
-	id: number = CommonHelper.getRandomId();
-	scoreId: number = 0;
-	partId: number = 0;
-	number: number = -1;
-	isPickup: boolean = false;
-	musicalScale: string = 'C';
-	timeSignature: string = '4/4';
-	tempoBpm: number = 120;
-	durationDivs: number = 96;
-	voices: Voice[] = [];
+	constructor(
+		public id: number,
+		public scoreId: number,
+		public partId: number,
+		public number: number,
+		public isPickup: boolean,
+		public musicalScale: string,
+		public timeSignature: string,
+		public tempoBpm: number,
+		public durationDivs: number,
+		public voices: Voice[],
+	) {}
 
-	initFromModel(measureModel: MeasureModel) {
-		this.id = measureModel.id;
-		this.scoreId = measureModel.scoreId;
-		this.partId = measureModel.partId;
-		this.number = measureModel.number;
-		this.isPickup = measureModel.isPickup;
-		this.timeSignature = measureModel.timeSignature;
-		this.durationDivs = measureModel.durationDivs;
-		this.tempoBpm = measureModel.tempoBpm;
-		this.musicalScale = measureModel.musicalScale;
-		this.voices = [];
-		measureModel.voices.forEach((v) => {
-			const voice = new Voice();
-			voice.initFromModel(v);
-			this.voices.push(voice);
+	static createFromModel(mm: MeasureModel) {
+		const voices: Voice[] = [];
+		mm.voices.forEach((vm) => {
+			const voice = Voice.createFromModel(vm);
+			voices.push(voice);
 		});
+		return new Measure(mm.id, mm.scoreId, mm.partId, mm.number, mm.isPickup, mm.musicalScale, mm.timeSignature, mm.tempoBpm, mm.durationDivs, voices);
 	}
 
-	initFromNewDialog(newScoreData: NewScoreData, isPickupMeasure: boolean, measureNumber: number) {
-		this.number = measureNumber;
-		this.isPickup = isPickupMeasure;
-		this.timeSignature = newScoreData.timeSignature;
-		this.durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
-		this.voices = [];
-		const voice = new Voice();
-		voice.scoreId = this.scoreId;
-		voice.partId = this.partId;
-		voice.measureId = this.id;
-		voice.initFromNewDialog(newScoreData);
-		this.voices.push(voice);
+	static createFromNewDialog(scoreId: number, partId: number, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
+		const id = CommonHelper.getRandomId();
+		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
+		const voice = Voice.createFromNewDialog(scoreId, partId, id, 'Melody', VoiceType.FN_LVL_1, newScoreData);
+		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, '', newScoreData.timeSignature, 120, durationDivs, [voice]);
 	}
 }

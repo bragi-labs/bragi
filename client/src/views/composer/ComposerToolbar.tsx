@@ -89,8 +89,7 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 		const fileReader = new FileReader();
 		fileReader.onload = () => {
 			if (fileReader.result) {
-				const openedScore = new Score();
-				openedScore.initFromModel(JSON.parse(fileReader.result.toString()));
+				const openedScore = Score.createFromModel(JSON.parse(fileReader.result.toString()));
 				onChangeScore(openedScore);
 			}
 		};
