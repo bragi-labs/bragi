@@ -1,5 +1,5 @@
 import { CommonHelper } from '../services/commonHelper';
-import { ChordModel, NoteModel, VoiceModel, VoiceType } from './scoreModel';
+import { VoiceModel, VoiceType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
 import { NewScoreData } from '../services/newScoreData';
@@ -13,8 +13,8 @@ export class Voice implements VoiceModel {
 	name: string = '';
 	voiceType: VoiceType = VoiceType.FN_LVL_1;
 	lyrics: string = '';
-	notes: NoteModel[] = [];
-	chords: ChordModel[] = [];
+	notes: Note[] = [];
+	chords: Chord[] = [];
 
 	initFromModel(voiceModel: VoiceModel) {
 		this.id = voiceModel.id;

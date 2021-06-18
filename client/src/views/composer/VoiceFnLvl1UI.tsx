@@ -2,6 +2,7 @@ import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Voice } from '../../model/voice';
+import { NoteUI } from './NoteUI';
 
 export interface VoiceFnLvl1UIProps {
 	voice: Voice;
@@ -24,7 +25,7 @@ export const VoiceFnLvl1UI = ({ voice }: VoiceFnLvl1UIProps) => {
 		<Box id="VoiceFnLvl1UI" className={classes.root}>
 			{voice.notes.map((note, i) => (
 				<Box key={i} className={classes.note} style={{ flex: `${note.durationDivs} 0 0` }}>
-					{note.durationDivs}
+					<NoteUI note={note} />
 				</Box>
 			))}
 		</Box>
