@@ -2,11 +2,11 @@ import { ChordModel } from './scoreModel';
 
 export class Chord implements ChordModel {
 	constructor(
-		public id: number,
-		public scoreId: number,
-		public partId: number,
-		public measureId: number,
-		public voiceId: number,
+		public id: string,
+		public scoreId: string,
+		public partId: string,
+		public measureId: string,
+		public voiceId: string,
 		public name: string,
 		public isRest: boolean,
 		public startDiv: number,

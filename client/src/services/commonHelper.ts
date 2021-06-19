@@ -1,7 +1,8 @@
 export class CommonHelper {
-	static getRandomId() {
-		const min = 1000000000;
-		const max = 9999999999;
-		return Math.floor(Math.random() * (max - min + 1)) + min;
+	static getRandomId(): string {
+		const numberOfDigits = 9;
+		const min = 16 ** (numberOfDigits - 1);
+		const max = 16 ** numberOfDigits;
+		return (Math.floor(Math.random() * (max - min + 1)) + min).toString(16);
 	}
 }

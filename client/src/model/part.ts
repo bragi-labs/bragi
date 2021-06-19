@@ -4,7 +4,7 @@ import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
 export class Part implements PartModel {
-	constructor(public id: number, public scoreId: number, public name: string, public measures: Measure[]) {}
+	constructor(public id: string, public scoreId: string, public name: string, public measures: Measure[]) {}
 
 	static createFromModel(pm: PartModel) {
 		const measures: Measure[] = [];
@@ -15,7 +15,7 @@ export class Part implements PartModel {
 		return new Part(pm.id, pm.scoreId, pm.name, measures);
 	}
 
-	static createFromNewDialog(scoreId: number, newScoreData: NewScoreData) {
+	static createFromNewDialog(scoreId: string, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const measures: Measure[] = [];
 		if (newScoreData.pickupMeasure !== 'no') {

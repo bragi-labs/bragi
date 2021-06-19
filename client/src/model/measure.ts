@@ -6,9 +6,9 @@ import { MusicalHelper } from '../services/musicalHelper';
 
 export class Measure implements MeasureModel {
 	constructor(
-		public id: number,
-		public scoreId: number,
-		public partId: number,
+		public id: string,
+		public scoreId: string,
+		public partId: string,
 		public number: number,
 		public isPickup: boolean,
 		public musicalScale: string,
@@ -27,7 +27,7 @@ export class Measure implements MeasureModel {
 		return new Measure(mm.id, mm.scoreId, mm.partId, mm.number, mm.isPickup, mm.musicalScale, mm.timeSignature, mm.tempoBpm, mm.durationDivs, voices);
 	}
 
-	static createFromNewDialog(scoreId: number, partId: number, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
+	static createFromNewDialog(scoreId: string, partId: string, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
 		const voice = Voice.createFromNewDialog(scoreId, partId, id, 'Melody', VoiceType.FN_LVL_1, newScoreData);

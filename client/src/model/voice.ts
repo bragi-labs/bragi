@@ -7,10 +7,10 @@ import { MusicalHelper } from '../services/musicalHelper';
 
 export class Voice implements VoiceModel {
 	constructor(
-		public id: number,
-		public scoreId: number,
-		public partId: number,
-		public measureId: number,
+		public id: string,
+		public scoreId: string,
+		public partId: string,
+		public measureId: string,
 		public name: string,
 		public voiceType: VoiceType,
 		public lyrics: string,
@@ -32,7 +32,7 @@ export class Voice implements VoiceModel {
 		return new Voice(vm.id, vm.scoreId, vm.partId, vm.measureId, vm.name, vm.voiceType, vm.lyrics, notes, chords);
 	}
 
-	static createFromNewDialog(scoreId: number, partId: number, measureId: number, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
+	static createFromNewDialog(scoreId: string, partId: string, measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const notes = [];
 		const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);

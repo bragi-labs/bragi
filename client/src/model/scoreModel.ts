@@ -6,11 +6,11 @@ export interface ScoreInfoModel {
 	softwareVersion: string; //e.g. "1.0.0"
 }
 export interface NoteModel {
-	id: number; //internal ID
-	scoreId: number; //internal ID
-	partId: number; //internal ID
-	measureId: number; //internal ID
-	voiceId: number; //internal ID
+	id: string; //internal ID
+	scoreId: string; //internal ID
+	partId: string; //internal ID
+	measureId: string; //internal ID
+	voiceId: string; //internal ID
 	name: string; //e.g. "F#4"
 	isRest: boolean; //e.g. false
 	startDiv: number; //e.g. 0
@@ -19,11 +19,11 @@ export interface NoteModel {
 	isTiedToPrev: boolean; //e.g. false
 }
 export interface ChordModel {
-	id: number; //internal ID
-	scoreId: number; //internal ID
-	partId: number; //internal ID
-	measureId: number; //internal ID
-	voiceId: number; //internal ID
+	id: string; //internal ID
+	scoreId: string; //internal ID
+	partId: string; //internal ID
+	measureId: string; //internal ID
+	voiceId: string; //internal ID
 	name: string; //e.g. "Am"
 	isRest: boolean; //e.g. false
 	startDiv: number; //e.g. 0
@@ -38,10 +38,10 @@ export enum VoiceType {
 	NA = 'NA',
 }
 export interface VoiceModel {
-	id: number; //internal ID
-	scoreId: number; //internal ID
-	partId: number; //internal ID
-	measureId: number; //internal ID
+	id: string; //internal ID
+	scoreId: string; //internal ID
+	partId: string; //internal ID
+	measureId: string; //internal ID
 	name: string; //e.g. "Piano"
 	voiceType: VoiceType; //e.g. FN_LVL_1
 	lyrics: string; //e.g. "Is this the real life?"
@@ -49,9 +49,9 @@ export interface VoiceModel {
 	chords: ChordModel[];
 }
 export interface MeasureModel {
-	id: number; //internal ID
-	scoreId: number; //internal ID
-	partId: number; //internal ID
+	id: string; //internal ID
+	scoreId: string; //internal ID
+	partId: string; //internal ID
 	number: number; //e.g. 1
 	isPickup: boolean; //e.g. false
 	timeSignature: string; //e.g. "4/4"
@@ -61,13 +61,13 @@ export interface MeasureModel {
 	voices: VoiceModel[];
 }
 export interface PartModel {
-	id: number; //internal ID
-	scoreId: number; //internal ID
+	id: string; //internal ID
+	scoreId: string; //internal ID
 	name: string; //e.g. "Part 1"
 	measures: MeasureModel[];
 }
 export interface ScoreModel {
-	id: number; //internal ID
+	id: string; //internal ID
 	scoreInfo: ScoreInfoModel;
 	parts: PartModel[];
 }

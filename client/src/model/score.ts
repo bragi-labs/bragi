@@ -5,7 +5,7 @@ import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
 export class Score implements ScoreModel {
-	constructor(public id: number, public scoreInfo: ScoreInfo, public parts: Part[]) {}
+	constructor(public id: string, public scoreInfo: ScoreInfo, public parts: Part[]) {}
 
 	static createFromModel(im: ScoreModel) {
 		const scoreInfo = ScoreInfo.createFromModel(im.scoreInfo);
