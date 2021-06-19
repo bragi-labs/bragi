@@ -2,8 +2,9 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
-import { VideoLoop } from './VideoLoop';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
+import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { VideoLoop } from './VideoLoop';
 import { Masthead } from './Masthead';
 import { HomePage } from '../home/HomePage';
 import { ComposerPage } from '../composer/ComposerPage';
@@ -113,19 +114,21 @@ export const MainPage = () => {
 			<Box className={classes.topCover} />
 			<Box className={classes.content}>
 				<SettingsContextContainer.Provider>
-					<Box className={classes.mastheadContainer}>
-						<Masthead />
-					</Box>
-					<Box className={classes.pageContainer}>
-						<Switch>
-							<Route path="/home" exact component={HomePage} />
-							<Route path="/composer" exact component={ComposerPage} />
-							<Route path="/play" exact component={PlayPage} />
-							<Route path="/help" exact component={HelpPage} />
-							<Route path="/about" exact component={AboutPage} />
-							<Route component={HomePage} />
-						</Switch>
-					</Box>
+					<SelectionContextContainer.Provider>
+						<Box className={classes.mastheadContainer}>
+							<Masthead />
+						</Box>
+						<Box className={classes.pageContainer}>
+							<Switch>
+								<Route path="/home" exact component={HomePage} />
+								<Route path="/composer" exact component={ComposerPage} />
+								<Route path="/play" exact component={PlayPage} />
+								<Route path="/help" exact component={HelpPage} />
+								<Route path="/about" exact component={AboutPage} />
+								<Route component={HomePage} />
+							</Switch>
+						</Box>
+					</SelectionContextContainer.Provider>
 				</SettingsContextContainer.Provider>
 			</Box>
 			<Footer />

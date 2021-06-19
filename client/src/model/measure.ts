@@ -33,4 +33,11 @@ export class Measure implements MeasureModel {
 		const voice = Voice.createFromNewDialog(scoreId, partId, id, 'Melody', VoiceType.FN_LVL_1, newScoreData);
 		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, '', newScoreData.timeSignature, 120, durationDivs, [voice]);
 	}
+
+	writeNote(noteName: string, voiceId: string, noteId: string) {
+		const voice = this.voices.find((v) => v.id === voiceId);
+		if (voice) {
+			voice.writeNote(noteName, noteId);
+		}
+	}
 }

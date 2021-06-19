@@ -9,9 +9,10 @@ import { FigurenotesHelper } from '../services/figurenotesHelper';
 
 export interface PianoProps {
 	smallPiano: boolean;
+	onPianoNote?: (noteName: string) => void;
 }
 
-export const Piano = ({ smallPiano }: PianoProps) => {
+export const Piano = ({ smallPiano, onPianoNote }: PianoProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -202,36 +203,57 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 	);
 
 	const startNote = useCallback(
-		(event) => {
+		(noteName: string, octaveNumber: number) => {
 			if (!synth) {
 				return;
 			}
-			SoundHelper.startNote(synth, event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+			SoundHelper.startNote(synth, noteName, octaveNumber);
+			if (onPianoNote) {
+				onPianoNote(`${noteName}${octaveNumber}`);
+			}
 		},
-		[synth],
+		[synth, onPianoNote],
 	);
 
 	const stopNote = useCallback(
-		(event) => {
+		(noteName: string, octaveNumber: number) => {
 			if (!synth) {
 				return;
 			}
-			SoundHelper.stopNote(synth, event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+			SoundHelper.stopNote(synth, noteName, octaveNumber);
 		},
 		[synth],
 	);
 
-	const enterNote = useCallback(
+	const handleMouseDown = useCallback(
 		(event) => {
-			if (!synth) {
-				return;
-			}
+			startNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		},
+		[startNote],
+	);
+
+	const handleMouseUp = useCallback(
+		(event) => {
+			stopNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		},
+		[stopNote],
+	);
+
+	const handleMouseEnter = useCallback(
+		(event) => {
 			const isMouseButtonPressed = 'buttons' in event ? event.buttons === 1 : (event.which || event.button) === 1;
 			if (isMouseButtonPressed) {
-				SoundHelper.startNote(synth, event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+				startNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
 			}
 		},
-		[synth],
+		[startNote],
+	);
+
+	const handleMouseLeave = useCallback(
+		(event) => {
+			stopNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		},
+		[stopNote],
 	);
 
 	return (
@@ -279,10 +301,10 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 									}}
 								/>
 								<Box
-									onMouseDown={startNote}
-									onMouseUp={stopNote}
-									onMouseEnter={enterNote}
-									onMouseLeave={stopNote}
+									onMouseDown={handleMouseDown}
+									onMouseUp={handleMouseUp}
+									onMouseEnter={handleMouseEnter}
+									onMouseLeave={handleMouseLeave}
 									data-note-name={whiteKey.noteName}
 									data-octave-number={i + 2}
 									className={`${classes.octaveKey} ${classes.whiteKey}`}
@@ -293,10 +315,10 @@ export const Piano = ({ smallPiano }: PianoProps) => {
 						{blackKeys.map((blackKey, j) => (
 							<Box
 								key={j}
-								onMouseDown={startNote}
-								onMouseUp={stopNote}
-								onMouseEnter={enterNote}
-								onMouseLeave={stopNote}
+								onMouseDown={handleMouseDown}
+								onMouseUp={handleMouseUp}
+								onMouseEnter={handleMouseEnter}
+								onMouseLeave={handleMouseLeave}
 								data-note-name={blackKey.noteName}
 								data-octave-number={i + 2}
 								className={`${classes.octaveKey} ${classes.blackKey}`}

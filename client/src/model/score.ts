@@ -23,4 +23,11 @@ export class Score implements ScoreModel {
 		const part = Part.createFromNewDialog(id, newScoreData);
 		return new Score(id, scoreInfo, [part]);
 	}
+
+	writeNote(noteName: string, partId: string, measureId: string, voiceId: string, noteId: string) {
+		const part = this.parts.find((p) => p.id === partId);
+		if (part) {
+			part.writeNote(noteName, measureId, voiceId, noteId);
+		}
+	}
 }

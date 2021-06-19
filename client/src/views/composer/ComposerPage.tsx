@@ -5,6 +5,7 @@ import { Score } from '../../model/score';
 import { ComposerToolbar } from './ComposerToolbar';
 import { StageUI } from './StageUI';
 import { Piano } from '../../components/Piano';
+import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -39,10 +40,25 @@ export const ComposerPage = () => {
 	const classes = useStyles();
 
 	const [score, setScore] = useState<Score | null>(null);
+	const { selection } = SelectionContextContainer.useContainer();
 
 	const handleChangeScore = useCallback((changedScore: Score) => {
 		setScore(changedScore);
 	}, []);
+
+	const handlePianoNote = useCallback(
+		(noteName: string) => {
+			if (selection && selection.items && selection.items.length === 1) {
+				setScore((s) => {
+					if (s) {
+						s.writeNote(noteName, selection.items[0].partId, selection.items[0].measureId, selection.items[0].voiceId, selection.items[0].noteId);
+					}
+					return Score.createFromModel(JSON.parse(JSON.stringify(s)));
+				});
+			}
+		},
+		[selection],
+	);
 
 	return (
 		<Box id="ComposerPage" className={classes.root}>
@@ -55,7 +71,7 @@ export const ComposerPage = () => {
 						<StageUI score={score} />
 					</Box>
 					<Box className={classes.pianoContainer}>
-						<Piano smallPiano={true} />
+						<Piano smallPiano={true} onPianoNote={handlePianoNote} />
 					</Box>
 				</>
 			)}

@@ -15,16 +15,13 @@ export const VoiceFnLvl1UI = ({ voice }: VoiceFnLvl1UIProps) => {
 			display: 'flex',
 			border: '1px solid #666',
 		},
-		note: {
-			border: '1px solid #ddd',
-		},
 	}));
 	const classes = useStyles();
 
 	return (
 		<Box id="VoiceFnLvl1UI" className={classes.root}>
 			{voice.notes.map((note, i) => (
-				<Box key={i} className={classes.note} style={{ flex: `${note.durationDivs} 0 0` }}>
+				<Box key={i} style={{ flex: `${note.durationDivs} 0 0` }}>
 					<NoteUI note={note} />
 				</Box>
 			))}
