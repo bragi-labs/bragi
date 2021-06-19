@@ -22,14 +22,11 @@ export const NoteUI = ({ note }: NoteUIProps) => {
 
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
-	const handleClickNote = useCallback(
-		() => {
-			setSelection({
-				items: [{ partId: note.partId, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
-			});
-		},
-		[setSelection, note.partId, note.measureId, note.voiceId, note.id],
-	);
+	const handleClickNote = useCallback(() => {
+		setSelection({
+			items: [{ partId: note.partId, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
+		});
+	}, [setSelection, note.partId, note.measureId, note.voiceId, note.id]);
 
 	return (
 		<Box id="NoteUI" className={`${classes.root} ${isSelected(note.id) ? classes.selected : ''}`} onClick={handleClickNote}>
