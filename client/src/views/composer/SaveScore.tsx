@@ -10,7 +10,7 @@ export interface SaveScoreProps {
 	onSaveScoreDone: () => void;
 }
 
-export const SaveScore = ({ score, goSaveScore, onSaveScoreDone }: SaveScoreProps) => {
+export const SaveScore = React.memo(({ score, goSaveScore, onSaveScoreDone }: SaveScoreProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'none',
@@ -37,4 +37,4 @@ export const SaveScore = ({ score, goSaveScore, onSaveScoreDone }: SaveScoreProp
 			</a>
 		</Box>
 	);
-};
+});

@@ -16,7 +16,7 @@ export interface ComposerToolbarProps {
 	onChangeScore: (score: Score) => void;
 }
 
-export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) => {
+export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -123,4 +123,4 @@ export const ComposerToolbar = ({ score, onChangeScore }: ComposerToolbarProps) 
 			</Box>
 		</Box>
 	);
-};
+});

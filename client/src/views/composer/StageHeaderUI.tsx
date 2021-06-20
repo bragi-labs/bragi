@@ -8,7 +8,7 @@ export interface StageHeaderUIProps {
 	scoreInfo: ScoreInfo;
 }
 
-export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
+export const StageHeaderUI = React.memo(({ scoreInfo }: StageHeaderUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			paddingBottom: 32,
@@ -54,4 +54,4 @@ export const StageHeaderUI = ({ scoreInfo }: StageHeaderUIProps) => {
 			</Typography>
 		</Box>
 	);
-};
+});
