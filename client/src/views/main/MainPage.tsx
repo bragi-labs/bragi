@@ -13,7 +13,7 @@ import { HelpPage } from '../help/HelpPage';
 import { AboutPage } from '../about/AboutPage';
 import { Footer } from './Footer';
 
-export const MainPage = () => {
+export const MainPage = React.memo(() => {
 	const useStyles = makeStyles((theme) => ({
 		root: {
 			position: 'absolute',
@@ -134,4 +134,4 @@ export const MainPage = () => {
 			<Footer />
 		</Box>
 	);
-};
+});

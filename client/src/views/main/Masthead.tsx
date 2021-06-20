@@ -8,7 +8,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
 import { AppDataHelper } from '../../services/appDataHelper';
 
-export const Masthead = () => {
+export const Masthead = React.memo(() => {
 	const useStyles = makeStyles((theme) => ({
 		root: {
 			position: 'relative',
@@ -152,4 +152,4 @@ export const Masthead = () => {
 			</Box>
 		</Box>
 	);
-};
+});

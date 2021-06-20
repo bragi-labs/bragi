@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Piano } from '../../components/Piano';
 
-export const PlayPage = () => {
+export const PlayPage = React.memo(() => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -23,4 +23,4 @@ export const PlayPage = () => {
 			</Box>
 		</Box>
 	);
-};
+});

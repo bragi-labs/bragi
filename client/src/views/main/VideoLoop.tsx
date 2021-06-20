@@ -11,7 +11,7 @@ interface VideoLoopProps {
 	height?: string;
 }
 
-export const VideoLoop = ({ videoName, playbackSpeed = 1, blurPixels = 0, grayscale = false, top = '0', height = '100vh' }: VideoLoopProps) => {
+export const VideoLoop = React.memo(({ videoName, playbackSpeed = 1, blurPixels = 0, grayscale = false, top = '0', height = '100vh' }: VideoLoopProps) => {
 	const useStyles = makeStyles((/*theme*/) => ({
 		root: {
 			position: 'absolute',
@@ -57,4 +57,4 @@ export const VideoLoop = ({ videoName, playbackSpeed = 1, blurPixels = 0, graysc
 			</video>
 		</Box>
 	);
-};
+});

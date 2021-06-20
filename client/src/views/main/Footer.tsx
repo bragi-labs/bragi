@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 // import { Typography } from '@material-ui/core';
 // import { AppDataHelper } from '../../services/appDataHelper';
 
-export const Footer = () => {
+export const Footer = React.memo(() => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -29,4 +29,4 @@ export const Footer = () => {
 			{/*</Typography>*/}
 		</Box>
 	);
-};
+});

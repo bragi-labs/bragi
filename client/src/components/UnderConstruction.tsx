@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box/Box';
 import { Typography } from '@material-ui/core';
 
-export const UnderConstruction = () => {
+export const UnderConstruction = React.memo(() => {
 	const useStyles = makeStyles((/*theme*/) => ({
 		root: {
 			height: '100%',
@@ -34,4 +34,4 @@ export const UnderConstruction = () => {
 			</Box>
 		</Box>
 	);
-};
+});
