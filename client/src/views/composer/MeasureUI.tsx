@@ -2,9 +2,9 @@ import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
-import { MeasureModel } from '../../model/scoreModel';
+import { MeasureModel, VoiceType } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
-import { VoiceUI } from './VoiceUI';
+import { VoiceFnLvl1UI } from './VoiceFnLvl1UI';
 
 export interface MeasureUIProps {
 	measure: MeasureModel;
@@ -39,7 +39,7 @@ export const MeasureUI = ({ measure }: MeasureUIProps) => {
 				</Box>
 			)}
 			{measure.voices.map((voice, i) => (
-				<VoiceUI key={i} voice={voice} />
+				<Box key={i}>{voice.voiceType === VoiceType.FN_LVL_1 && <VoiceFnLvl1UI voice={voice} />}</Box>
 			))}
 		</Box>
 	);
