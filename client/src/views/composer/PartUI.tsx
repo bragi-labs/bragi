@@ -45,6 +45,10 @@ export const PartUI = ({ part }: StageUIProps) => {
 				backgroundColor: '#ddf',
 				border: '1px solid #33f',
 			},
+			'@media print': {
+				backgroundColor: 'transparent !important',
+				border: '1px solid #ddd !important',
+			},
 		},
 		figureNoteSymbol: {},
 	}));
