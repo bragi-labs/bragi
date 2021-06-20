@@ -34,7 +34,7 @@ export const VoiceFnLvl1UI = ({ voice }: VoiceFnLvl1UIProps) => {
 				items: [{ partId: note.partId, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
 			});
 		},
-		[setSelection],
+		[voice.notes, setSelection],
 	);
 
 	return (

@@ -5,7 +5,6 @@ import { ScoreModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { StageHeaderUI } from './StageHeaderUI';
 import { PartUI } from './PartUI';
-import { StageFooterUI } from './StageFooterUI';
 
 export interface StageUIProps {
 	score: ScoreModel | null;
@@ -75,7 +74,6 @@ export const StageUI = ({ score }: StageUIProps) => {
 						{score.parts.map((part, i) => (
 							<PartUI key={i} part={part} />
 						))}
-						<StageFooterUI />
 					</Box>
 				</Box>
 			)}
