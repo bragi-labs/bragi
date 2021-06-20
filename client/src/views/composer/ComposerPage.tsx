@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
-import { ComposerToolbar } from './ComposerToolbar';
-import { StageUI } from './StageUI';
-import { Piano } from '../../components/Piano';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { ComposerToolbar } from './ComposerToolbar';
+import { Piano } from '../../components/Piano';
+import { StageUI } from './StageUI';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -39,7 +40,7 @@ export const ComposerPage = () => {
 	}));
 	const classes = useStyles();
 
-	const [score, setScore] = useState<Score | null>(null);
+	const [score, setScore] = useState<ScoreModel | null>(null);
 	const { selection } = SelectionContextContainer.useContainer();
 
 	const handleChangeScore = useCallback((changedScore: Score) => {
@@ -49,11 +50,11 @@ export const ComposerPage = () => {
 	const handlePianoNote = useCallback(
 		(noteName: string) => {
 			if (selection && selection.items && selection.items.length === 1) {
-				setScore((s) => {
-					if (s) {
-						s.writeNote(noteName, selection.items[0].partId, selection.items[0].measureId, selection.items[0].voiceId, selection.items[0].noteId);
+				setScore((sm) => {
+					if (sm) {
+						Score.writeNote(sm, selection.items[0].partId, selection.items[0].measureId, selection.items[0].voiceId, selection.items[0].noteId, noteName);
 					}
-					return Score.createFromModel(JSON.parse(JSON.stringify(s)));
+					return { ...sm } as ScoreModel;
 				});
 			}
 		},

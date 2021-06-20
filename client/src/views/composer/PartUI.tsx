@@ -2,12 +2,12 @@ import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
+import { PartModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
-import { Part } from '../../model/part';
 import { MeasureUI } from './MeasureUI';
 
 export interface StageUIProps {
-	part: Part;
+	part: PartModel;
 }
 
 export const PartUI = ({ part }: StageUIProps) => {

@@ -34,10 +34,10 @@ export class Measure implements MeasureModel {
 		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, '', newScoreData.timeSignature, 120, durationDivs, [voice]);
 	}
 
-	writeNote(noteName: string, voiceId: string, noteId: string) {
-		const voice = this.voices.find((v) => v.id === voiceId);
-		if (voice) {
-			voice.writeNote(noteName, noteId);
+	static writeNote(mm: MeasureModel, voiceId: string, noteId: string, noteName: string) {
+		const vm = mm.voices.find((v) => v.id === voiceId);
+		if (vm) {
+			Voice.writeNote(vm, noteId, noteName);
 		}
 	}
 }

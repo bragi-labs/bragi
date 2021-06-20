@@ -43,10 +43,10 @@ export class Voice implements VoiceModel {
 		return new Voice(id, scoreId, partId, measureId, name, voiceType, '', notes, []);
 	}
 
-	writeNote(noteName: string, noteId: string) {
-		const note = this.notes.find((n) => n.id === noteId);
-		if (note) {
-			note.writeNote(noteName);
+	static writeNote(vm: VoiceModel, noteId: string, noteName: string) {
+		const nm = vm.notes.find((n) => n.id === noteId);
+		if (nm) {
+			Note.writeNote(nm, noteName);
 		}
 	}
 }

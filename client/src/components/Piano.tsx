@@ -12,7 +12,7 @@ export interface PianoProps {
 	onPianoNote?: (noteName: string) => void;
 }
 
-export const Piano = ({ smallPiano, onPianoNote }: PianoProps) => {
+export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -331,4 +331,4 @@ export const Piano = ({ smallPiano, onPianoNote }: PianoProps) => {
 			</Box>
 		</Box>
 	);
-};
+});

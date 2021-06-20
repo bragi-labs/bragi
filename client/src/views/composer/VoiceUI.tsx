@@ -1,12 +1,11 @@
 import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Voice } from '../../model/voice';
-import { VoiceType } from '../../model/scoreModel';
+import { VoiceType, VoiceModel } from '../../model/scoreModel';
 import { VoiceFnLvl1UI } from './VoiceFnLvl1UI';
 
 export interface VoiceUIProps {
-	voice: Voice;
+	voice: VoiceModel;
 }
 
 export const VoiceUI = ({ voice }: VoiceUIProps) => {

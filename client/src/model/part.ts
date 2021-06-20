@@ -29,10 +29,10 @@ export class Part implements PartModel {
 		return new Part(id, scoreId, '', measures);
 	}
 
-	writeNote(noteName: string, measureId: string, voiceId: string, noteId: string) {
-		const measure = this.measures.find((m) => m.id === measureId);
-		if (measure) {
-			measure.writeNote(noteName, voiceId, noteId);
+	static writeNote(pm: PartModel, measureId: string, voiceId: string, noteId: string, noteName: string) {
+		const mm = pm.measures.find((m) => m.id === measureId);
+		if (mm) {
+			Measure.writeNote(mm, voiceId, noteId, noteName);
 		}
 	}
 }

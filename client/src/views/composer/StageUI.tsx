@@ -1,14 +1,14 @@
 import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Score } from '../../model/score';
+import { ScoreModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { StageHeaderUI } from './StageHeaderUI';
 import { PartUI } from './PartUI';
 import { StageFooterUI } from './StageFooterUI';
 
 export interface StageUIProps {
-	score: Score | null;
+	score: ScoreModel | null;
 }
 
 export const StageUI = ({ score }: StageUIProps) => {

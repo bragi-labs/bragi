@@ -2,12 +2,12 @@ import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
+import { MeasureModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
-import { Measure } from '../../model/measure';
 import { VoiceUI } from './VoiceUI';
 
 export interface MeasureUIProps {
-	measure: Measure;
+	measure: MeasureModel;
 }
 
 export const MeasureUI = ({ measure }: MeasureUIProps) => {

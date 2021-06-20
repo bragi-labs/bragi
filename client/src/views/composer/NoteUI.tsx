@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { NoteModel } from '../../model/scoreModel';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
-import { Note } from '../../model/note';
 
 export interface NoteUIProps {
-	note: Note;
+	note: NoteModel;
 }
 
 export const NoteUI = ({ note }: NoteUIProps) => {

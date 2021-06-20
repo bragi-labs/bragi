@@ -24,10 +24,10 @@ export class Score implements ScoreModel {
 		return new Score(id, scoreInfo, [part]);
 	}
 
-	writeNote(noteName: string, partId: string, measureId: string, voiceId: string, noteId: string) {
-		const part = this.parts.find((p) => p.id === partId);
-		if (part) {
-			part.writeNote(noteName, measureId, voiceId, noteId);
+	static writeNote(sm: ScoreModel, partId: string, measureId: string, voiceId: string, noteId: string, noteName: string) {
+		const pm = sm.parts.find((p) => p.id === partId);
+		if (pm) {
+			Part.writeNote(pm, measureId, voiceId, noteId, noteName);
 		}
 	}
 }
