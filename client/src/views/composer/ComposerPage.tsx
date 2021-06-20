@@ -52,7 +52,10 @@ export const ComposerPage = () => {
 			if (selection && selection.items && selection.items.length === 1) {
 				setScore((sm) => {
 					if (sm) {
-						Score.writeNote(sm, selection.items[0].partId, selection.items[0].measureId, selection.items[0].voiceId, selection.items[0].noteId, noteName);
+						const note = Score.findNote(sm, selection.items[0].noteId);
+						if (note) {
+							note.name = noteName;
+						}
 					}
 					return { ...sm } as ScoreModel;
 				});

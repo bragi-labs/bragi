@@ -18,8 +18,4 @@ export class Note implements NoteModel {
 	static createFromModel(nm: NoteModel) {
 		return new Note(nm.id, nm.scoreId, nm.partId, nm.measureId, nm.voiceId, nm.name, nm.isRest, nm.startDiv, nm.durationDivs, nm.isTiedToNext, nm.isTiedToPrev);
 	}
-
-	static writeNote(nm: NoteModel, noteName: string) {
-		nm.name = noteName;
-	}
 }

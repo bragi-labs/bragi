@@ -1,9 +1,3 @@
-export enum NoteLength {
-	WHOLE = 'WHOLE',
-	HALF_DOTTED = 'HALF_DOTTED',
-	HALF = 'HALF',
-}
-
 export class MusicalHelper {
 	static getNoteNameByIndex(index: number, useSharps = true): string {
 		if (index >= 0 && index <= 11) {
@@ -40,6 +34,15 @@ export class MusicalHelper {
 	}
 	static getBlackIndices(): number[] {
 		return [1, 3, 6, 8, 10];
+	}
+	static getNoteOctave(noteName: string): number {
+		if (noteName && noteName.length === 2) {
+			return Number(noteName[1]);
+		}
+		if (noteName && noteName.length === 3) {
+			return Number(noteName[2]);
+		}
+		return 0;
 	}
 	static parseTimeSignature(timeSignature: string) {
 		const beats = parseInt(timeSignature[0]);

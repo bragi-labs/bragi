@@ -1,4 +1,4 @@
-import { ScoreModel } from './scoreModel';
+import { NoteModel, ScoreModel } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { Part } from './part';
 import { NewScoreData } from '../services/newScoreData';
@@ -24,10 +24,13 @@ export class Score implements ScoreModel {
 		return new Score(id, scoreInfo, [part]);
 	}
 
-	static writeNote(sm: ScoreModel, partId: string, measureId: string, voiceId: string, noteId: string, noteName: string) {
-		const pm = sm.parts.find((p) => p.id === partId);
-		if (pm) {
-			Part.writeNote(pm, measureId, voiceId, noteId, noteName);
-		}
+	static findNote(sm: ScoreModel, noteId: string): NoteModel | null {
+		let result: NoteModel | null = null;
+		sm.parts.forEach((pm) => {
+			if (!result) {
+				result = Part.findNote(pm, noteId);
+			}
+		});
+		return result;
 	}
 }

@@ -1,4 +1,4 @@
-import { VoiceModel, VoiceType } from './scoreModel';
+import { NoteModel, VoiceModel, VoiceType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
 import { NewScoreData } from '../services/newScoreData';
@@ -43,10 +43,7 @@ export class Voice implements VoiceModel {
 		return new Voice(id, scoreId, partId, measureId, name, voiceType, '', notes, []);
 	}
 
-	static writeNote(vm: VoiceModel, noteId: string, noteName: string) {
-		const nm = vm.notes.find((n) => n.id === noteId);
-		if (nm) {
-			Note.writeNote(nm, noteName);
-		}
+	static findNote(vm: VoiceModel, noteId: string): NoteModel | null {
+		return vm.notes.find((nm) => nm.id === noteId) || null;
 	}
 }

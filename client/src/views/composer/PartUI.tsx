@@ -3,8 +3,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
+import { Part } from '../../model/part';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { FigurenotesHelper } from '../../services/figurenotesHelper';
+import { MusicalHelper } from '../../services/musicalHelper';
 
 export interface StageUIProps {
 	part: PartModel;
@@ -34,10 +37,17 @@ export const PartUI = ({ part }: StageUIProps) => {
 			border: '1px solid #666',
 		},
 		note: {
+			position: 'relative',
+			height: 40,
+			fontSize: 10,
 			border: '1px solid #ccc',
 			'&.selected': {
 				border: '1px solid red',
 			},
+		},
+		figureNoteSymbol: {
+			position: 'absolute',
+			top: 0,
 		},
 	}));
 	const classes = useStyles();
@@ -61,23 +71,14 @@ export const PartUI = ({ part }: StageUIProps) => {
 
 	const handleClickNote = useCallback(
 		(event) => {
-			const m = part.measures.find((m) => m.id === event.target.dataset.measureId);
-			if (!m) {
-				return;
+			const note = Part.findNote(part, event.currentTarget.dataset.noteId);
+			if (note) {
+				setSelection({
+					items: [{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
+				});
 			}
-			const v = m.voices.find((v) => v.id === event.target.dataset.voiceId);
-			if (!v) {
-				return;
-			}
-			const n = v.notes.find((n) => n.id === event.target.dataset.noteId);
-			if (!n) {
-				return;
-			}
-			setSelection({
-				items: [{ partId: part.id, measureId: m.id, voiceId: v.id, noteId: n.id }],
-			});
 		},
-		[setSelection, part.id, part.measures],
+		[setSelection, part],
 	);
 
 	return (
@@ -107,7 +108,19 @@ export const PartUI = ({ part }: StageUIProps) => {
 														data-note-id={note.id}
 														onClick={handleClickNote}
 													>
-														{note.name || note.durationDivs}
+														{note.name && (
+															<Box
+																className={classes.figureNoteSymbol}
+																style={{
+																	...FigurenotesHelper.getSymbolStyle(
+																		FigurenotesHelper.getNoteColor(note.name[0]),
+																		FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
+																		14,
+																	),
+																}}
+															/>
+														)}
+														{!note.name && <Box>{`-`}</Box>}
 													</Box>
 												</Box>
 											))}
