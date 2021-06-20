@@ -296,6 +296,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 											FigurenotesHelper.getNoteColor(whiteKey.noteName),
 											FigurenotesHelper.getOctaveShape(i + 2),
 											smallPiano ? 14 : 28,
+											'px',
 										),
 										left: whiteKey.left + (smallPiano ? 4 : 8),
 									}}

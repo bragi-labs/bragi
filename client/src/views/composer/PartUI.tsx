@@ -34,21 +34,19 @@ export const PartUI = ({ part }: StageUIProps) => {
 		},
 		voice: {
 			display: 'flex',
-			border: '1px solid #666',
+			border: '1px solid #999',
 		},
 		note: {
-			position: 'relative',
-			height: 40,
+			display: 'grid',
+			placeItems: 'center',
 			fontSize: 10,
-			border: '1px solid #ccc',
+			border: '1px solid #ddd',
 			'&.selected': {
-				border: '1px solid red',
+				backgroundColor: '#ddf',
+				border: '1px solid #33f',
 			},
 		},
-		figureNoteSymbol: {
-			position: 'absolute',
-			top: 0,
-		},
+		figureNoteSymbol: {},
 	}));
 	const classes = useStyles();
 
@@ -59,12 +57,14 @@ export const PartUI = ({ part }: StageUIProps) => {
 		const measureDurationDivs = part.measures[0].isPickup ? part.measures[1].durationDivs : part.measures[0].durationDivs;
 		const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
 		const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
+		const quarterSizeCm = measureWidthCm / 4;
 		const pickupMeasureLeftOverCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
 		const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 		return {
 			pickupMeasureLeftOverCm,
 			leftOverCm,
 			measureWidthCm,
+			quarterSizeCm,
 			numberOfMeasuresPerRow,
 		};
 	}, [part.measures, stageWidthCm, totalDurationDivsPerRow]);
@@ -100,28 +100,31 @@ export const PartUI = ({ part }: StageUIProps) => {
 									{voice.voiceType === VoiceType.FN_LVL_1 && (
 										<Box id="VoiceFnLvl1UI" className={classes.voice}>
 											{voice.notes.map((note, n) => (
-												<Box key={n} style={{ flex: `${note.durationDivs} 0 0` }}>
-													<Box
-														className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
-														data-measure-id={measure.id}
-														data-voice-id={voice.id}
-														data-note-id={note.id}
-														onClick={handleClickNote}
-													>
-														{note.name && (
-															<Box
-																className={classes.figureNoteSymbol}
-																style={{
-																	...FigurenotesHelper.getSymbolStyle(
-																		FigurenotesHelper.getNoteColor(note.name[0]),
-																		FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
-																		14,
-																	),
-																}}
-															/>
-														)}
-														{!note.name && <Box>{`-`}</Box>}
-													</Box>
+												<Box
+													key={n}
+													className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
+													style={{ flex: `${note.durationDivs} 0 0`, height: `${sizeVars.quarterSizeCm}cm` }}
+													onClick={handleClickNote}
+													data-measure-id={measure.id}
+													data-voice-id={voice.id}
+													data-note-id={note.id}
+												>
+													{note.name && (
+														<Box
+															className={classes.figureNoteSymbol}
+															style={{
+																...FigurenotesHelper.getSymbolStyle(
+																	FigurenotesHelper.getNoteColor(note.name[0]),
+																	FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
+																	0.8 * sizeVars.quarterSizeCm,
+																	'cm',
+																),
+																top: `${0.1 * sizeVars.quarterSizeCm}cm`,
+																left: `${0.1 * sizeVars.quarterSizeCm}cm`,
+															}}
+														/>
+													)}
+													{!note.name && <Box>{``}</Box>}
 												</Box>
 											))}
 										</Box>
