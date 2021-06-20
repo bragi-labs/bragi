@@ -40,26 +40,6 @@ export const StageUI = ({ score }: StageUIProps) => {
 		stageHeader: {
 			padding: '0 0 16px 0',
 		},
-		scoreTitle: {
-			display: 'flex',
-			justifyContent: 'center',
-			color: '#000',
-		},
-		scoreCredits: {
-			display: 'flex',
-			justifyContent: 'center',
-			color: '#666',
-		},
-		arrangerName: {
-			display: 'flex',
-			justifyContent: 'flex-end',
-			color: '#999',
-		},
-		softwareCredits: {
-			display: 'flex',
-			justifyContent: 'flex-end',
-			color: '#999',
-		},
 	}));
 	const classes = useStyles();
 
