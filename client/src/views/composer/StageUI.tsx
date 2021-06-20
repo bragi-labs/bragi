@@ -1,9 +1,9 @@
 import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { Typography } from '@material-ui/core';
 import { ScoreModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
-import { StageHeaderUI } from './StageHeaderUI';
 import { PartUI } from './PartUI';
 
 export interface StageUIProps {
@@ -37,8 +37,28 @@ export const StageUI = ({ score }: StageUIProps) => {
 			backgroundColor: '#fff',
 			color: '#000',
 		},
-		stageHeader: {
-			padding: '0 0 16px 0',
+		header: {
+			paddingBottom: 32,
+		},
+		scoreTitle: {
+			display: 'flex',
+			justifyContent: 'center',
+			color: '#000',
+		},
+		scoreCredits: {
+			display: 'flex',
+			justifyContent: 'center',
+			color: '#666',
+		},
+		arrangerName: {
+			display: 'flex',
+			justifyContent: 'flex-end',
+			color: '#666',
+		},
+		appName: {
+			display: 'flex',
+			justifyContent: 'flex-end',
+			color: '#666',
 		},
 	}));
 	const classes = useStyles();
@@ -50,7 +70,22 @@ export const StageUI = ({ score }: StageUIProps) => {
 			{score && (
 				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ padding: `${(21 - stageWidthCm) / 2}cm` }}>
 					<Box className={classes.content} style={{ width: `${stageWidthCm}cm` }}>
-						<StageHeaderUI scoreInfo={score.scoreInfo} />
+						<Box className={classes.header}>
+							<Typography variant="h4" className={classes.scoreTitle}>
+								{score.scoreInfo.scoreTitle}
+							</Typography>
+							<Typography variant="h6" className={classes.scoreCredits}>
+								{score.scoreInfo.scoreCredits}
+							</Typography>
+							{score.scoreInfo.arrangerName && (
+								<Typography variant="body2" className={classes.arrangerName}>
+									Arranged by {score.scoreInfo.arrangerName}
+								</Typography>
+							)}
+							<Typography variant="body2" className={classes.appName}>
+								{`${score.scoreInfo.softwareName} v${score.scoreInfo.softwareVersion}`}
+							</Typography>
+						</Box>
 						{score.parts.map((part, i) => (
 							<PartUI key={i} part={part} />
 						))}
