@@ -7,12 +7,13 @@ import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
 import { Score } from '../../model/score';
+import { ScoreModel } from '../../model/scoreModel';
 import { NewScoreDialog } from './NewScoreDialog';
 import { SaveScore } from './SaveScore';
 import { AppDataHelper } from '../../services/appDataHelper';
 
 export interface ComposerToolbarProps {
-	score: Score | null;
+	score: ScoreModel | null;
 	onChangeScore: (score: Score) => void;
 }
 
