@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Score } from '../../model/score';
+import { VoiceType } from '../../model/scoreModel';
 
 interface NewScoreDialogProps {
 	onNewScoreDialogDone: (newScore: Score | null) => void;
@@ -65,6 +66,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
 	const [arrangerName, setArrangerName] = useState('');
+	const [voiceTypes, setVoiceTypes] = useState<string>(JSON.stringify([VoiceType.FN_LVL_1]));
 	const [timeSignature, setTimeSignature] = useState('4/4');
 	const [pickupMeasure, setPickupMeasure] = useState('no');
 	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
@@ -82,6 +84,10 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 
 	const handleChangeArrangerName = (event: any) => {
 		setArrangerName(event.target.value);
+	};
+
+	const handleChangeVoiceTypes = (event: any) => {
+		setVoiceTypes(event.target.value);
 	};
 
 	const handleChangeTimeSignature = (event: any) => {
@@ -113,6 +119,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			scoreTitle,
 			scoreCredits,
 			arrangerName,
+			voiceTypes: JSON.parse(voiceTypes),
 			musicalScale: musicalScale || 'C',
 			tempoBpm: Number(tempoBpm) || 120,
 			timeSignature,
@@ -120,7 +127,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			numberOfMeasures: Number(numberOfMeasures) || 16,
 		});
 		onNewScoreDialogDone(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
+	}, [scoreTitle, scoreCredits, arrangerName, voiceTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
@@ -132,7 +139,13 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" autoFocus={true} />
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
-					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
+					<FormControl className={classes.formControl}>
+						<InputLabel id="voice-types-label">Voice Types</InputLabel>
+						<Select id="voice=types" value={voiceTypes} onChange={handleChangeVoiceTypes}>
+							<MenuItem value={JSON.stringify([VoiceType.FN_LVL_1])}>Figurenotes</MenuItem>
+							<MenuItem value={JSON.stringify([VoiceType.FN_LVL_1, VoiceType.LYRICS])}>Figurenotes + Lyrics</MenuItem>
+						</Select>
+					</FormControl>
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
@@ -158,6 +171,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 						</Select>
 					</FormControl>
 					<TextField label="Number of Measurements" value={numberOfMeasures} onChange={handleChangeNumberOfMeasurements} placeholder="e.g. 16" />
+					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
 				</form>
 			</Box>
 			<Box className={classes.footer}>
