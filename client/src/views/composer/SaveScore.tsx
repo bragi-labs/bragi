@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { AppDataHelper } from '../../services/appDataHelper';
-import { Score } from '../../model/score';
+import { ScoreModel } from '../../model/scoreModel';
 
 export interface SaveScoreProps {
-	score: Score | null;
+	score: ScoreModel | null;
 	goSaveScore: boolean;
 	onSaveScoreDone: () => void;
 }
