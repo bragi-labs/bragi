@@ -120,7 +120,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			numberOfMeasures: Number(numberOfMeasures) || 16,
 		});
 		onNewScoreDialogDone(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
+	}, [scoreTitle, scoreCredits, arrangerName, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
