@@ -26,9 +26,14 @@ const useSelectionContext = () => {
 		return found;
 	};
 
+	const clearSelection = () => {
+		setSelection(null);
+	};
+
 	return {
 		selection,
 		setSelection,
+		clearSelection,
 		isSelected,
 	};
 };
