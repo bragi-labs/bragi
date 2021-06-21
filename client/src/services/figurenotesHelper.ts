@@ -50,7 +50,7 @@ export class FigurenotesHelper {
 					width: `${size}${units}`,
 					height: `${size}${units}`,
 					backgroundColor: `${noteColor}`,
-					borderRadius: `15%`,
+					borderRadius: `10%`,
 				};
 				break;
 			}

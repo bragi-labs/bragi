@@ -35,12 +35,12 @@ export class MusicalHelper {
 	static getBlackIndices(): number[] {
 		return [1, 3, 6, 8, 10];
 	}
-	static getNoteOctave(noteName: string): number {
-		if (noteName && noteName.length === 2) {
-			return Number(noteName[1]);
+	static getNoteOctave(noteFullName: string): number {
+		if (noteFullName && noteFullName.length === 2) {
+			return Number(noteFullName[1]);
 		}
-		if (noteName && noteName.length === 3) {
-			return Number(noteName[2]);
+		if (noteFullName && noteFullName.length === 3) {
+			return Number(noteFullName[2]);
 		}
 		return 0;
 	}
