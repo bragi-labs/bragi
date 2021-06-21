@@ -39,10 +39,8 @@ export const PartUI = ({ part }: StageUIProps) => {
 		},
 		note: {
 			position: 'relative',
-			display: 'grid',
-			placeItems: 'center',
 			fontSize: 10,
-			border: '1px solid #ddd',
+			border: '1px solid #eee',
 			'&.selected': {
 				backgroundColor: '#ddf',
 				border: '1px solid #33f',
@@ -52,9 +50,15 @@ export const PartUI = ({ part }: StageUIProps) => {
 				border: '1px solid #ddd !important',
 			},
 		},
-		figureNoteSymbol: {
+		fnSymbolContainer: {
 			position: 'absolute',
-			transformOrigin: 'left',
+			left: 0,
+			top: 0,
+		},
+		fnSymbol: {
+			position: 'absolute',
+			left: 0,
+			top: 0,
 		},
 	}));
 	const classes = useStyles();
@@ -120,18 +124,23 @@ export const PartUI = ({ part }: StageUIProps) => {
 												>
 													{note.name && (
 														<Box
-															className={classes.figureNoteSymbol}
+															className={classes.fnSymbolContainer}
 															style={{
-																...FigurenotesHelper.getSymbolStyle(
-																	FigurenotesHelper.getNoteColor(note.name[0]),
-																	FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
-																	0.8 * sizeVars.quarterSizeCm,
-																	'cm',
-																),
-																top: `${0.1 * sizeVars.quarterSizeCm}cm`,
-																left: `${0.1 * sizeVars.quarterSizeCm}cm`,
+																transform: `scaleX(${note.durationDivs >= 24 ? 1 : note.durationDivs / 24})`,
 															}}
-														/>
+														>
+															<Box
+																className={classes.fnSymbol}
+																style={{
+																	...FigurenotesHelper.getSymbolStyle(
+																		FigurenotesHelper.getNoteColor(note.name[0]),
+																		FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
+																		sizeVars.quarterSizeCm - CommonHelper.pxToCm(2),
+																		'cm',
+																	),
+																}}
+															/>
+														</Box>
 													)}
 													{!note.name && <Box>{``}</Box>}
 												</Box>
