@@ -16,7 +16,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			top: '50%',
 			transform: 'translate(-50%, -50%)',
 			borderRadius: 8,
-			width: 800,
+			width: 1000,
 			display: 'grid',
 			gridTemplate: 'auto 1fr auto / auto',
 			border: '1px solid #666',
@@ -36,7 +36,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 		},
 		form: {
 			display: 'grid',
-			gridTemplateColumns: 'repeat(2, 1fr)',
+			gridTemplateColumns: 'repeat(3, 1fr)',
 			gap: '40px 40px',
 			userSelect: 'none',
 			'& label.Mui-focused': {
@@ -68,6 +68,8 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	const [timeSignature, setTimeSignature] = useState('4/4');
 	const [pickupMeasure, setPickupMeasure] = useState('no');
 	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
+	const [tempoBpm, setTempoBpm] = useState<string>('120');
+	const [musicalScale, setMusicalScale] = useState<string>('C');
 
 	const handleChangeScoreTitle = (event: any) => {
 		setScoreTitle(event.target.value);
@@ -94,12 +96,29 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 		setNumberOfMeasures(event.target.value);
 	};
 
+	const handleChangeTempoBpm = (event: any) => {
+		setTempoBpm(event.target.value);
+	};
+
+	const handleChangeMusicalScale = (event: any) => {
+		setMusicalScale(event.target.value);
+	};
+
 	const handleClickCancel = useCallback(() => {
 		onNewScoreDialogDone(null);
 	}, [onNewScoreDialogDone]);
 
 	const handleClickOK = useCallback(() => {
-		const newScore = Score.createFromNewDialog({ scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures: Number(numberOfMeasures) || 16 });
+		const newScore = Score.createFromNewDialog({
+			scoreTitle,
+			scoreCredits,
+			arrangerName,
+			musicalScale: musicalScale || 'C',
+			tempoBpm: Number(tempoBpm) || 120,
+			timeSignature,
+			pickupMeasure,
+			numberOfMeasures: Number(numberOfMeasures) || 16,
+		});
 		onNewScoreDialogDone(newScore);
 	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
 
@@ -111,8 +130,9 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			<Box className={classes.body}>
 				<form className={classes.form} noValidate autoComplete="off">
 					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" autoFocus={true} />
-					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Words & Music by Freddie Mercury" />
+					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
+					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
@@ -129,6 +149,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 							<MenuItem value="8/8">8/8</MenuItem>
 						</Select>
 					</FormControl>
+					<TextField label="Tempo (bpm)" value={tempoBpm} onChange={handleChangeTempoBpm} placeholder="e.g. 120" />
 					<FormControl className={classes.formControl}>
 						<InputLabel id="pickup-measure-label">Pickup Measure (initial bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
