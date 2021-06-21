@@ -18,19 +18,18 @@ export interface NoteToolbarProps {
 
 export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
-		root: {},
+		root: {
+			width: 827,
+		},
 		panel: {
 			display: 'grid',
-			gridTemplate: 'auto auto / 1fr',
-			marginRight: 24,
+			gridTemplate: '80px auto / 1fr',
 			//opacity: 0.9,
-			borderRadius: 16,
-			backgroundColor: '#444',
+			borderRadius: 4,
+			backgroundColor: '#333',
 			padding: 24,
 		},
 		noteLengthControl: {
-			width: 600,
-			height: 80,
 			'& .MuiSlider-rail': {
 				color: '#ccc',
 			},
@@ -57,7 +56,7 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 			},
 		},
 		actionButton: {
-			margin: '0 8px',
+			marginRight: 20,
 			width: 24,
 			height: 24,
 			textAlign: 'center',
@@ -77,10 +76,10 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 
 	const { selection } = SelectionContextContainer.useContainer();
 	const [canChangeLength, setCanChangeLength] = useState(false);
-	const [canPitchUp, setCanPitchUp] = useState(false);
-	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canMoveLeft, setCanMoveLeft] = useState(false);
 	const [canMoveRight, setCanMoveRight] = useState(false);
+	const [canPitchUp, setCanPitchUp] = useState(false);
+	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
 	const marks = [
@@ -106,10 +105,10 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 			});
 		}
 		setCanChangeLength(hasRealNotes);
-		setCanPitchUp(hasRealNotes);
-		setCanPitchDown(hasRealNotes);
 		setCanMoveLeft(hasRealNotes);
 		setCanMoveRight(hasRealNotes);
+		setCanPitchUp(hasRealNotes);
+		setCanPitchDown(hasRealNotes);
 		setCanDelete(hasRealNotes);
 	}, [selection, score]);
 
@@ -144,10 +143,10 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 					/>
 				</Box>
 				<Box>
-					<ArrowUpwardIcon className={`${classes.actionButton} ${canPitchUp ? '' : 'disabled'}`} titleAccess="Pitch Up" />
-					<ArrowDownwardIcon className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`} titleAccess="Pitch Down" />
 					<ArrowBackIcon className={`${classes.actionButton} ${canMoveLeft ? '' : 'disabled'}`} titleAccess="Move Left" />
 					<ArrowForwardIcon className={`${classes.actionButton} ${canMoveRight ? '' : 'disabled'}`} titleAccess="Move Right" />
+					<ArrowUpwardIcon className={`${classes.actionButton} ${canPitchUp ? '' : 'disabled'}`} titleAccess="Pitch Up" />
+					<ArrowDownwardIcon className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`} titleAccess="Pitch Down" />
 					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
 				</Box>
 			</Box>
