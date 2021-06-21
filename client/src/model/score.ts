@@ -33,4 +33,15 @@ export class Score implements ScoreModel {
 		});
 		return result;
 	}
+
+	static findNotes(sm: ScoreModel, noteIds: string[]): NoteModel[] {
+		const result: NoteModel[] = [];
+		noteIds.forEach((noteId) => {
+			const note = Score.findNote(sm, noteId);
+			if (note) {
+				result.push(note);
+			}
+		});
+		return result;
+	}
 }
