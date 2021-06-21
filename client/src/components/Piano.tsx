@@ -17,7 +17,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 		root: {
 			position: 'relative',
 			display: 'inline-block',
-			opacity: 0.85,
+			//opacity: 0.9,
 			backgroundColor: '#111',
 			userSelect: 'none',
 			borderRadius: 8,
@@ -131,9 +131,9 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 		},
 		figureNoteSymbol: {
 			position: 'absolute',
-			bottom: 8,
+			bottom: 7,
 			'.small-piano &': {
-				bottom: 4,
+				bottom: 3,
 			},
 		},
 		keyboardCover: {
@@ -295,10 +295,10 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 										...FigurenotesHelper.getSymbolStyle(
 											FigurenotesHelper.getNoteColor(whiteKey.noteName),
 											FigurenotesHelper.getOctaveShape(i + 2),
-											smallPiano ? 14 : 28,
+											smallPiano ? 16 : 32,
 											'px',
 										),
-										left: whiteKey.left + (smallPiano ? 4 : 8),
+										left: whiteKey.left + (smallPiano ? 3 : 7),
 									}}
 								/>
 								<Box

@@ -23,7 +23,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			backgroundColor: '#222',
 			padding: 24,
 			color: '#fff',
-			opacity: 0.85,
+			//opacity: 0.9,
 		},
 		header: {},
 		title: {

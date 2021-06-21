@@ -5,4 +5,10 @@ export class CommonHelper {
 		const max = 16 ** numberOfDigits;
 		return (Math.floor(Math.random() * (max - min + 1)) + min).toString(16);
 	}
+	static cmToPx(cm: number) {
+		return cm * 37.7952755906;
+	}
+	static pxToCm(px: number) {
+		return px * 0.0264583333;
+	}
 }

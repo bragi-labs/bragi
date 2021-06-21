@@ -23,7 +23,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 			//backgroundImage: 'linear-gradient(135deg, #fff 47.06%, #ccc 47.06%, #ccc 50%, #fff 50%, #fff 97.06%, #ccc 97.06%, #ccc 100%)',
 			//backgroundSize: '24px 24px',
 			padding: '2.54cm 1.32cm 3.67cm 1.9cm',
-			opacity: 0.85,
+			//opacity: 0.9,
 			overflow: 'auto',
 			'@media print': {
 				padding: '0 !important',

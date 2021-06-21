@@ -30,9 +30,9 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			alignItems: 'center',
 			marginRight: 24,
 			height: 32,
-			opacity: 0.85,
+			//opacity: 0.9,
 			borderRadius: 16,
-			backgroundColor: '#333',
+			backgroundColor: '#444',
 			padding: '0 4px',
 		},
 		actionButton: {

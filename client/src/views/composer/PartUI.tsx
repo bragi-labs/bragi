@@ -8,6 +8,7 @@ import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
+import { CommonHelper } from '../../services/commonHelper';
 
 export interface StageUIProps {
 	part: PartModel;
@@ -37,6 +38,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 			border: '1px solid #999',
 		},
 		note: {
+			position: 'relative',
 			display: 'grid',
 			placeItems: 'center',
 			fontSize: 10,
@@ -50,7 +52,10 @@ export const PartUI = ({ part }: StageUIProps) => {
 				border: '1px solid #ddd !important',
 			},
 		},
-		figureNoteSymbol: {},
+		figureNoteSymbol: {
+			position: 'absolute',
+			transformOrigin: 'left',
+		},
 	}));
 	const classes = useStyles();
 
@@ -61,7 +66,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 		const measureDurationDivs = part.measures[0].isPickup ? part.measures[1].durationDivs : part.measures[0].durationDivs;
 		const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
 		const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
-		const quarterSizeCm = measureWidthCm / 4;
+		const quarterSizeCm = (measureWidthCm - CommonHelper.pxToCm(2)) / 4;
 		const pickupMeasureLeftOverCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
 		const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 		return {
