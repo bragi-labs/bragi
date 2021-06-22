@@ -42,6 +42,7 @@ export class FigurenotesHelper {
 					width: `${size}${units}`,
 					height: `${size}${units}`,
 					background: `linear-gradient(45deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, ${noteColor} 35%, ${noteColor} 65%, rgba(0,0,0,0) 65%, rgba(0,0,0,0) 100%), linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, ${noteColor} 35%, ${noteColor} 65%, rgba(0,0,0,0) 65%, rgba(0,0,0,0) 100%)`,
+					//borderRadius: `10%`,
 				};
 				break;
 			}
@@ -50,7 +51,7 @@ export class FigurenotesHelper {
 					width: `${size}${units}`,
 					height: `${size}${units}`,
 					backgroundColor: `${noteColor}`,
-					borderRadius: `10%`,
+					//borderRadius: `10%`,
 				};
 				break;
 			}
@@ -70,6 +71,7 @@ export class FigurenotesHelper {
 					borderLeft: `${size / 2}${units} solid transparent`,
 					borderRight: `${size / 2}${units} solid transparent`,
 					borderBottom: `${size}${units} solid ${noteColor}`,
+					//borderRadius: `10%`,
 				};
 				break;
 			}
@@ -80,6 +82,7 @@ export class FigurenotesHelper {
 					backgroundColor: `${noteColor}`,
 					transform: `rotate(45deg) scale(0.71)`,
 					transformOrigin: `${size / 2}${units} ${size / 2}${units}`,
+					//borderRadius: `10%`,
 				};
 				break;
 			}
