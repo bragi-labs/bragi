@@ -1,15 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { NoteModel, ScoreModel } from '../../model/scoreModel';
+import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
 import { NoteToolbar } from './NoteToolbar';
-import { MusicalHelper } from '../../services/musicalHelper';
-import { SoundHelper } from '../../services/soundHelper';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -54,13 +52,19 @@ export const ComposerPage = () => {
 	const [score, setScore] = useState<ScoreModel | null>(null);
 	const { selection, clearSelection } = SelectionContextContainer.useContainer();
 
-	const handleChangeScore = useCallback(
+	const handleScoreChanged = useCallback(
 		(changedScore: Score) => {
 			setScore(changedScore);
 			clearSelection();
 		},
 		[clearSelection],
 	);
+
+	const handleScoreUpdated = useCallback(() => {
+		setScore((sm) => {
+			return { ...sm } as ScoreModel;
+		});
+	}, []);
 
 	const handlePianoNote = useCallback(
 		(noteFullName: string) => {
@@ -80,40 +84,10 @@ export const ComposerPage = () => {
 		[selection],
 	);
 
-	const handlePitchChange = useCallback(
-		(notes: NoteModel[], pitchUp: boolean) => {
-			notes.forEach((note) => {
-				if (!score) {
-					return;
-				}
-				const measure = Score.findMeasure(score, note.measureId);
-				if (!measure) {
-					return;
-				}
-				note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, pitchUp);
-				SoundHelper.playShortNote(note.fullName);
-			});
-			setScore((sm) => {
-				return { ...sm } as ScoreModel;
-			});
-		},
-		[score],
-	);
-
-	const handleDelete = useCallback((notes: NoteModel[]) => {
-		notes.forEach((note) => {
-			note.fullName = '';
-			note.isRest = true;
-		});
-		setScore((sm) => {
-			return { ...sm } as ScoreModel;
-		});
-	}, []);
-
 	return (
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
-				<ComposerToolbar score={score} onChangeScore={handleChangeScore} />
+				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} />
 			</Box>
 			{score && (
 				<>
@@ -124,7 +98,7 @@ export const ComposerPage = () => {
 						<Piano smallPiano={true} onPianoNote={handlePianoNote} />
 					</Box>
 					<Box className={classes.noteToolbarContainer}>
-						<NoteToolbar score={score} onPitchChange={handlePitchChange} onDelete={handleDelete} />
+						<NoteToolbar score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 				</>
 			)}

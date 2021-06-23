@@ -11,14 +11,15 @@ import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { Typography } from '@material-ui/core';
+import { MusicalHelper } from '../../services/musicalHelper';
+import { SoundHelper } from '../../services/soundHelper';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
-	onPitchChange: (notes: NoteModel[], pitchUp: boolean) => void;
-	onDelete: (notes: NoteModel[]) => void;
+	onUpdateScore: () => void;
 }
 
-export const NoteToolbar = ({ score, onPitchChange, onDelete }: NoteToolbarProps) => {
+export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			width: 827,
@@ -128,9 +129,9 @@ export const NoteToolbar = ({ score, onPitchChange, onDelete }: NoteToolbarProps
 		setCanDelete(hasRealNotes);
 	}, [selection, score]);
 
-	const handleClickDelete = useCallback(() => {
+	const getSelectedNonRestNotes = useCallback(() => {
 		if (!score || !selection) {
-			return;
+			return [];
 		}
 		const notes: NoteModel[] = [];
 		selection.items.forEach((item) => {
@@ -139,28 +140,39 @@ export const NoteToolbar = ({ score, onPitchChange, onDelete }: NoteToolbarProps
 				notes.push(note);
 			}
 		});
+		return notes;
+	}, [score, selection]);
+
+	const handleClickDelete = useCallback(() => {
+		const notes: NoteModel[] = getSelectedNonRestNotes();
 		if (notes.length) {
-			onDelete(notes);
+			notes.forEach((note) => {
+				note.fullName = '';
+				note.isRest = true;
+			});
+			onUpdateScore();
 		}
-	}, [score, selection, onDelete]);
+	}, [getSelectedNonRestNotes, onUpdateScore]);
 
 	const handleChangePitch = useCallback(
 		(event) => {
-			if (!score || !selection) {
-				return;
-			}
-			const notes: NoteModel[] = [];
-			selection.items.forEach((item) => {
-				const note = Score.findNote(score, item.noteId);
-				if (note && !note.isRest) {
-					notes.push(note);
-				}
-			});
+			const notes: NoteModel[] = getSelectedNonRestNotes();
 			if (notes.length) {
-				onPitchChange(notes, event.currentTarget.dataset.direction === 'up');
+				notes.forEach((note) => {
+					if (!score) {
+						return;
+					}
+					const measure = Score.findMeasure(score, note.measureId);
+					if (!measure) {
+						return;
+					}
+					note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
+					SoundHelper.playShortNote(note.fullName);
+				});
+				onUpdateScore();
 			}
 		},
-		[score, selection, onPitchChange],
+		[getSelectedNonRestNotes, score, onUpdateScore],
 	);
 
 	return (
