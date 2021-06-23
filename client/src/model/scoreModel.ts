@@ -11,7 +11,7 @@ export interface NoteModel {
 	partId: string; //internal ID
 	measureId: string; //internal ID
 	voiceId: string; //internal ID
-	name: string; //e.g. "F#4"
+	fullName: string; //e.g. "F#4"
 	isRest: boolean; //e.g. false
 	startDiv: number; //e.g. 0
 	durationDivs: number; //e.g. 24

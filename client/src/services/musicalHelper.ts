@@ -105,11 +105,11 @@ export class MusicalHelper {
 			octave: noteDetails.octave,
 		});
 	}
-	static changePitch(fullNoteName: string, musicalScale: string, pitchUp: boolean): string {
-		const noteDetails = MusicalHelper.parseNote(fullNoteName);
+	static changePitch(noteFullName: string, musicalScale: string, pitchUp: boolean): string {
+		const noteDetails = MusicalHelper.parseNote(noteFullName);
 		const curIndex = MusicalHelper.getIndexByNoteName(noteDetails.step + noteDetails.alter);
 		if ((pitchUp && noteDetails.octave === MusicalHelper.maxOctave && curIndex === 11) || (!pitchUp && noteDetails.octave === MusicalHelper.minOctave && curIndex === 0)) {
-			return fullNoteName;
+			return noteFullName;
 		}
 		const newIndex = (curIndex + (pitchUp ? 1 : -1) + 12) % 12;
 		const useSharps = MusicalHelper.isScaleUsesSharps(musicalScale);

@@ -9,6 +9,7 @@ import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
 import { NoteToolbar } from './NoteToolbar';
 import { MusicalHelper } from '../../services/musicalHelper';
+import { SoundHelper } from '../../services/soundHelper';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -68,7 +69,7 @@ export const ComposerPage = () => {
 					if (sm) {
 						const note = Score.findNote(sm, selection.items[0].noteId);
 						if (note) {
-							note.name = noteFullName;
+							note.fullName = noteFullName;
 							note.isRest = false;
 						}
 					}
@@ -89,7 +90,8 @@ export const ComposerPage = () => {
 				if (!measure) {
 					return;
 				}
-				note.name = MusicalHelper.changePitch(note.name, measure.musicalScale, pitchUp);
+				note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, pitchUp);
+				SoundHelper.playShortNote(note.fullName);
 			});
 			setScore((sm) => {
 				return { ...sm } as ScoreModel;
@@ -100,7 +102,7 @@ export const ComposerPage = () => {
 
 	const handleDelete = useCallback((notes: NoteModel[]) => {
 		notes.forEach((note) => {
-			note.name = '';
+			note.fullName = '';
 			note.isRest = true;
 		});
 		setScore((sm) => {

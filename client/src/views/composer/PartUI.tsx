@@ -103,7 +103,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 					items: [{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
 				});
 				if (!note.isRest) {
-					SoundHelper.playShortNote(note.name);
+					SoundHelper.playShortNote(note.fullName);
 				}
 			}
 		},
@@ -138,7 +138,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 													data-voice-id={voice.id}
 													data-note-id={note.id}
 												>
-													{note.name && (
+													{note.fullName && (
 														<Box
 															className={classes.fnSymbolContainer}
 															style={{
@@ -149,19 +149,19 @@ export const PartUI = ({ part }: StageUIProps) => {
 																className={classes.fnSymbol}
 																style={{
 																	...FigurenotesHelper.getSymbolStyle(
-																		`${MusicalHelper.parseNote(note.name).step}${MusicalHelper.parseNote(note.name).octave}`,
+																		`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
 																		sizeVars.quarterSizeCm - CommonHelper.pxToCm(2),
 																		'cm',
 																	),
 																}}
 															/>
-															{note.name.length >= 2 && note.name[1] === '#' && (
+															{note.fullName.length >= 2 && note.fullName[1] === '#' && (
 																<ArrowRightAltIcon
 																	className={`${classes.alter} sharp`}
 																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 8px)` }}
 																/>
 															)}
-															{note.name.length >= 2 && note.name[1] === 'b' && (
+															{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
 																<ArrowRightAltIcon
 																	className={`${classes.alter} flat`}
 																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 18px)` }}
@@ -169,7 +169,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 															)}
 														</Box>
 													)}
-													{!note.name && <Box>{``}</Box>}
+													{!note.fullName && <Box>{``}</Box>}
 												</Box>
 											))}
 										</Box>
