@@ -68,20 +68,16 @@ export const ComposerPage = () => {
 
 	const handlePianoNote = useCallback(
 		(noteFullName: string) => {
-			if (selection && selection.items && selection.items.length === 1) {
-				setScore((sm) => {
-					if (sm) {
-						const note = Score.findNote(sm, selection.items[0].noteId);
-						if (note) {
-							note.fullName = noteFullName;
-							note.isRest = false;
-						}
-					}
-					return { ...sm } as ScoreModel;
-				});
+			if (score && selection && selection.items && selection.items.length === 1) {
+				const note = Score.findNote(score, selection.items[0].noteId);
+				if (note) {
+					note.fullName = noteFullName;
+					note.isRest = false;
+				}
+				handleScoreUpdated();
 			}
 		},
-		[selection],
+		[selection, score, handleScoreUpdated],
 	);
 
 	return (

@@ -207,9 +207,10 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			if (!synth) {
 				return;
 			}
-			SoundHelper.startNote(noteName + octaveNumber, synth);
+			const noteFullName = noteName + octaveNumber;
+			SoundHelper.startNote(noteFullName, synth);
 			if (onPianoNote) {
-				onPianoNote(`${noteName}${octaveNumber}`);
+				onPianoNote(noteFullName);
 			}
 		},
 		[synth, onPianoNote],
