@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
@@ -59,6 +60,17 @@ export const PartUI = ({ part }: StageUIProps) => {
 			position: 'absolute',
 			left: 0,
 			top: 0,
+		},
+		alter: {
+			position: 'absolute',
+			top: -20,
+			transformOrigin: 'center',
+			'&.sharp': {
+				transform: 'rotate(-45deg)',
+			},
+			'&.flat': {
+				transform: 'rotate(-135deg)',
+			},
 		},
 	}));
 	const classes = useStyles();
@@ -139,6 +151,18 @@ export const PartUI = ({ part }: StageUIProps) => {
 																	),
 																}}
 															/>
+															{note.name.length >= 2 && note.name[1] === '#' && (
+																<ArrowRightAltIcon
+																	className={`${classes.alter} sharp`}
+																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 8px)` }}
+																/>
+															)}
+															{note.name.length >= 2 && note.name[1] === 'b' && (
+																<ArrowRightAltIcon
+																	className={`${classes.alter} flat`}
+																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 18px)` }}
+																/>
+															)}
 														</Box>
 													)}
 													{!note.name && <Box>{``}</Box>}
