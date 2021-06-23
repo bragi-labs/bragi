@@ -120,7 +120,7 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			scoreCredits,
 			arrangerName,
 			voiceTypes: JSON.parse(voiceTypes),
-			musicalScale: musicalScale || 'C',
+			musicalScale: (musicalScale || 'C').toUpperCase(),
 			tempoBpm: Number(tempoBpm) || 120,
 			timeSignature,
 			pickupMeasure,
