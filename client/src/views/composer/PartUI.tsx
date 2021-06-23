@@ -10,6 +10,7 @@ import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { CommonHelper } from '../../services/commonHelper';
+import { SoundHelper } from '../../services/soundHelper';
 
 export interface StageUIProps {
 	part: PartModel;
@@ -101,6 +102,9 @@ export const PartUI = ({ part }: StageUIProps) => {
 				setSelection({
 					items: [{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
 				});
+				if (!note.isRest) {
+					SoundHelper.playShortNote(note.name);
+				}
 			}
 		},
 		[setSelection, part],

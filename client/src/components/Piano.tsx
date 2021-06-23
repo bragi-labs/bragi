@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import * as Tone from 'tone';
 import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
 import { Typography } from '@material-ui/core';
@@ -207,7 +207,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			if (!synth) {
 				return;
 			}
-			SoundHelper.startNote(synth, noteName, octaveNumber);
+			SoundHelper.startNote(noteName + octaveNumber, synth);
 			if (onPianoNote) {
 				onPianoNote(`${noteName}${octaveNumber}`);
 			}
@@ -220,7 +220,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			if (!synth) {
 				return;
 			}
-			SoundHelper.stopNote(synth, noteName, octaveNumber);
+			SoundHelper.stopNote(noteName + octaveNumber, synth);
 		},
 		[synth],
 	);
