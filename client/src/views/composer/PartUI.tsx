@@ -80,10 +80,12 @@ export const PartUI = ({ part }: StageUIProps) => {
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
 	const sizeVars = useMemo(() => {
-		const measureDurationDivs = part.measures[0].isPickup ? part.measures[1].durationDivs : part.measures[0].durationDivs;
+		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
+		const measureDurationDivs = exampleMeasure.durationDivs;
 		const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
 		const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
-		const quarterSizeCm = (measureWidthCm - CommonHelper.pxToCm(2)) / 4;
+		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
+		const quarterSizeCm = ((measureWidthCm - CommonHelper.pxToCm(2)) * timeData.beatType) / timeData.beats / 4;
 		const pickupMeasureLeftOverCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
 		const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 		return {
