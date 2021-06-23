@@ -1,4 +1,4 @@
-import { MeasureModel, NoteModel, VoiceType } from './scoreModel';
+import { MeasureModel, VoiceModel, VoiceType, NoteModel } from './scoreModel';
 import { Voice } from './voice';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
@@ -34,6 +34,10 @@ export class Measure implements MeasureModel {
 		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, [
 			voice,
 		]);
+	}
+
+	static findVoice(mm: MeasureModel, voiceId: string): VoiceModel | null {
+		return mm.voices.find((v) => (v.id = voiceId)) || null;
 	}
 
 	static findNote(mm: MeasureModel, noteId: string): NoteModel | null {

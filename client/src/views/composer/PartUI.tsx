@@ -133,8 +133,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 																className={classes.fnSymbol}
 																style={{
 																	...FigurenotesHelper.getSymbolStyle(
-																		FigurenotesHelper.getNoteColor(note.name[0]),
-																		FigurenotesHelper.getOctaveShape(MusicalHelper.getNoteOctave(note.name)),
+																		`${MusicalHelper.parseNote(note.name).step}${MusicalHelper.parseNote(note.name).octave}`,
 																		sizeVars.quarterSizeCm - CommonHelper.pxToCm(2),
 																		'cm',
 																	),

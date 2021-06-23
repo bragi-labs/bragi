@@ -1,3 +1,5 @@
+import { MusicalHelper } from './musicalHelper';
+
 export enum FnOctaveShape {
 	'X' = 'X',
 	'SQUARE' = 'SQUARE',
@@ -34,8 +36,11 @@ export class FigurenotesHelper {
 	static getBlackIndices(): number[] {
 		return [1, 3, 6, 8, 10];
 	}
-	static getSymbolStyle(noteColor: string, octaveShape: FnOctaveShape, size: number, units: string) {
+	static getSymbolStyle(noteFullName: string, size: number, units: string) {
 		let style: any;
+		const noteDetails = MusicalHelper.parseNote(noteFullName);
+		const octaveShape = FigurenotesHelper.getOctaveShape(noteDetails.octave);
+		const noteColor = FigurenotesHelper.getNoteColor(noteDetails.step);
 		switch (octaveShape) {
 			case FnOctaveShape.X: {
 				style = {

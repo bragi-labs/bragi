@@ -8,6 +8,7 @@ import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
 import { NoteToolbar } from './NoteToolbar';
+import { MusicalHelper } from '../../services/musicalHelper';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -78,7 +79,26 @@ export const ComposerPage = () => {
 		[selection],
 	);
 
-	const handleDeleteNotes = useCallback((notes: NoteModel[]) => {
+	const handlePitchChange = useCallback(
+		(notes: NoteModel[], pitchUp: boolean) => {
+			notes.forEach((note) => {
+				if (!score) {
+					return;
+				}
+				const measure = Score.findMeasure(score, note.measureId);
+				if (!measure) {
+					return;
+				}
+				note.name = MusicalHelper.changePitch(note.name, measure.musicalScale, pitchUp);
+			});
+			setScore((sm) => {
+				return { ...sm } as ScoreModel;
+			});
+		},
+		[score],
+	);
+
+	const handleDelete = useCallback((notes: NoteModel[]) => {
 		notes.forEach((note) => {
 			note.name = '';
 			note.isRest = true;
@@ -102,7 +122,7 @@ export const ComposerPage = () => {
 						<Piano smallPiano={true} onPianoNote={handlePianoNote} />
 					</Box>
 					<Box className={classes.noteToolbarContainer}>
-						<NoteToolbar score={score} onDeleteNotes={handleDeleteNotes} />
+						<NoteToolbar score={score} onPitchChange={handlePitchChange} onDelete={handleDelete} />
 					</Box>
 				</>
 			)}

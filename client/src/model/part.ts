@@ -1,4 +1,4 @@
-import { NoteModel, PartModel } from './scoreModel';
+import { PartModel, MeasureModel, VoiceModel, NoteModel } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
@@ -27,6 +27,20 @@ export class Part implements PartModel {
 			measures.push(measure);
 		}
 		return new Part(id, scoreId, '', measures);
+	}
+
+	static findMeasure(pm: PartModel, measureId: string): MeasureModel | null {
+		return pm.measures.find((m) => m.id === measureId) || null;
+	}
+
+	static findVoice(pm: PartModel, voiceId: string): VoiceModel | null {
+		let result: VoiceModel | null = null;
+		pm.measures.forEach((mm) => {
+			if (!result) {
+				result = Measure.findVoice(mm, voiceId);
+			}
+		});
+		return result;
 	}
 
 	static findNote(pm: PartModel, noteId: string): NoteModel | null {

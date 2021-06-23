@@ -1,4 +1,4 @@
-import { NoteModel, ScoreModel } from './scoreModel';
+import { ScoreModel, PartModel, MeasureModel, VoiceModel, NoteModel } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { Part } from './part';
 import { NewScoreData } from '../services/newScoreData';
@@ -22,6 +22,30 @@ export class Score implements ScoreModel {
 		const scoreInfo = ScoreInfo.createFromNewDialog(newScoreData);
 		const part = Part.createFromNewDialog(id, newScoreData);
 		return new Score(id, scoreInfo, [part]);
+	}
+
+	static findPart(sm: ScoreModel, partId: string): PartModel | null {
+		return sm.parts.find((p) => (p.id = partId)) || null;
+	}
+
+	static findMeasure(sm: ScoreModel, measureId: string): MeasureModel | null {
+		let result: MeasureModel | null = null;
+		sm.parts.forEach((pm) => {
+			if (!result) {
+				result = Part.findMeasure(pm, measureId);
+			}
+		});
+		return result;
+	}
+
+	static findVoice(sm: ScoreModel, voiceId: string): VoiceModel | null {
+		let result: VoiceModel | null = null;
+		sm.parts.forEach((pm) => {
+			if (!result) {
+				result = Part.findVoice(pm, voiceId);
+			}
+		});
+		return result;
 	}
 
 	static findNote(sm: ScoreModel, noteId: string): NoteModel | null {

@@ -10,24 +10,40 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { Typography } from '@material-ui/core';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
-	onDeleteNotes: (notes: NoteModel[]) => void;
+	onPitchChange: (notes: NoteModel[], pitchUp: boolean) => void;
+	onDelete: (notes: NoteModel[]) => void;
 }
 
-export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
+export const NoteToolbar = ({ score, onPitchChange, onDelete }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			width: 827,
-		},
-		panel: {
 			display: 'grid',
-			gridTemplate: '80px auto / 1fr',
+			gridTemplate: '80px 40px / 1fr',
 			//opacity: 0.9,
 			borderRadius: 4,
 			backgroundColor: '#333',
 			padding: 24,
+		},
+		panel: {
+			display: 'inline-flex',
+			alignItems: 'center',
+			height: 32,
+			marginRight: 24,
+			backgroundColor: '#222',
+			padding: '0 4px',
+			borderRadius: 16,
+			textShadow: '1px 1px #000',
+		},
+		panelText: {
+			color: '#ccc',
+			'&.disabled': {
+				color: '#666',
+			},
 		},
 		noteLengthControl: {
 			'& .MuiSlider-rail': {
@@ -56,7 +72,7 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 			},
 		},
 		actionButton: {
-			marginRight: 20,
+			margin: '0 4px',
 			width: 24,
 			height: 24,
 			textAlign: 'center',
@@ -124,29 +140,63 @@ export const NoteToolbar = ({ score, onDeleteNotes }: NoteToolbarProps) => {
 			}
 		});
 		if (notes.length) {
-			onDeleteNotes(notes);
+			onDelete(notes);
 		}
-	}, [score, selection, onDeleteNotes]);
+	}, [score, selection, onDelete]);
+
+	const handleChangePitch = useCallback(
+		(event) => {
+			if (!score || !selection) {
+				return;
+			}
+			const notes: NoteModel[] = [];
+			selection.items.forEach((item) => {
+				const note = Score.findNote(score, item.noteId);
+				if (note && !note.isRest) {
+					notes.push(note);
+				}
+			});
+			if (notes.length) {
+				onPitchChange(notes, event.currentTarget.dataset.direction === 'up');
+			}
+		},
+		[score, selection, onPitchChange],
+	);
 
 	return (
 		<Box id="NoteToolbar" className={classes.root}>
-			<Box className={classes.panel}>
-				<Box className={classes.noteLengthControl}>
-					<Slider
-						className={`${canChangeLength ? '' : 'disabled'}`}
-						defaultValue={24}
-						step={null}
-						track={false}
-						valueLabelDisplay="off"
-						marks={marks}
-						disabled={!canChangeLength}
-					/>
-				</Box>
-				<Box>
+			<Box className={classes.noteLengthControl}>
+				<Slider
+					className={`${canChangeLength ? '' : 'disabled'}`}
+					defaultValue={24}
+					step={null}
+					track={false}
+					valueLabelDisplay="off"
+					marks={marks}
+					disabled={!canChangeLength}
+				/>
+			</Box>
+			<Box>
+				<Box className={classes.panel}>
 					<ArrowBackIcon className={`${classes.actionButton} ${canMoveLeft ? '' : 'disabled'}`} titleAccess="Move Left" />
+					<Typography variant="body1" className={`${classes.panelText} ${canMoveLeft || canMoveRight ? '' : 'disabled'}`}>
+						move
+					</Typography>
 					<ArrowForwardIcon className={`${classes.actionButton} ${canMoveRight ? '' : 'disabled'}`} titleAccess="Move Right" />
-					<ArrowUpwardIcon className={`${classes.actionButton} ${canPitchUp ? '' : 'disabled'}`} titleAccess="Pitch Up" />
-					<ArrowDownwardIcon className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`} titleAccess="Pitch Down" />
+				</Box>
+				<Box className={classes.panel}>
+					<ArrowDownwardIcon
+						onClick={handleChangePitch}
+						data-direction="down"
+						className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`}
+						titleAccess="Pitch Down"
+					/>
+					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+						pitch
+					</Typography>
+					<ArrowUpwardIcon onClick={handleChangePitch} data-direction="up" className={`${classes.actionButton} ${canPitchUp ? '' : 'disabled'}`} titleAccess="Pitch Up" />
+				</Box>
+				<Box className={classes.panel}>
 					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
 				</Box>
 			</Box>
