@@ -65,6 +65,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 		},
 		noteName: {
 			fontSize: '11px',
+			fontFamily: 'Arial, sans-serif',
 			color: '#fff',
 			position: 'absolute',
 			top: 10,
