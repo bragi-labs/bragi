@@ -76,26 +76,23 @@ export const PartUI = ({ part }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { stageWidthCm, rowGapCm, totalDurationDivsPerRow } = SettingsContextContainer.useContainer();
+	const { stageWidthCm, quarterSizeCm, rowGapCm } = SettingsContextContainer.useContainer();
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
-		const measureDurationDivs = exampleMeasure.durationDivs;
-		const numberOfMeasuresPerRow = Math.trunc(totalDurationDivsPerRow / measureDurationDivs);
-		const measureWidthCm = (stageWidthCm * measureDurationDivs) / totalDurationDivsPerRow;
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
-		const quarterSizeCm = ((measureWidthCm - CommonHelper.pxToCm(2)) * timeData.beatType) / timeData.beats / 4;
+		const measureWidthCm = (4 * quarterSizeCm * timeData.beats) / timeData.beatType + CommonHelper.pxToCm(2);
+		const numberOfMeasuresPerRow = Math.trunc(stageWidthCm / measureWidthCm);
 		const pickupMeasureLeftOverCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
 		const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 		return {
+			numberOfMeasuresPerRow,
+			measureWidthCm,
 			pickupMeasureLeftOverCm,
 			leftOverCm,
-			measureWidthCm,
-			quarterSizeCm,
-			numberOfMeasuresPerRow,
 		};
-	}, [part.measures, stageWidthCm, totalDurationDivsPerRow]);
+	}, [part.measures, stageWidthCm, quarterSizeCm]);
 
 	const handleClickNote = useCallback(
 		(event) => {
@@ -134,7 +131,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 												<Box
 													key={n}
 													className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
-													style={{ flex: `${note.durationDivs} 0 0`, height: `${sizeVars.quarterSizeCm}cm` }}
+													style={{ flex: `${note.durationDivs} 0 0`, height: `${quarterSizeCm}cm` }}
 													onClick={handleClickNote}
 													data-measure-id={measure.id}
 													data-voice-id={voice.id}
@@ -152,22 +149,16 @@ export const PartUI = ({ part }: StageUIProps) => {
 																style={{
 																	...FigurenotesHelper.getSymbolStyle(
 																		`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
-																		sizeVars.quarterSizeCm - CommonHelper.pxToCm(2),
+																		quarterSizeCm - CommonHelper.pxToCm(2),
 																		'cm',
 																	),
 																}}
 															/>
 															{note.fullName.length >= 2 && note.fullName[1] === '#' && (
-																<ArrowRightAltIcon
-																	className={`${classes.alter} sharp`}
-																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 8px)` }}
-																/>
+																<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `calc(${quarterSizeCm / 2}cm - 8px)` }} />
 															)}
 															{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
-																<ArrowRightAltIcon
-																	className={`${classes.alter} flat`}
-																	style={{ left: `calc(${sizeVars.quarterSizeCm / 2}cm - 18px)` }}
-																/>
+																<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `calc(${quarterSizeCm / 2}cm - 18px)` }} />
 															)}
 														</Box>
 													)}
