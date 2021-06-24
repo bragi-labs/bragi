@@ -155,7 +155,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	}));
 	const classes = useStyles();
 
-	const [powerOn, setPowerOn] = useState(false);
+	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([true, true, true, true, true]);
