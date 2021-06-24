@@ -64,13 +64,13 @@ export const PartUI = ({ part }: StageUIProps) => {
 			top: 0,
 		},
 		noteName: {
-			fontSize: '10px',
+			fontSize: '11px',
 			color: '#fff',
 			position: 'absolute',
-			top: 11,
+			top: 10,
 			left: 14,
 			'&.alter': {
-				left: 12,
+				left: 11,
 			},
 		},
 		alter: {
