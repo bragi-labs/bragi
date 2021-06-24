@@ -60,6 +60,10 @@ export const StageUI = ({ score }: StageUIProps) => {
 			justifyContent: 'flex-end',
 			color: '#666',
 		},
+		partContainer: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
 	}));
 	const classes = useStyles();
 
@@ -87,7 +91,9 @@ export const StageUI = ({ score }: StageUIProps) => {
 							</Typography>
 						</Box>
 						{score.parts.map((part, i) => (
-							<PartUI key={i} part={part} />
+							<Box className={classes.partContainer}>
+								<PartUI key={i} part={part} />
+							</Box>
 						))}
 					</Box>
 				</Box>

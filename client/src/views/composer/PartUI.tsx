@@ -21,6 +21,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 		root: {},
 		partName: {
 			color: '#666',
+			marginBottom: 24,
 		},
 		measures: {
 			position: 'relative',
@@ -76,23 +77,23 @@ export const PartUI = ({ part }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { stageWidthCm, quarterSizeCm, rowGapCm } = SettingsContextContainer.useContainer();
+	const { partsWidthCm, quarterSizeCm, rowGapCm } = SettingsContextContainer.useContainer();
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
 		const measureWidthCm = (4 * quarterSizeCm * timeData.beats) / timeData.beatType + CommonHelper.pxToCm(2);
-		const numberOfMeasuresPerRow = Math.trunc(stageWidthCm / measureWidthCm);
+		const numberOfMeasuresPerRow = Math.trunc(partsWidthCm / measureWidthCm);
 		const pickupMeasureLeftOverCm = measureWidthCm * (numberOfMeasuresPerRow - 1);
-		const leftOverCm = (stageWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
+		const leftOverCm = (partsWidthCm - measureWidthCm * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidthCm,
 			pickupMeasureLeftOverCm,
 			leftOverCm,
 		};
-	}, [part.measures, stageWidthCm, quarterSizeCm]);
+	}, [part.measures, partsWidthCm, quarterSizeCm]);
 
 	const handleClickNote = useCallback(
 		(event) => {
@@ -110,10 +111,12 @@ export const PartUI = ({ part }: StageUIProps) => {
 	);
 
 	return (
-		<Box id="PartUI" className={classes.root}>
-			<Typography variant="h6" className={classes.partName}>
-				{part.name}
-			</Typography>
+		<Box id="PartUI" className={classes.root} style={{ width: `${partsWidthCm}cm` }}>
+			{part.name && (
+				<Typography variant="h6" className={classes.partName}>
+					{part.name}
+				</Typography>
+			)}
 			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOverCm}cm` }}>
 				{part.measures.map((measure, m) => (
 					<Box key={m} style={{ marginRight: `${measure.isPickup ? sizeVars.pickupMeasureLeftOverCm : 0}cm` }}>
