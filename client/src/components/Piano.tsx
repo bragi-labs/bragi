@@ -317,7 +317,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 								onMouseEnter={handleMouseEnter}
 								onMouseLeave={handleMouseLeave}
 								data-note-name={blackKey.noteName}
-								data-octave-number={i + 2}
+								data-octave-number={i + MusicalHelper.minOctave}
 								className={`${classes.octaveKey} ${classes.blackKey}`}
 								style={{ left: blackKey.left }}
 							/>

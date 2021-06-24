@@ -8,6 +8,7 @@ import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
 import { NoteToolbar } from './NoteToolbar';
+import { MusicalHelper } from '../../services/musicalHelper';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -71,8 +72,14 @@ export const ComposerPage = () => {
 			if (score && selection && selection.items && selection.items.length === 1) {
 				const note = Score.findNote(score, selection.items[0].noteId);
 				if (note) {
-					note.fullName = noteFullName;
 					note.isRest = false;
+					note.fullName = noteFullName;
+					if (MusicalHelper.parseNote(noteFullName).alter === '#') {
+						const measure = Score.findMeasure(score, note.measureId);
+						if (measure && !MusicalHelper.isScaleUsesSharps(measure.musicalScale)) {
+							note.fullName = MusicalHelper.toggleSharpAndFlat(note.fullName);
+						}
+					}
 				}
 				handleScoreUpdated();
 			}
