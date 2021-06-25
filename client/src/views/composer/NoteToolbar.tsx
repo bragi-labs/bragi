@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import Slider from '@material-ui/core/Slider';
-// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-// import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { Button, Typography } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
-import { Typography } from '@material-ui/core';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 
@@ -22,11 +19,12 @@ export interface NoteToolbarProps {
 export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
-			width: 827,
+			//width: 827,
 			display: 'grid',
-			gridTemplate: '80px 40px / 1fr',
+			gridTemplate: 'auto auto auto / 1fr',
+			gap: '24px 0',
 			//opacity: 0.9,
-			borderRadius: 4,
+			borderRadius: 16,
 			backgroundColor: '#333',
 			padding: 24,
 		},
@@ -88,34 +86,33 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				color: '#666',
 			},
 		},
+		noteLengthButton: {
+			borderRadius: 24,
+		},
 	}));
 	const classes = useStyles();
 
 	const { selection } = SelectionContextContainer.useContainer();
 	const [canChangeLength, setCanChangeLength] = useState(false);
-	//const [canMoveLeft, setCanMoveLeft] = useState(false);
-	//const [canMoveRight, setCanMoveRight] = useState(false);
 	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
-	const marks = [
-		{ value: 6, label: '1/16' },
-		{ value: 12, label: '1/8' },
-		{ value: 18, label: '1/8.' },
-		{ value: 24, label: '1/4' },
-		{ value: 36, label: '1/4.' },
-		{ value: 48, label: '1/2' },
-		{ value: 72, label: '3/4' },
-		{ value: 96, label: '1' },
+	const noteLengthOptions = [
+		{ duration: 6, label: '1/16' },
+		{ duration: 12, label: '1/8' },
+		{ duration: 18, label: '3/16' },
+		{ duration: 24, label: '1/4' },
+		{ duration: 36, label: '3/8' },
+		{ duration: 48, label: '1/2' },
+		{ duration: 72, label: '3/4' },
+		{ duration: 96, label: '1' },
 	];
 
 	useEffect(() => {
 		setCanChangeLength(false);
-		//setCanMoveLeft(false);
-		//setCanMoveRight(false);
 		setCanPitchDown(false);
 		setCanPitchUp(false);
 		setCanOctaveDown(false);
@@ -126,18 +123,12 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		}
 		let note;
 		let noteDetails;
-
-		let hasRealNotes = false;
-		if (selection) {
-			hasRealNotes = selection.items.some((item) => {
-				if (score && item.noteId) {
-					note = Score.findNote(score, item.noteId);
-					return note && !note.isRest;
-				}
-				return false;
-			});
-		}
-
+		setCanChangeLength(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				return note && !note.isRest;
+			}),
+		);
 		setCanPitchDown(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
@@ -184,10 +175,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				return note && !note.isRest;
 			}),
 		);
-
-		setCanChangeLength(hasRealNotes);
-		//setCanMoveLeft(hasRealNotes);
-		//setCanMoveRight(hasRealNotes);
 	}, [selection, score]);
 
 	const getSelectedNonRestNotes = useCallback(() => {
@@ -227,7 +214,14 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 					if (!measure) {
 						return;
 					}
-					note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
+					if (event.currentTarget.dataset.amount === 'octave') {
+						const noteDetails = MusicalHelper.parseNote(note.fullName);
+						note.fullName = `${noteDetails.step}${noteDetails.alter}${
+							event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1
+						}`;
+					} else {
+						note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
+					}
 					SoundHelper.playShortNote(note.fullName);
 				});
 				onUpdateScore();
@@ -236,53 +230,30 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		[getSelectedNonRestNotes, score, onUpdateScore],
 	);
 
-	const handleChangeOctave = useCallback(
-		(event) => {
-			const notes: NoteModel[] = getSelectedNonRestNotes();
-			if (notes.length) {
-				notes.forEach((note) => {
-					if (!score) {
-						return;
-					}
-					const measure = Score.findMeasure(score, note.measureId);
-					if (!measure) {
-						return;
-					}
-					const noteDetails = MusicalHelper.parseNote(note.fullName);
-					note.fullName = `${noteDetails.step}${noteDetails.alter}${event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
-					SoundHelper.playShortNote(note.fullName);
-				});
-				onUpdateScore();
-			}
-		},
-		[getSelectedNonRestNotes, score, onUpdateScore],
-	);
+	const handleClickNoteLength = useCallback(() => {}, []);
 
 	return (
 		<Box id="NoteToolbar" className={classes.root}>
-			<Box className={classes.noteLengthControl}>
-				<Slider
-					className={`${canChangeLength ? '' : 'disabled'}`}
-					defaultValue={24}
-					step={null}
-					track={false}
-					valueLabelDisplay="off"
-					marks={marks}
-					disabled={!canChangeLength}
-				/>
+			<Box>
+				<Box className={classes.panel}>
+					{noteLengthOptions.map((o, i) => (
+						<Button
+							key={i}
+							onClick={handleClickNoteLength}
+							disabled={!canChangeLength}
+							className={`${classes.actionButton} ${classes.noteLengthButton} ${canChangeLength ? '' : 'disabled'}`}
+						>
+							{o.label}
+						</Button>
+					))}
+				</Box>
 			</Box>
 			<Box>
-				{/*<Box className={classes.panel}>*/}
-				{/*	<ArrowBackIcon className={`${classes.actionButton} ${canMoveLeft ? '' : 'disabled'}`} titleAccess="Move Left" />*/}
-				{/*	<Typography variant="body1" className={`${classes.panelText} ${canMoveLeft || canMoveRight ? '' : 'disabled'}`}>*/}
-				{/*		move*/}
-				{/*	</Typography>*/}
-				{/*	<ArrowForwardIcon className={`${classes.actionButton} ${canMoveRight ? '' : 'disabled'}`} titleAccess="Move Right" />*/}
-				{/*</Box>*/}
 				<Box className={classes.panel}>
 					<ArrowDownwardIcon
 						onClick={handleChangePitch}
 						data-direction="down"
+						data-amount="semitone"
 						className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`}
 						titleAccess="Pitch Down"
 					/>
@@ -292,6 +263,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 					<ArrowUpwardIcon
 						onClick={handleChangePitch}
 						data-direction="up"
+						data-amount="semitone"
 						className={`${classes.actionButton}
 						${canPitchUp ? '' : 'disabled'}`}
 						titleAccess="Pitch Up"
@@ -299,8 +271,9 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				</Box>
 				<Box className={classes.panel}>
 					<ArrowDownwardIcon
-						onClick={handleChangeOctave}
+						onClick={handleChangePitch}
 						data-direction="down"
+						data-amount="octave"
 						className={`${classes.actionButton} ${canOctaveDown ? '' : 'disabled'}`}
 						titleAccess="Octave Down"
 					/>
@@ -308,12 +281,15 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 						octave
 					</Typography>
 					<ArrowUpwardIcon
-						onClick={handleChangeOctave}
+						onClick={handleChangePitch}
 						data-direction="up"
+						data-amount="octave"
 						className={`${classes.actionButton}	${canOctaveUp ? '' : 'disabled'}`}
 						titleAccess="Octave Up"
 					/>
 				</Box>
+			</Box>
+			<Box>
 				<Box className={classes.panel}>
 					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
 				</Box>
