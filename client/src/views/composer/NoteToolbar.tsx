@@ -178,11 +178,16 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				return noteDetails.octave !== MusicalHelper.maxOctave;
 			}),
 		);
+		setCanDelete(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				return note && !note.isRest;
+			}),
+		);
 
 		setCanChangeLength(hasRealNotes);
 		//setCanMoveLeft(hasRealNotes);
 		//setCanMoveRight(hasRealNotes);
-		setCanDelete(hasRealNotes);
 	}, [selection, score]);
 
 	const getSelectedNonRestNotes = useCallback(() => {
