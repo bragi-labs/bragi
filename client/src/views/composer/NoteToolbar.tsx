@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Button, Typography } from '@material-ui/core';
+import { Button, IconButton, Typography } from '@material-ui/core';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -43,8 +43,19 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		panelText: {
 			marginLeft: 4,
 			color: '#999',
+			transition: 'all 0.2s ease-in-out',
+			'&.clickable': {
+				marginLeft: 2,
+			},
+			'&.clickable:not(.disabled)': {
+				cursor: 'pointer',
+			},
+			'&.clickable:not(.disabled):hover': {
+				color: '#fff',
+			},
 			'&.disabled': {
 				color: '#666',
+				pointerEvents: 'none',
 			},
 		},
 		actionButton: {
@@ -226,40 +237,23 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			</Box>
 			<Box>
 				<Box className={classes.panel}>
-					<ArrowDownwardIcon
-						onClick={handleChangePitch}
-						data-direction="down"
-						data-amount="semitone"
-						className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`}
-						titleAccess="Pitch Down"
-					/>
-					<ArrowUpwardIcon
-						onClick={handleChangePitch}
-						data-direction="up"
-						data-amount="semitone"
-						className={`${classes.actionButton}
-						${canPitchUp ? '' : 'disabled'}`}
-						titleAccess="Pitch Up"
-					/>
+					<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
+						<ArrowDownwardIcon titleAccess="Pitch Down" />
+					</IconButton>
+					<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
+						<ArrowUpwardIcon titleAccess="Pitch Up" />
+					</IconButton>
 					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
 						Semitone
 					</Typography>
 				</Box>
 				<Box className={classes.panel}>
-					<ArrowDownwardIcon
-						onClick={handleChangePitch}
-						data-direction="down"
-						data-amount="octave"
-						className={`${classes.actionButton} ${canOctaveDown ? '' : 'disabled'}`}
-						titleAccess="Octave Down"
-					/>
-					<ArrowUpwardIcon
-						onClick={handleChangePitch}
-						data-direction="up"
-						data-amount="octave"
-						className={`${classes.actionButton}	${canOctaveUp ? '' : 'disabled'}`}
-						titleAccess="Octave Up"
-					/>
+					<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
+						<ArrowDownwardIcon titleAccess="Octave Down" />
+					</IconButton>
+					<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
+						<ArrowUpwardIcon titleAccess="Octave Up" />
+					</IconButton>
 					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
 						Octave
 					</Typography>
@@ -267,8 +261,10 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			</Box>
 			<Box>
 				<Box className={classes.panel}>
-					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
-					<Typography variant="body1" className={`${classes.panelText} ${canDelete ? '' : 'disabled'}`}>
+					<IconButton onClick={handleClickDelete} className={`${classes.actionButton}`} disabled={!canDelete}>
+						<DeleteForeverIcon titleAccess="Delete" />
+					</IconButton>
+					<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} clickable ${canDelete ? '' : 'disabled'}`}>
 						Delete
 					</Typography>
 				</Box>
