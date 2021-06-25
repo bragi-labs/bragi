@@ -95,8 +95,10 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const [canChangeLength, setCanChangeLength] = useState(false);
 	const [canMoveLeft, setCanMoveLeft] = useState(false);
 	const [canMoveRight, setCanMoveRight] = useState(false);
-	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canPitchDown, setCanPitchDown] = useState(false);
+	const [canPitchUp, setCanPitchUp] = useState(false);
+	const [canOctaveDown, setCanOctaveDown] = useState(false);
+	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
 	const marks = [
@@ -111,21 +113,75 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	];
 
 	useEffect(() => {
+		setCanChangeLength(false);
+		setCanMoveLeft(false);
+		setCanMoveRight(false);
+		setCanPitchDown(false);
+		setCanPitchUp(false);
+		setCanOctaveDown(false);
+		setCanOctaveUp(false);
+		setCanDelete(false);
+		if (!score || !selection || selection.items.length === 0) {
+			return;
+		}
+		let note;
+		let noteDetails;
+
 		let hasRealNotes = false;
 		if (selection) {
 			hasRealNotes = selection.items.some((item) => {
 				if (score && item.noteId) {
-					const note = Score.findNote(score, item.noteId);
+					note = Score.findNote(score, item.noteId);
 					return note && !note.isRest;
 				}
 				return false;
 			});
 		}
+
+		setCanPitchDown(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				if (!note) {
+					return false;
+				}
+				noteDetails = MusicalHelper.parseNote(note.fullName);
+				return !(noteDetails.step === 'C' && !noteDetails.alter && noteDetails.octave === MusicalHelper.minOctave);
+			}),
+		);
+		setCanPitchUp(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				if (!note) {
+					return false;
+				}
+				noteDetails = MusicalHelper.parseNote(note.fullName);
+				return !(noteDetails.step === 'B' && !noteDetails.alter && noteDetails.octave === MusicalHelper.maxOctave);
+			}),
+		);
+		setCanOctaveDown(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				if (!note) {
+					return false;
+				}
+				noteDetails = MusicalHelper.parseNote(note.fullName);
+				return noteDetails.octave !== MusicalHelper.minOctave;
+			}),
+		);
+		setCanOctaveUp(
+			selection.items.every((item) => {
+				note = item.noteId && Score.findNote(score, item.noteId);
+				if (!note) {
+					return false;
+				}
+				noteDetails = MusicalHelper.parseNote(note.fullName);
+				return noteDetails.octave !== MusicalHelper.maxOctave;
+			}),
+		);
+
 		setCanChangeLength(hasRealNotes);
 		setCanMoveLeft(hasRealNotes);
 		setCanMoveRight(hasRealNotes);
-		setCanPitchUp(hasRealNotes);
-		setCanPitchDown(hasRealNotes);
 		setCanDelete(hasRealNotes);
 	}, [selection, score]);
 
@@ -175,6 +231,28 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		[getSelectedNonRestNotes, score, onUpdateScore],
 	);
 
+	const handleChangeOctave = useCallback(
+		(event) => {
+			const notes: NoteModel[] = getSelectedNonRestNotes();
+			if (notes.length) {
+				notes.forEach((note) => {
+					if (!score) {
+						return;
+					}
+					const measure = Score.findMeasure(score, note.measureId);
+					if (!measure) {
+						return;
+					}
+					const noteDetails = MusicalHelper.parseNote(note.fullName);
+					note.fullName = `${noteDetails.step}${noteDetails.alter}${event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
+					SoundHelper.playShortNote(note.fullName);
+				});
+				onUpdateScore();
+			}
+		},
+		[getSelectedNonRestNotes, score, onUpdateScore],
+	);
+
 	return (
 		<Box id="NoteToolbar" className={classes.root}>
 			<Box className={classes.noteLengthControl}>
@@ -206,7 +284,30 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
 						pitch
 					</Typography>
-					<ArrowUpwardIcon onClick={handleChangePitch} data-direction="up" className={`${classes.actionButton} ${canPitchUp ? '' : 'disabled'}`} titleAccess="Pitch Up" />
+					<ArrowUpwardIcon
+						onClick={handleChangePitch}
+						data-direction="up"
+						className={`${classes.actionButton}
+						${canPitchUp ? '' : 'disabled'}`}
+						titleAccess="Pitch Up"
+					/>
+				</Box>
+				<Box className={classes.panel}>
+					<ArrowDownwardIcon
+						onClick={handleChangeOctave}
+						data-direction="down"
+						className={`${classes.actionButton} ${canOctaveDown ? '' : 'disabled'}`}
+						titleAccess="Octave Down"
+					/>
+					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+						octave
+					</Typography>
+					<ArrowUpwardIcon
+						onClick={handleChangeOctave}
+						data-direction="up"
+						className={`${classes.actionButton}	${canOctaveUp ? '' : 'disabled'}`}
+						titleAccess="Octave Up"
+					/>
 				</Box>
 				<Box className={classes.panel}>
 					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
