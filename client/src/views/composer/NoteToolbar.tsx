@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import Slider from '@material-ui/core/Slider';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -93,8 +93,8 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 
 	const { selection } = SelectionContextContainer.useContainer();
 	const [canChangeLength, setCanChangeLength] = useState(false);
-	const [canMoveLeft, setCanMoveLeft] = useState(false);
-	const [canMoveRight, setCanMoveRight] = useState(false);
+	//const [canMoveLeft, setCanMoveLeft] = useState(false);
+	//const [canMoveRight, setCanMoveRight] = useState(false);
 	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
@@ -114,8 +114,8 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 
 	useEffect(() => {
 		setCanChangeLength(false);
-		setCanMoveLeft(false);
-		setCanMoveRight(false);
+		//setCanMoveLeft(false);
+		//setCanMoveRight(false);
 		setCanPitchDown(false);
 		setCanPitchUp(false);
 		setCanOctaveDown(false);
@@ -141,7 +141,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		setCanPitchDown(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note) {
+				if (!note || note.isRest) {
 					return false;
 				}
 				noteDetails = MusicalHelper.parseNote(note.fullName);
@@ -151,7 +151,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		setCanPitchUp(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note) {
+				if (!note || note.isRest) {
 					return false;
 				}
 				noteDetails = MusicalHelper.parseNote(note.fullName);
@@ -161,7 +161,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		setCanOctaveDown(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note) {
+				if (!note || note.isRest) {
 					return false;
 				}
 				noteDetails = MusicalHelper.parseNote(note.fullName);
@@ -171,7 +171,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		setCanOctaveUp(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note) {
+				if (!note || note.isRest) {
 					return false;
 				}
 				noteDetails = MusicalHelper.parseNote(note.fullName);
@@ -180,8 +180,8 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		);
 
 		setCanChangeLength(hasRealNotes);
-		setCanMoveLeft(hasRealNotes);
-		setCanMoveRight(hasRealNotes);
+		//setCanMoveLeft(hasRealNotes);
+		//setCanMoveRight(hasRealNotes);
 		setCanDelete(hasRealNotes);
 	}, [selection, score]);
 
@@ -267,13 +267,13 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				/>
 			</Box>
 			<Box>
-				<Box className={classes.panel}>
-					<ArrowBackIcon className={`${classes.actionButton} ${canMoveLeft ? '' : 'disabled'}`} titleAccess="Move Left" />
-					<Typography variant="body1" className={`${classes.panelText} ${canMoveLeft || canMoveRight ? '' : 'disabled'}`}>
-						move
-					</Typography>
-					<ArrowForwardIcon className={`${classes.actionButton} ${canMoveRight ? '' : 'disabled'}`} titleAccess="Move Right" />
-				</Box>
+				{/*<Box className={classes.panel}>*/}
+				{/*	<ArrowBackIcon className={`${classes.actionButton} ${canMoveLeft ? '' : 'disabled'}`} titleAccess="Move Left" />*/}
+				{/*	<Typography variant="body1" className={`${classes.panelText} ${canMoveLeft || canMoveRight ? '' : 'disabled'}`}>*/}
+				{/*		move*/}
+				{/*	</Typography>*/}
+				{/*	<ArrowForwardIcon className={`${classes.actionButton} ${canMoveRight ? '' : 'disabled'}`} titleAccess="Move Right" />*/}
+				{/*</Box>*/}
 				<Box className={classes.panel}>
 					<ArrowDownwardIcon
 						onClick={handleChangePitch}
