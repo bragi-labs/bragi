@@ -91,8 +91,8 @@ export const StageUI = ({ score }: StageUIProps) => {
 							</Typography>
 						</Box>
 						{score.parts.map((part, i) => (
-							<Box className={classes.partContainer}>
-								<PartUI key={i} part={part} />
+							<Box key={i} className={classes.partContainer}>
+								<PartUI part={part} />
 							</Box>
 						))}
 					</Box>
