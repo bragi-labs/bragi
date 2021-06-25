@@ -33,16 +33,17 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			alignItems: 'center',
 			height: 32,
 			backgroundColor: '#222',
-			padding: '0 4px',
+			padding: '0 16px',
 			borderRadius: 16,
 			textShadow: '1px 1px #000',
-			marginLeft: 24,
+			marginLeft: 16,
 			'&:first-of-type': {
 				marginLeft: 0,
 			},
 		},
 		panelText: {
-			color: '#ccc',
+			marginLeft: 4,
+			color: '#999',
 			'&.disabled': {
 				color: '#666',
 			},
@@ -74,7 +75,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			},
 		},
 		actionButton: {
-			margin: '0 4px',
 			width: 24,
 			height: 24,
 			textAlign: 'center',
@@ -260,9 +260,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 						className={`${classes.actionButton} ${canPitchDown ? '' : 'disabled'}`}
 						titleAccess="Pitch Down"
 					/>
-					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-						pitch
-					</Typography>
 					<ArrowUpwardIcon
 						onClick={handleChangePitch}
 						data-direction="up"
@@ -271,6 +268,9 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 						${canPitchUp ? '' : 'disabled'}`}
 						titleAccess="Pitch Up"
 					/>
+					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+						Semitone
+					</Typography>
 				</Box>
 				<Box className={classes.panel}>
 					<ArrowDownwardIcon
@@ -280,9 +280,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 						className={`${classes.actionButton} ${canOctaveDown ? '' : 'disabled'}`}
 						titleAccess="Octave Down"
 					/>
-					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-						octave
-					</Typography>
 					<ArrowUpwardIcon
 						onClick={handleChangePitch}
 						data-direction="up"
@@ -290,11 +287,17 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 						className={`${classes.actionButton}	${canOctaveUp ? '' : 'disabled'}`}
 						titleAccess="Octave Up"
 					/>
+					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+						Octave
+					</Typography>
 				</Box>
 			</Box>
 			<Box>
 				<Box className={classes.panel}>
 					<DeleteForeverIcon onClick={handleClickDelete} className={`${classes.actionButton} ${canDelete ? '' : 'disabled'}`} titleAccess="Delete" />
+					<Typography variant="body1" className={`${classes.panelText} ${canDelete ? '' : 'disabled'}`}>
+						Delete
+					</Typography>
 				</Box>
 			</Box>
 		</Box>
