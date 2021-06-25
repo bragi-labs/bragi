@@ -29,12 +29,15 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		panel: {
 			display: 'flex',
 			alignItems: 'center',
-			marginRight: 24,
 			height: 32,
 			//opacity: 0.9,
 			borderRadius: 16,
 			backgroundColor: '#444',
 			padding: '0 4px',
+			marginLeft: 24,
+			'&:first-of-type': {
+				marginLeft: 0,
+			},
 		},
 		actionButton: {
 			margin: '0 4px',

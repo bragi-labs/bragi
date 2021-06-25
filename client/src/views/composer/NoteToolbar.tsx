@@ -32,11 +32,14 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
-			marginRight: 24,
 			backgroundColor: '#222',
 			padding: '0 4px',
 			borderRadius: 16,
 			textShadow: '1px 1px #000',
+			marginLeft: 24,
+			'&:first-of-type': {
+				marginLeft: 0,
+			},
 		},
 		panelText: {
 			color: '#ccc',
