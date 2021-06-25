@@ -1,13 +1,13 @@
 import React, { useCallback, useRef, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Modal } from '@material-ui/core';
+import { Modal, Typography } from '@material-ui/core';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
-import { Score } from '../../model/score';
 import { ScoreModel } from '../../model/scoreModel';
+import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
 import { SaveScore } from './SaveScore';
 import { AppDataHelper } from '../../services/appDataHelper';
@@ -27,26 +27,36 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			height: '100%',
 		},
 		panel: {
-			display: 'flex',
+			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
-			//opacity: 0.9,
 			borderRadius: 16,
 			backgroundColor: '#444',
-			padding: '0 4px',
-			marginLeft: 24,
+			padding: '0 12px 0 4px',
+			opacity: 0.9,
+			marginLeft: 16,
 			'&:first-of-type': {
 				marginLeft: 0,
 			},
 		},
+		panelText: {
+			marginLeft: 2,
+			color: '#999',
+			'&.disabled': {
+				color: '#666',
+			},
+		},
 		actionButton: {
-			margin: '0 4px',
 			width: 24,
 			height: 24,
 			textAlign: 'center',
 			cursor: 'pointer',
 			transition: 'all 0.2s ease-in-out',
 			color: '#ccc',
+			marginLeft: 12,
+			'&:first-of-type': {
+				marginLeft: 0,
+			},
 			'&:hover': {
 				color: '#fff',
 			},
@@ -116,9 +126,21 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		<Box id="ComposerToolbar" className={classes.root}>
 			<Box className={classes.panel}>
 				<AddCircleOutlineOutlinedIcon onClick={handleClickNew} className={classes.actionButton} titleAccess="New" />
+				<Typography variant="body1" className={classes.panelText}>
+					New
+				</Typography>
 				<FolderOpenOutlinedIcon onClick={handleClickOpen} className={classes.actionButton} titleAccess="Open" />
+				<Typography variant="body1" className={classes.panelText}>
+					Open
+				</Typography>
 				<SaveOutlinedIcon onClick={handleClickSave} className={`${classes.actionButton} ${score ? '' : 'disabled'}`} titleAccess="Save" />
+				<Typography variant="body1" className={`${classes.panelText} ${score ? '' : 'disabled'}`}>
+					Save
+				</Typography>
 				<PrintIcon onClick={handleClickPrint} className={`${classes.actionButton} ${score ? '' : 'disabled'}`} titleAccess="Print" />
+				<Typography variant="body1" className={`${classes.panelText} ${score ? '' : 'disabled'}`}>
+					Print
+				</Typography>
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
 				</Modal>

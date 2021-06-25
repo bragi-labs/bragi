@@ -19,23 +19,22 @@ export interface NoteToolbarProps {
 export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
-			//width: 827,
 			display: 'grid',
 			gridTemplate: 'auto auto auto / 1fr',
 			gap: '24px 0',
-			//opacity: 0.9,
 			borderRadius: 16,
-			backgroundColor: '#333',
+			backgroundColor: '#444',
 			padding: 24,
+			opacity: 0.9,
+			//width: 827,
 		},
 		panel: {
 			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
-			backgroundColor: '#222',
-			padding: '0 16px',
 			borderRadius: 16,
-			textShadow: '1px 1px #000',
+			backgroundColor: '#333',
+			padding: '0 12px 0 4px',
 			marginLeft: 16,
 			'&:first-of-type': {
 				marginLeft: 0,
@@ -46,32 +45,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			color: '#999',
 			'&.disabled': {
 				color: '#666',
-			},
-		},
-		noteLengthControl: {
-			'& .MuiSlider-rail': {
-				color: '#ccc',
-			},
-			'& .MuiSlider-root': {
-				color: '#fff',
-			},
-			'& .MuiSlider-thumb': {
-				boxShadow: 'none',
-			},
-			'& .MuiSlider-markLabel': {
-				color: '#aaa',
-			},
-			'& .MuiSlider-markLabelActive': {
-				color: '#fff',
-			},
-			'& .MuiSlider-root.Mui-disabled': {
-				opacity: 0.5,
-				'& .MuiSlider-thumb': {
-					color: '#aaa',
-				},
-				'& .MuiSlider-markLabelActive': {
-					color: '#aaa',
-				},
 			},
 		},
 		actionButton: {
