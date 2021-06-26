@@ -1,10 +1,12 @@
-import { MeasureModel, VoiceModel, VoiceType, NoteModel } from './scoreModel';
+import { MeasureModel, VoiceModel, VoiceType, NoteModel, EntityKind } from './scoreModel';
 import { Voice } from './voice';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 
 export class Measure implements MeasureModel {
+	kind: EntityKind = EntityKind.MEASURE;
+
 	constructor(
 		public id: string,
 		public scoreId: string,

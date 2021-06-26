@@ -1,8 +1,10 @@
-import { ScoreInfoModel } from './scoreModel';
+import { EntityKind, ScoreInfoModel } from './scoreModel';
 import { NewScoreData } from '../services/newScoreData';
 import { AppDataHelper } from '../services/appDataHelper';
 
 export class ScoreInfo implements ScoreInfoModel {
+	kind: EntityKind = EntityKind.SCORE_INFO;
+
 	constructor(public scoreTitle: string, public scoreCredits: string, public arrangerName: string, public softwareName: string, public softwareVersion: string) {}
 
 	static createFromModel(im: ScoreInfoModel) {

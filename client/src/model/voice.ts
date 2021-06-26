@@ -1,4 +1,4 @@
-import { NoteModel, VoiceModel, VoiceType } from './scoreModel';
+import { EntityKind, NoteModel, VoiceModel, VoiceType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
 import { NewScoreData } from '../services/newScoreData';
@@ -6,6 +6,8 @@ import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 
 export class Voice implements VoiceModel {
+	kind: EntityKind = EntityKind.VOICE;
+
 	constructor(
 		public id: string,
 		public scoreId: string,

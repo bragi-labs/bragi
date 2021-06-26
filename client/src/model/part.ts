@@ -1,9 +1,11 @@
-import { PartModel, MeasureModel, VoiceModel, NoteModel } from './scoreModel';
+import { PartModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
 export class Part implements PartModel {
+	kind: EntityKind = EntityKind.PART;
+
 	constructor(public id: string, public scoreId: string, public name: string, public measures: Measure[]) {}
 
 	static createFromModel(pm: PartModel) {

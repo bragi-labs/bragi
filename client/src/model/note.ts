@@ -1,6 +1,8 @@
-import { NoteModel } from './scoreModel';
+import { EntityKind, NoteModel } from './scoreModel';
 
 export class Note implements NoteModel {
+	kind: EntityKind = EntityKind.NOTE;
+
 	constructor(
 		public id: string,
 		public scoreId: string,

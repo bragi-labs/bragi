@@ -1,6 +1,8 @@
-import { ChordModel } from './scoreModel';
+import { ChordModel, EntityKind } from './scoreModel';
 
 export class Chord implements ChordModel {
+	kind: EntityKind = EntityKind.CHORD;
+
 	constructor(
 		public id: string,
 		public scoreId: string,

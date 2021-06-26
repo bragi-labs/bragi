@@ -1,4 +1,15 @@
+export enum EntityKind {
+	SCORE = 'SCORE',
+	SCORE_INFO = 'SCORE_INFO',
+	PART = 'PART',
+	MEASURE = 'MEASURE',
+	VOICE = 'VOICE',
+	NOTE = 'NOTE',
+	CHORD = 'NOTE',
+	NA = 'NA',
+}
 export interface ScoreInfoModel {
+	kind: EntityKind; //"SCORE_INFO"
 	scoreTitle: string; //e.g. "Bohemian Rhapsody"
 	scoreCredits: string; //e.g. "Queen - A Night at the Opera - 1975"
 	arrangerName: string; //e.g. "Uri Kalish"
@@ -6,6 +17,7 @@ export interface ScoreInfoModel {
 	softwareVersion: string; //e.g. "1.0.0"
 }
 export interface NoteModel {
+	kind: EntityKind; //"NOTE"
 	id: string; //internal ID
 	scoreId: string; //internal ID
 	partId: string; //internal ID
@@ -19,6 +31,7 @@ export interface NoteModel {
 	isTiedToPrev: boolean; //e.g. false
 }
 export interface ChordModel {
+	kind: EntityKind; //"CHORD"
 	id: string; //internal ID
 	scoreId: string; //internal ID
 	partId: string; //internal ID
@@ -38,6 +51,7 @@ export enum VoiceType {
 	NA = 'NA',
 }
 export interface VoiceModel {
+	kind: EntityKind; //"VOICE"
 	id: string; //internal ID
 	scoreId: string; //internal ID
 	partId: string; //internal ID
@@ -49,6 +63,7 @@ export interface VoiceModel {
 	chords: ChordModel[];
 }
 export interface MeasureModel {
+	kind: EntityKind; //"MEASURE"
 	id: string; //internal ID
 	scoreId: string; //internal ID
 	partId: string; //internal ID
@@ -61,12 +76,14 @@ export interface MeasureModel {
 	voices: VoiceModel[];
 }
 export interface PartModel {
+	kind: EntityKind; //"PART"
 	id: string; //internal ID
 	scoreId: string; //internal ID
 	name: string; //e.g. "Part 1"
 	measures: MeasureModel[];
 }
 export interface ScoreModel {
+	kind: EntityKind; //"SCORE"
 	id: string; //internal ID
 	scoreInfo: ScoreInfoModel;
 	parts: PartModel[];
