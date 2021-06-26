@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core';
 import { AppDataHelper } from '../../services/appDataHelper';
 
 export const Masthead = React.memo(() => {
-	const useStyles = makeStyles((theme) => ({
+	const useStyles = makeStyles((/*theme*/) => ({
 		root: {
 			position: 'relative',
 			height: '100%',
@@ -49,14 +49,14 @@ export const Masthead = React.memo(() => {
 			textDecoration: 'none',
 			transition: 'all 0.2s ease-in-out',
 			textShadow: '1px 1px #000',
-			color: '#aaa',
+			color: '#999',
 			'&:hover': {
 				color: '#ccc',
 			},
 		},
 		currentPath: {
 			textDecoration: 'none',
-			color: theme.palette.text.secondary,
+			color: '#ddd',
 			textShadow: '1px 1px #000',
 			pointerEvents: 'none',
 		},
