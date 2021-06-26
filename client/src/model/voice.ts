@@ -49,10 +49,17 @@ export class Voice implements VoiceModel {
 		return v.notes.find((n) => n.id === noteId) || null;
 	}
 
-	static canChangeNoteDuration(v: VoiceModel, n: NoteModel, newDurationDivs: number, measureDurationDivs: number): boolean {
+	static canChangeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureDurationDivs: number): boolean {
 		if (v.voiceType !== VoiceType.FN_LVL_1) {
 			return false;
 		}
-		return n.durationDivs !== newDurationDivs && n.startDiv + newDurationDivs <= measureDurationDivs;
+		const n = Voice.findNote(v, noteId);
+		return !!n && n.durationDivs !== newDurationDivs && n.startDiv + newDurationDivs <= measureDurationDivs;
+	}
+
+	static changeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureDurationDivs: number) {
+		if (!Voice.canChangeNoteDuration(v, noteId, newDurationDivs, measureDurationDivs)) {
+			return;
+		}
 	}
 }

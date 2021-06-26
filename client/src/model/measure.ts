@@ -54,13 +54,9 @@ export class Measure implements MeasureModel {
 
 	static canChangeNoteDuration(m: MeasureModel, voiceId: string, noteId: string, newDurationDivs: number): boolean {
 		const v = Measure.findVoice(m, voiceId);
-		if (!v || v.voiceType !== VoiceType.FN_LVL_1) {
+		if (!v) {
 			return false;
 		}
-		const n = Voice.findNote(v, noteId);
-		if (!n) {
-			return false;
-		}
-		return Voice.canChangeNoteDuration(v, n, newDurationDivs, m.durationDivs);
+		return Voice.canChangeNoteDuration(v, noteId, newDurationDivs, m.durationDivs);
 	}
 }
