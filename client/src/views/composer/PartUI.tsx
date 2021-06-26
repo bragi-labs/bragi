@@ -174,20 +174,20 @@ export const PartUI = ({ part }: StageUIProps) => {
 																	className={classes.longNoteTail}
 																	style={{
 																		backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
-																		top: `${CommonHelper.cmToPx(quarterSizeCm) * 0.66}px`,
-																		height: `${CommonHelper.cmToPx(quarterSizeCm) * 0.288}px`,
+																		top: `${CommonHelper.cmToPx(quarterSizeCm) * 0.662}px`,
+																		height: `${CommonHelper.cmToPx(quarterSizeCm) * 0.285}px`,
 																		left:
 																			MusicalHelper.parseNote(note.fullName).octave <= 3
 																				? `${CommonHelper.cmToPx(quarterSizeCm) - 2}px`
 																				: `${CommonHelper.cmToPx(quarterSizeCm) / 2 - 1}px`,
 																		width:
 																			MusicalHelper.parseNote(note.fullName).octave <= 3
-																				? `${((note.durationDivs - 24) * CommonHelper.cmToPx(quarterSizeCm)) / 24 - 2}px`
+																				? `${((note.durationDivs - 24) * CommonHelper.cmToPx(quarterSizeCm)) / 24 - 1}px`
 																				: `${
 																						CommonHelper.cmToPx(quarterSizeCm) / 2 -
 																						1 +
 																						((note.durationDivs - 24) * CommonHelper.cmToPx(quarterSizeCm)) / 24 -
-																						2
+																						1
 																				  }px`,
 																	}}
 																/>
