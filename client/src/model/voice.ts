@@ -86,13 +86,11 @@ export class Voice implements VoiceModel {
 			}
 		} else {
 			let passedTarget = false;
-			let curStartDivs = 0;
 			let lastOkIndex = -1;
 			v.notes.forEach((n, i) => {
 				if (n.id === noteId) {
 					lastOkIndex = i;
 					targetNote.durationDivs = newDurationDivs;
-					curStartDivs = n.startDiv + n.durationDivs;
 					passedTarget = true;
 				} else if (passedTarget) {
 					n.startDiv += deltaDivs;
