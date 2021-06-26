@@ -11,6 +11,7 @@ import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
+import { Voice } from '../../model/voice';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
@@ -120,121 +121,146 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		if (!score || !selection || selection.items.length === 0) {
 			return;
 		}
-		let measure;
-		let note;
+		let m;
+		let n;
 		let noteDetails;
 
 		let noteDurationsOK: any = {};
 		noteDurationOptions.forEach((o) => {
 			noteDurationsOK[o.durationDivs] = selection.items.every((item) => {
-				measure = item.measureId && Score.findMeasure(score, item.measureId);
-				if (!measure) return false;
-				return Measure.canChangeNoteDuration(measure, item.voiceId, item.noteId, o.durationDivs);
+				m = item.measureId && Score.findMeasure(score, item.measureId);
+				if (!m) return false;
+				return Measure.canChangeNoteDuration(m, item.voiceId, item.noteId, o.durationDivs);
 			});
 		});
 		setCanChangeDuration(noteDurationsOK);
 		setCanPitchDown(
 			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note || note.isRest) {
+				n = item.noteId && Score.findNote(score, item.noteId);
+				if (!n || n.isRest) {
 					return false;
 				}
-				noteDetails = MusicalHelper.parseNote(note.fullName);
+				noteDetails = MusicalHelper.parseNote(n.fullName);
 				return !(noteDetails.step === 'C' && !noteDetails.alter && noteDetails.octave === MusicalHelper.minOctave);
 			}),
 		);
 		setCanPitchUp(
 			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note || note.isRest) {
+				n = item.noteId && Score.findNote(score, item.noteId);
+				if (!n || n.isRest) {
 					return false;
 				}
-				noteDetails = MusicalHelper.parseNote(note.fullName);
+				noteDetails = MusicalHelper.parseNote(n.fullName);
 				return !(noteDetails.step === 'B' && !noteDetails.alter && noteDetails.octave === MusicalHelper.maxOctave);
 			}),
 		);
 		setCanOctaveDown(
 			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note || note.isRest) {
+				n = item.noteId && Score.findNote(score, item.noteId);
+				if (!n || n.isRest) {
 					return false;
 				}
-				noteDetails = MusicalHelper.parseNote(note.fullName);
+				noteDetails = MusicalHelper.parseNote(n.fullName);
 				return noteDetails.octave !== MusicalHelper.minOctave;
 			}),
 		);
 		setCanOctaveUp(
 			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				if (!note || note.isRest) {
+				n = item.noteId && Score.findNote(score, item.noteId);
+				if (!n || n.isRest) {
 					return false;
 				}
-				noteDetails = MusicalHelper.parseNote(note.fullName);
+				noteDetails = MusicalHelper.parseNote(n.fullName);
 				return noteDetails.octave !== MusicalHelper.maxOctave;
 			}),
 		);
 		setCanDelete(
 			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				return note && !note.isRest;
+				n = item.noteId && Score.findNote(score, item.noteId);
+				return n && !n.isRest;
 			}),
 		);
 	}, [selection, score, noteDurationOptions]);
 
-	const getSelectedNonRestNotes = useCallback(() => {
-		if (!score || !selection) {
-			return [];
-		}
-		const notes: NoteModel[] = [];
-		selection.items.forEach((item) => {
-			const note = Score.findNote(score, item.noteId);
-			if (note && !note.isRest) {
-				notes.push(note);
+	const getSelectedNotes = useCallback(
+		(includeRests: boolean) => {
+			if (!score || !selection) {
+				return [];
 			}
-		});
-		return notes;
-	}, [score, selection]);
+			const notes: NoteModel[] = [];
+			selection.items.forEach((item) => {
+				const n = Score.findNote(score, item.noteId);
+				if (n && (!n.isRest || includeRests)) {
+					notes.push(n);
+				}
+			});
+			return notes;
+		},
+		[score, selection],
+	);
 
 	const handleClickDelete = useCallback(() => {
-		const notes: NoteModel[] = getSelectedNonRestNotes();
-		if (notes.length) {
-			notes.forEach((note) => {
-				note.fullName = '';
-				note.isRest = true;
-			});
-			onUpdateScore();
+		const notes: NoteModel[] = getSelectedNotes(false);
+		if (!notes.length) {
+			return;
 		}
-	}, [getSelectedNonRestNotes, onUpdateScore]);
+		notes.forEach((n) => {
+			n.fullName = '';
+			n.isRest = true;
+		});
+		onUpdateScore();
+	}, [getSelectedNotes, onUpdateScore]);
 
 	const handleChangePitch = useCallback(
 		(event) => {
-			const notes: NoteModel[] = getSelectedNonRestNotes();
-			if (notes.length) {
-				notes.forEach((note) => {
-					if (!score) {
-						return;
-					}
-					const measure = Score.findMeasure(score, note.measureId);
-					if (!measure) {
-						return;
-					}
-					if (event.currentTarget.dataset.amount === 'octave') {
-						const noteDetails = MusicalHelper.parseNote(note.fullName);
-						note.fullName = `${noteDetails.step}${noteDetails.alter}${
-							event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1
-						}`;
-					} else {
-						note.fullName = MusicalHelper.changePitch(note.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
-					}
-					SoundHelper.playShortNote(note.fullName);
-				});
-				onUpdateScore();
+			const notes: NoteModel[] = getSelectedNotes(true);
+			if (!notes.length) {
+				return;
 			}
+			notes.forEach((n) => {
+				if (!score) {
+					return;
+				}
+				const measure = Score.findMeasure(score, n.measureId);
+				if (!measure) {
+					return;
+				}
+				if (event.currentTarget.dataset.amount === 'octave') {
+					const noteDetails = MusicalHelper.parseNote(n.fullName);
+					n.fullName = `${noteDetails.step}${noteDetails.alter}${event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
+				} else {
+					n.fullName = MusicalHelper.changePitch(n.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
+				}
+				SoundHelper.playShortNote(n.fullName);
+			});
+			onUpdateScore();
 		},
-		[getSelectedNonRestNotes, score, onUpdateScore],
+		[getSelectedNotes, score, onUpdateScore],
 	);
 
-	const handleClickNoteDuration = useCallback(() => {}, []);
+	const handleClickNoteDuration = useCallback(
+		(event) => {
+			const notes: NoteModel[] = getSelectedNotes(true);
+			if (!notes.length) {
+				return;
+			}
+			notes.forEach((n) => {
+				if (!score) {
+					return;
+				}
+				const m = Score.findMeasure(score, n.measureId);
+				if (!m) {
+					return;
+				}
+				const v = Measure.findVoice(m, n.voiceId);
+				if (!v) {
+					return;
+				}
+				Voice.changeNoteDuration(v, n.id, event.currentTarget.dataset['durationDivs'], m.durationDivs);
+			});
+		},
+		[getSelectedNotes],
+	);
 
 	return (
 		<Box id="NoteToolbar" className={classes.root}>
@@ -243,6 +269,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 					{noteDurationOptions.map((o, i) => (
 						<Button
 							key={i}
+							data-duration-divs={o.durationDivs}
 							onClick={handleClickNoteDuration}
 							disabled={!canChangeDuration[o.durationDivs]}
 							className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'}`}
