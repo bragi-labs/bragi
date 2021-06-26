@@ -190,12 +190,12 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	}, []);
 
 	const toggleOctave = useCallback(
-		(event) => {
+		(e) => {
 			if (!powerOn) {
 				return;
 			}
 			const newOctaves = [...octaves];
-			const index = event.currentTarget.dataset['octaveIndex'];
+			const index = e.currentTarget.dataset['octaveIndex'];
 			newOctaves[index] = !newOctaves[index];
 			setOctaves(newOctaves);
 		},
@@ -227,32 +227,32 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	const handleMouseDown = useCallback(
-		(event) => {
-			startNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		(e) => {
+			startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[startNote],
 	);
 
 	const handleMouseUp = useCallback(
-		(event) => {
-			stopNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		(e) => {
+			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[stopNote],
 	);
 
 	const handleMouseEnter = useCallback(
-		(event) => {
-			const isMouseButtonPressed = 'buttons' in event ? event.buttons === 1 : (event.which || event.button) === 1;
+		(e) => {
+			const isMouseButtonPressed = 'buttons' in e ? e.buttons === 1 : (e.which || e.button) === 1;
 			if (isMouseButtonPressed) {
-				startNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+				startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 			}
 		},
 		[startNote],
 	);
 
 	const handleMouseLeave = useCallback(
-		(event) => {
-			stopNote(event.currentTarget.dataset['noteName'], event.currentTarget.dataset['octaveNumber']);
+		(e) => {
+			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[stopNote],
 	);

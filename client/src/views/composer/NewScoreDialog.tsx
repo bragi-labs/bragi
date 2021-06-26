@@ -73,41 +73,41 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	const [tempoBpm, setTempoBpm] = useState<string>('120');
 	const [musicalScale, setMusicalScale] = useState<string>('C');
 
-	const handleChangeScoreTitle = (event: any) => {
-		setScoreTitle(event.target.value);
-		setIsOk(!!event.target.value);
+	const handleChangeScoreTitle = (e: any) => {
+		setScoreTitle(e.target.value);
+		setIsOk(!!e.target.value);
 	};
 
-	const handleChangeScoreCredits = (event: any) => {
-		setScoreCredits(event.target.value);
+	const handleChangeScoreCredits = (e: any) => {
+		setScoreCredits(e.target.value);
 	};
 
-	const handleChangeArrangerName = (event: any) => {
-		setArrangerName(event.target.value);
+	const handleChangeArrangerName = (e: any) => {
+		setArrangerName(e.target.value);
 	};
 
-	const handleChangeVoiceTypes = (event: any) => {
-		setVoiceTypes(event.target.value);
+	const handleChangeVoiceTypes = (e: any) => {
+		setVoiceTypes(e.target.value);
 	};
 
-	const handleChangeTimeSignature = (event: any) => {
-		setTimeSignature(event.target.value);
+	const handleChangeTimeSignature = (e: any) => {
+		setTimeSignature(e.target.value);
 	};
 
-	const handleChangePickupMeasure = (event: any) => {
-		setPickupMeasure(event.target.value);
+	const handleChangePickupMeasure = (e: any) => {
+		setPickupMeasure(e.target.value);
 	};
 
-	const handleChangeNumberOfMeasurements = (event: any) => {
-		setNumberOfMeasures(event.target.value);
+	const handleChangeNumberOfMeasurements = (e: any) => {
+		setNumberOfMeasures(e.target.value);
 	};
 
-	const handleChangeTempoBpm = (event: any) => {
-		setTempoBpm(event.target.value);
+	const handleChangeTempoBpm = (e: any) => {
+		setTempoBpm(e.target.value);
 	};
 
-	const handleChangeMusicalScale = (event: any) => {
-		setMusicalScale(event.target.value);
+	const handleChangeMusicalScale = (e: any) => {
+		setMusicalScale(e.target.value);
 	};
 
 	const handleClickCancel = useCallback(() => {

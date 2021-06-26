@@ -107,8 +107,8 @@ export const PartUI = ({ part }: StageUIProps) => {
 	}, [part.measures, partsWidthCm, quarterSizeCm]);
 
 	const handleClickNote = useCallback(
-		(event) => {
-			const note = Part.findNote(part, event.currentTarget.dataset.noteId);
+		(e) => {
+			const note = Part.findNote(part, e.currentTarget.dataset.noteId);
 			if (note) {
 				setSelection({
 					items: [{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],

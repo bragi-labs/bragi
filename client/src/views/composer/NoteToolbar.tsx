@@ -212,7 +212,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	}, [getSelectedNotes, onUpdateScore]);
 
 	const handleChangePitch = useCallback(
-		(event) => {
+		(e) => {
 			const notes: NoteModel[] = getSelectedNotes(true);
 			if (!notes.length) {
 				return;
@@ -225,11 +225,11 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				if (!measure) {
 					return;
 				}
-				if (event.currentTarget.dataset.amount === 'octave') {
+				if (e.currentTarget.dataset.amount === 'octave') {
 					const noteDetails = MusicalHelper.parseNote(n.fullName);
-					n.fullName = `${noteDetails.step}${noteDetails.alter}${event.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
+					n.fullName = `${noteDetails.step}${noteDetails.alter}${e.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
 				} else {
-					n.fullName = MusicalHelper.changePitch(n.fullName, measure.musicalScale, event.currentTarget.dataset.direction === 'up');
+					n.fullName = MusicalHelper.changePitch(n.fullName, measure.musicalScale, e.currentTarget.dataset.direction === 'up');
 				}
 				SoundHelper.playShortNote(n.fullName);
 			});
@@ -239,7 +239,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	);
 
 	const handleClickNoteDuration = useCallback(
-		(event) => {
+		(e) => {
 			const notes: NoteModel[] = getSelectedNotes(true);
 			if (!notes.length) {
 				return;
@@ -256,10 +256,10 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				if (!v) {
 					return;
 				}
-				Voice.changeNoteDuration(v, n.id, event.currentTarget.dataset['durationDivs'], m.durationDivs);
+				Voice.changeNoteDuration(v, n.id, e.currentTarget.dataset['durationDivs'], m.durationDivs);
 			});
 		},
-		[getSelectedNotes],
+		[getSelectedNotes, score],
 	);
 
 	return (
