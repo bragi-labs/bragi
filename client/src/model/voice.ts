@@ -61,29 +61,53 @@ export class Voice implements VoiceModel {
 		if (!Voice.canChangeNoteDuration(v, noteId, newDurationDivs, measureDurationDivs)) {
 			return;
 		}
-		let targetNote: NoteModel | null = null;
-		let targetNoteIndex = 0;
-		let newNote: NoteModel | null = null;
-		let isShorting = false;
-		let deltaDivs = 0;
-		let curStartDivs = 0;
-		//const tsDetails = MusicalHelper.parseTimeSignature(measureTimeSignature);
-		v.notes.forEach((n, i) => {
-			if (n.id === noteId) {
-				targetNote = n;
-				targetNoteIndex = i;
-				deltaDivs = newDurationDivs - n.durationDivs;
-				isShorting = deltaDivs < 0;
-				n.durationDivs = newDurationDivs;
-				curStartDivs = n.startDiv + n.durationDivs;
-				if (isShorting) {
-					newNote = new Note(CommonHelper.getRandomId(), n.scoreId, n.partId, n.measureId, n.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
+		const targetNote = Voice.findNote(v, noteId);
+		if (!targetNote) {
+			return;
+		}
+		const deltaDivs = newDurationDivs - targetNote.durationDivs;
+		const isShorting = deltaDivs < 0;
+		if (isShorting) {
+			let targetNoteIndex = 0;
+			let newNote: NoteModel | null = null;
+			let curStartDivs = 0;
+			v.notes.forEach((n, i) => {
+				if (n.id === noteId) {
+					targetNoteIndex = i;
+					targetNote.durationDivs = newDurationDivs;
+					curStartDivs = n.startDiv + n.durationDivs;
+					if (isShorting) {
+						newNote = new Note(CommonHelper.getRandomId(), n.scoreId, n.partId, n.measureId, n.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
+					}
 				}
-			} else if (targetNote && !isShorting) {
+			});
+			if (newNote) {
+				v.notes.splice(targetNoteIndex + 1, 0, newNote);
 			}
-		});
-		if (newNote) {
-			v.notes.splice(targetNoteIndex + 1, 0, newNote);
+		} else {
+			let passedTarget = false;
+			let curStartDivs = 0;
+			let lastOkIndex = -1;
+			v.notes.forEach((n, i) => {
+				if (n.id === noteId) {
+					lastOkIndex = i;
+					targetNote.durationDivs = newDurationDivs;
+					curStartDivs = n.startDiv + n.durationDivs;
+					passedTarget = true;
+				} else if (passedTarget) {
+					n.startDiv += deltaDivs;
+					const endDiv = n.startDiv + n.durationDivs;
+					if (endDiv >= measureDurationDivs) {
+						n.durationDivs = Math.max(n.durationDivs - (endDiv - measureDurationDivs), 0);
+						if (n.durationDivs > 0) {
+							lastOkIndex = i;
+						}
+					}
+				}
+			});
+			if (lastOkIndex > -1) {
+				v.notes.length = lastOkIndex + 1;
+			}
 		}
 	}
 }
