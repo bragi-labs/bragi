@@ -60,8 +60,9 @@ export const PartUI = ({ part }: StageUIProps) => {
 		},
 		fnSymbol: {
 			position: 'absolute',
-			left: 0,
-			top: 0,
+		},
+		longNoteTail: {
+			position: 'absolute',
 		},
 		noteName: {
 			fontSize: '11px',
@@ -168,6 +169,29 @@ export const PartUI = ({ part }: StageUIProps) => {
 																	),
 																}}
 															/>
+															{note.durationDivs > 24 && (
+																<Box
+																	className={classes.longNoteTail}
+																	style={{
+																		backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
+																		top: `${CommonHelper.cmToPx(quarterSizeCm) * 0.66}px`,
+																		height: `${CommonHelper.cmToPx(quarterSizeCm) * 0.288}px`,
+																		left:
+																			MusicalHelper.parseNote(note.fullName).octave <= 3
+																				? `${CommonHelper.cmToPx(quarterSizeCm) - 2}px`
+																				: `${CommonHelper.cmToPx(quarterSizeCm) / 2 - 1}px`,
+																		width:
+																			MusicalHelper.parseNote(note.fullName).octave <= 3
+																				? `${((note.durationDivs - 24) * CommonHelper.cmToPx(quarterSizeCm)) / 24 - 2}px`
+																				: `${
+																						CommonHelper.cmToPx(quarterSizeCm) / 2 -
+																						1 +
+																						((note.durationDivs - 24) * CommonHelper.cmToPx(quarterSizeCm)) / 24 -
+																						2
+																				  }px`,
+																	}}
+																/>
+															)}
 															{note.fullName.length >= 2 && note.fullName[1] === '#' && (
 																<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `calc(${quarterSizeCm / 2}cm - 8px)` }} />
 															)}
