@@ -256,10 +256,11 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				if (!v) {
 					return;
 				}
-				Voice.changeNoteDuration(v, n.id, e.currentTarget.dataset['durationDivs'], m.durationDivs);
+				Voice.changeNoteDuration(v, n.id, Number(e.currentTarget.dataset['durationDivs']), m.timeSignature, m.durationDivs);
+				onUpdateScore();
 			});
 		},
-		[getSelectedNotes, score],
+		[getSelectedNotes, score, onUpdateScore],
 	);
 
 	return (

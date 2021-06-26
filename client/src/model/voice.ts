@@ -57,9 +57,33 @@ export class Voice implements VoiceModel {
 		return !!n && n.durationDivs !== newDurationDivs && n.startDiv + newDurationDivs <= measureDurationDivs;
 	}
 
-	static changeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureDurationDivs: number) {
+	static changeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureTimeSignature: string, measureDurationDivs: number) {
 		if (!Voice.canChangeNoteDuration(v, noteId, newDurationDivs, measureDurationDivs)) {
 			return;
+		}
+		let targetNote: NoteModel | null = null;
+		let targetNoteIndex = 0;
+		let newNote: NoteModel | null = null;
+		let isShorting = false;
+		let deltaDivs = 0;
+		let curStartDivs = 0;
+		//const tsDetails = MusicalHelper.parseTimeSignature(measureTimeSignature);
+		v.notes.forEach((n, i) => {
+			if (n.id === noteId) {
+				targetNote = n;
+				targetNoteIndex = i;
+				deltaDivs = newDurationDivs - n.durationDivs;
+				isShorting = deltaDivs < 0;
+				n.durationDivs = newDurationDivs;
+				curStartDivs = n.startDiv + n.durationDivs;
+				if (isShorting) {
+					newNote = new Note(CommonHelper.getRandomId(), n.scoreId, n.partId, n.measureId, n.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
+				}
+			} else if (targetNote && !isShorting) {
+			}
+		});
+		if (newNote) {
+			v.notes.splice(targetNoteIndex + 1, 0, newNote);
 		}
 	}
 }
