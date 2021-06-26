@@ -20,13 +20,13 @@ export class Measure implements MeasureModel {
 		public voices: Voice[],
 	) {}
 
-	static createFromModel(mm: MeasureModel) {
+	static createFromModel(m: MeasureModel) {
 		const voices: Voice[] = [];
-		mm.voices.forEach((vm) => {
-			const voice = Voice.createFromModel(vm);
+		m.voices.forEach((v) => {
+			const voice = Voice.createFromModel(v);
 			voices.push(voice);
 		});
-		return new Measure(mm.id, mm.scoreId, mm.partId, mm.number, mm.isPickup, mm.timeSignature, mm.durationDivs, mm.tempoBpm, mm.musicalScale, voices);
+		return new Measure(m.id, m.scoreId, m.partId, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, voices);
 	}
 
 	static createFromNewDialog(scoreId: string, partId: string, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
@@ -38,29 +38,29 @@ export class Measure implements MeasureModel {
 		]);
 	}
 
-	static findVoice(mm: MeasureModel, voiceId: string): VoiceModel | null {
-		return mm.voices.find((v) => (v.id = voiceId)) || null;
+	static findVoice(m: MeasureModel, voiceId: string): VoiceModel | null {
+		return m.voices.find((v) => (v.id = voiceId)) || null;
 	}
 
-	static findNote(mm: MeasureModel, noteId: string): NoteModel | null {
+	static findNote(m: MeasureModel, noteId: string): NoteModel | null {
 		let result: NoteModel | null = null;
-		mm.voices.forEach((vm) => {
+		m.voices.forEach((v) => {
 			if (!result) {
-				result = Voice.findNote(vm, noteId);
+				result = Voice.findNote(v, noteId);
 			}
 		});
 		return result;
 	}
 
-	static canChangeNoteDuration(mm: MeasureModel, voiceId: string, noteId: string, newDurationDivs: number): boolean {
-		const vm = Measure.findVoice(mm, voiceId);
-		if (!vm || vm.voiceType !== VoiceType.FN_LVL_1) {
+	static canChangeNoteDuration(m: MeasureModel, voiceId: string, noteId: string, newDurationDivs: number): boolean {
+		const v = Measure.findVoice(m, voiceId);
+		if (!v || v.voiceType !== VoiceType.FN_LVL_1) {
 			return false;
 		}
-		const nm = Voice.findNote(vm, noteId);
-		if (!nm) {
+		const n = Voice.findNote(v, noteId);
+		if (!n) {
 			return false;
 		}
-		return Voice.canChangeNoteDuration(vm, nm, newDurationDivs, mm.durationDivs);
+		return Voice.canChangeNoteDuration(v, n, newDurationDivs, m.durationDivs);
 	}
 }

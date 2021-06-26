@@ -7,8 +7,8 @@ export class ScoreInfo implements ScoreInfoModel {
 
 	constructor(public scoreTitle: string, public scoreCredits: string, public arrangerName: string, public softwareName: string, public softwareVersion: string) {}
 
-	static createFromModel(im: ScoreInfoModel) {
-		return new ScoreInfo(im.scoreTitle, im.scoreCredits, im.arrangerName, im.softwareName, im.softwareVersion);
+	static createFromModel(si: ScoreInfoModel) {
+		return new ScoreInfo(si.scoreTitle, si.scoreCredits, si.arrangerName, si.softwareName, si.softwareVersion);
 	}
 
 	static createFromNewDialog(newScoreData: NewScoreData) {

@@ -8,13 +8,13 @@ export class Part implements PartModel {
 
 	constructor(public id: string, public scoreId: string, public name: string, public measures: Measure[]) {}
 
-	static createFromModel(pm: PartModel) {
+	static createFromModel(p: PartModel) {
 		const measures: Measure[] = [];
-		pm.measures.forEach((mm) => {
-			const measure = Measure.createFromModel(mm);
+		p.measures.forEach((m) => {
+			const measure = Measure.createFromModel(m);
 			measures.push(measure);
 		});
-		return new Part(pm.id, pm.scoreId, pm.name, measures);
+		return new Part(p.id, p.scoreId, p.name, measures);
 	}
 
 	static createFromNewDialog(scoreId: string, newScoreData: NewScoreData) {
@@ -31,25 +31,25 @@ export class Part implements PartModel {
 		return new Part(id, scoreId, '', measures);
 	}
 
-	static findMeasure(pm: PartModel, measureId: string): MeasureModel | null {
-		return pm.measures.find((m) => m.id === measureId) || null;
+	static findMeasure(p: PartModel, measureId: string): MeasureModel | null {
+		return p.measures.find((m) => m.id === measureId) || null;
 	}
 
-	static findVoice(pm: PartModel, voiceId: string): VoiceModel | null {
+	static findVoice(p: PartModel, voiceId: string): VoiceModel | null {
 		let result: VoiceModel | null = null;
-		pm.measures.forEach((mm) => {
+		p.measures.forEach((m) => {
 			if (!result) {
-				result = Measure.findVoice(mm, voiceId);
+				result = Measure.findVoice(m, voiceId);
 			}
 		});
 		return result;
 	}
 
-	static findNote(pm: PartModel, noteId: string): NoteModel | null {
+	static findNote(p: PartModel, noteId: string): NoteModel | null {
 		let result: NoteModel | null = null;
-		pm.measures.forEach((mm) => {
+		p.measures.forEach((m) => {
 			if (!result) {
-				result = Measure.findNote(mm, noteId);
+				result = Measure.findNote(m, noteId);
 			}
 		});
 		return result;

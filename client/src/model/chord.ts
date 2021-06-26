@@ -15,7 +15,7 @@ export class Chord implements ChordModel {
 		public durationDivs: number,
 	) {}
 
-	static createFromModel(cm: ChordModel) {
-		return new Chord(cm.id, cm.scoreId, cm.partId, cm.measureId, cm.voiceId, cm.name, cm.isRest, cm.startDiv, cm.durationDivs);
+	static createFromModel(c: ChordModel) {
+		return new Chord(c.id, c.scoreId, c.partId, c.measureId, c.voiceId, c.name, c.isRest, c.startDiv, c.durationDivs);
 	}
 }

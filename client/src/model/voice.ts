@@ -20,18 +20,18 @@ export class Voice implements VoiceModel {
 		public chords: Chord[],
 	) {}
 
-	static createFromModel(vm: VoiceModel) {
+	static createFromModel(v: VoiceModel) {
 		const notes: Note[] = [];
-		vm.notes.forEach((nm) => {
-			const note = Note.createFromModel(nm);
+		v.notes.forEach((n) => {
+			const note = Note.createFromModel(n);
 			notes.push(note);
 		});
 		const chords: Chord[] = [];
-		vm.chords.forEach((cm) => {
-			const chord = Chord.createFromModel(cm);
+		v.chords.forEach((c) => {
+			const chord = Chord.createFromModel(c);
 			chords.push(chord);
 		});
-		return new Voice(vm.id, vm.scoreId, vm.partId, vm.measureId, vm.name, vm.voiceType, vm.lyrics, notes, chords);
+		return new Voice(v.id, v.scoreId, v.partId, v.measureId, v.name, v.voiceType, v.lyrics, notes, chords);
 	}
 
 	static createFromNewDialog(scoreId: string, partId: string, measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
@@ -45,14 +45,14 @@ export class Voice implements VoiceModel {
 		return new Voice(id, scoreId, partId, measureId, name, voiceType, '', notes, []);
 	}
 
-	static findNote(vm: VoiceModel, noteId: string): NoteModel | null {
-		return vm.notes.find((nm) => nm.id === noteId) || null;
+	static findNote(v: VoiceModel, noteId: string): NoteModel | null {
+		return v.notes.find((n) => n.id === noteId) || null;
 	}
 
-	static canChangeNoteDuration(vm: VoiceModel, nm: NoteModel, newDurationDivs: number, measureDurationDivs: number): boolean {
-		if (vm.voiceType !== VoiceType.FN_LVL_1) {
+	static canChangeNoteDuration(v: VoiceModel, n: NoteModel, newDurationDivs: number, measureDurationDivs: number): boolean {
+		if (v.voiceType !== VoiceType.FN_LVL_1) {
 			return false;
 		}
-		return nm.durationDivs !== newDurationDivs && nm.startDiv + newDurationDivs <= measureDurationDivs;
+		return n.durationDivs !== newDurationDivs && n.startDiv + newDurationDivs <= measureDurationDivs;
 	}
 }

@@ -62,8 +62,8 @@ export const ComposerPage = () => {
 	);
 
 	const handleScoreUpdated = useCallback(() => {
-		setScore((sm) => {
-			return { ...sm } as ScoreModel;
+		setScore((s) => {
+			return { ...s } as ScoreModel;
 		});
 	}, []);
 

@@ -17,7 +17,7 @@ export class Note implements NoteModel {
 		public isTiedToPrev: boolean,
 	) {}
 
-	static createFromModel(nm: NoteModel) {
-		return new Note(nm.id, nm.scoreId, nm.partId, nm.measureId, nm.voiceId, nm.fullName, nm.isRest, nm.startDiv, nm.durationDivs, nm.isTiedToNext, nm.isTiedToPrev);
+	static createFromModel(n: NoteModel) {
+		return new Note(n.id, n.scoreId, n.partId, n.measureId, n.voiceId, n.fullName, n.isRest, n.startDiv, n.durationDivs, n.isTiedToNext, n.isTiedToPrev);
 	}
 }

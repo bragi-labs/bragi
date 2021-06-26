@@ -9,14 +9,14 @@ export class Score implements ScoreModel {
 
 	constructor(public id: string, public scoreInfo: ScoreInfo, public parts: Part[]) {}
 
-	static createFromModel(im: ScoreModel) {
-		const scoreInfo = ScoreInfo.createFromModel(im.scoreInfo);
+	static createFromModel(s: ScoreModel) {
+		const scoreInfo = ScoreInfo.createFromModel(s.scoreInfo);
 		const parts: Part[] = [];
-		im.parts.forEach((pm) => {
-			const part = Part.createFromModel(pm);
+		s.parts.forEach((p) => {
+			const part = Part.createFromModel(p);
 			parts.push(part);
 		});
-		return new Score(im.id, scoreInfo, parts);
+		return new Score(s.id, scoreInfo, parts);
 	}
 
 	static createFromNewDialog(newScoreData: NewScoreData) {
@@ -26,46 +26,46 @@ export class Score implements ScoreModel {
 		return new Score(id, scoreInfo, [part]);
 	}
 
-	static findPart(sm: ScoreModel, partId: string): PartModel | null {
-		return sm.parts.find((p) => (p.id = partId)) || null;
+	static findPart(s: ScoreModel, partId: string): PartModel | null {
+		return s.parts.find((p) => (p.id = partId)) || null;
 	}
 
-	static findMeasure(sm: ScoreModel, measureId: string): MeasureModel | null {
+	static findMeasure(s: ScoreModel, measureId: string): MeasureModel | null {
 		let result: MeasureModel | null = null;
-		sm.parts.forEach((pm) => {
+		s.parts.forEach((p) => {
 			if (!result) {
-				result = Part.findMeasure(pm, measureId);
+				result = Part.findMeasure(p, measureId);
 			}
 		});
 		return result;
 	}
 
-	static findVoice(sm: ScoreModel, voiceId: string): VoiceModel | null {
+	static findVoice(s: ScoreModel, voiceId: string): VoiceModel | null {
 		let result: VoiceModel | null = null;
-		sm.parts.forEach((pm) => {
+		s.parts.forEach((p) => {
 			if (!result) {
-				result = Part.findVoice(pm, voiceId);
+				result = Part.findVoice(p, voiceId);
 			}
 		});
 		return result;
 	}
 
-	static findNote(sm: ScoreModel, noteId: string): NoteModel | null {
+	static findNote(s: ScoreModel, noteId: string): NoteModel | null {
 		let result: NoteModel | null = null;
-		sm.parts.forEach((pm) => {
+		s.parts.forEach((p) => {
 			if (!result) {
-				result = Part.findNote(pm, noteId);
+				result = Part.findNote(p, noteId);
 			}
 		});
 		return result;
 	}
 
-	static findNotes(sm: ScoreModel, noteIds: string[]): NoteModel[] {
+	static findNotes(s: ScoreModel, noteIds: string[]): NoteModel[] {
 		const result: NoteModel[] = [];
 		noteIds.forEach((noteId) => {
-			const note = Score.findNote(sm, noteId);
-			if (note) {
-				result.push(note);
+			const n = Score.findNote(s, noteId);
+			if (n) {
+				result.push(n);
 			}
 		});
 		return result;
