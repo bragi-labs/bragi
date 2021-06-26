@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { Score } from '../../model/score';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
+import { Measure } from '../../model/measure';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
@@ -73,33 +74,44 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				color: '#666',
 			},
 		},
-		noteLengthButton: {
+		noteDurationButton: {
 			borderRadius: 24,
 		},
 	}));
 	const classes = useStyles();
 
 	const { selection } = SelectionContextContainer.useContainer();
-	const [canChangeLength, setCanChangeLength] = useState(false);
+	const [canChangeDuration, setCanChangeDuration] = useState<any>({
+		6: false,
+		12: false,
+		18: false,
+		24: false,
+		36: false,
+		48: false,
+		72: false,
+		96: false,
+	});
 	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
-	const noteLengthOptions = [
-		{ duration: 6, label: '1/16' },
-		{ duration: 12, label: '1/8' },
-		{ duration: 18, label: '3/16' },
-		{ duration: 24, label: '1/4' },
-		{ duration: 36, label: '3/8' },
-		{ duration: 48, label: '1/2' },
-		{ duration: 72, label: '3/4' },
-		{ duration: 96, label: '1' },
-	];
+	const noteDurationOptions = useMemo(
+		() => [
+			{ durationDivs: 6, label: '1/16' },
+			{ durationDivs: 12, label: '1/8' },
+			{ durationDivs: 18, label: '3/16' },
+			{ durationDivs: 24, label: '1/4' },
+			{ durationDivs: 36, label: '3/8' },
+			{ durationDivs: 48, label: '1/2' },
+			{ durationDivs: 72, label: '3/4' },
+			{ durationDivs: 96, label: '1' },
+		],
+		[],
+	);
 
 	useEffect(() => {
-		setCanChangeLength(false);
 		setCanPitchDown(false);
 		setCanPitchUp(false);
 		setCanOctaveDown(false);
@@ -108,14 +120,19 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		if (!score || !selection || selection.items.length === 0) {
 			return;
 		}
+		let measure;
 		let note;
 		let noteDetails;
-		setCanChangeLength(
-			selection.items.every((item) => {
-				note = item.noteId && Score.findNote(score, item.noteId);
-				return note && !note.isRest;
-			}),
-		);
+
+		let noteDurationsOK: any = {};
+		noteDurationOptions.forEach((o) => {
+			noteDurationsOK[o.durationDivs] = selection.items.every((item) => {
+				measure = item.measureId && Score.findMeasure(score, item.measureId);
+				if (!measure) return false;
+				return Measure.canChangeNoteDuration(measure, item.voiceId, item.noteId, o.durationDivs);
+			});
+		});
+		setCanChangeDuration(noteDurationsOK);
 		setCanPitchDown(
 			selection.items.every((item) => {
 				note = item.noteId && Score.findNote(score, item.noteId);
@@ -162,7 +179,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				return note && !note.isRest;
 			}),
 		);
-	}, [selection, score]);
+	}, [selection, score, noteDurationOptions]);
 
 	const getSelectedNonRestNotes = useCallback(() => {
 		if (!score || !selection) {
@@ -217,18 +234,18 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		[getSelectedNonRestNotes, score, onUpdateScore],
 	);
 
-	const handleClickNoteLength = useCallback(() => {}, []);
+	const handleClickNoteDuration = useCallback(() => {}, []);
 
 	return (
 		<Box id="NoteToolbar" className={classes.root}>
 			<Box>
 				<Box className={classes.panel}>
-					{noteLengthOptions.map((o, i) => (
+					{noteDurationOptions.map((o, i) => (
 						<Button
 							key={i}
-							onClick={handleClickNoteLength}
-							disabled={!canChangeLength}
-							className={`${classes.actionButton} ${classes.noteLengthButton} ${canChangeLength ? '' : 'disabled'}`}
+							onClick={handleClickNoteDuration}
+							disabled={!canChangeDuration[o.durationDivs]}
+							className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'}`}
 						>
 							{o.label}
 						</Button>
