@@ -14,7 +14,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
-			width: '21cm',
+			//width: '21cm',
 			//height: '29.7cm',
 			height: '100%',
 			textAlign: 'center',
@@ -67,13 +67,13 @@ export const StageUI = ({ score }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { stageWidthCm } = SettingsContextContainer.useContainer();
+	const { pageWidth, stageWidth } = SettingsContextContainer.useContainer();
 
 	return (
 		<>
 			{score && (
-				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ padding: `${(21 - stageWidthCm) / 2}cm` }}>
-					<Box className={classes.content} style={{ width: `${stageWidthCm}cm` }}>
+				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ width: `${pageWidth}px`, padding: `${(pageWidth - stageWidth) / 2}px` }}>
+					<Box className={classes.content} style={{ width: `${stageWidth}px` }}>
 						<Box className={classes.header}>
 							<Typography variant="h4" className={classes.scoreTitle}>
 								{score.scoreInfo.scoreTitle}
