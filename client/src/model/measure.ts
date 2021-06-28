@@ -1,4 +1,4 @@
-import { MeasureModel, VoiceModel, VoiceType, NoteModel, EntityKind } from './scoreModel';
+import { EntityKind, MeasureModel, NoteModel, VoiceModel, VoiceType } from './scoreModel';
 import { Voice } from './voice';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
@@ -32,14 +32,27 @@ export class Measure implements MeasureModel {
 	static createFromNewDialog(scoreId: string, partId: string, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
-		const voice = Voice.createFromNewDialog(scoreId, partId, id, 'Melody', VoiceType.FN_LVL_1, newScoreData);
-		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, [
-			voice,
-		]);
+		const voices: Voice[] = [];
+		newScoreData.voiceTypes.forEach((vt) => {
+			let voiceName;
+			switch (vt) {
+				case VoiceType.FN_LVL_1:
+					voiceName = 'Melody';
+					break;
+				case VoiceType.LYRICS:
+					voiceName = 'Lyrics';
+					break;
+				default:
+					voiceName = '';
+			}
+			const voice = Voice.createFromNewDialog(scoreId, partId, id, voiceName, vt, newScoreData);
+			voices.push(voice);
+		});
+		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, voices);
 	}
 
 	static findVoice(m: MeasureModel, voiceId: string): VoiceModel | null {
-		return m.voices.find((v) => (v.id = voiceId)) || null;
+		return m.voices.find((v) => v.id === voiceId) || null;
 	}
 
 	static findNote(m: MeasureModel, noteId: string): NoteModel | null {

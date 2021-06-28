@@ -37,10 +37,12 @@ export class Voice implements VoiceModel {
 	static createFromNewDialog(scoreId: string, partId: string, measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const notes = [];
-		const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
-		for (let i = 0; i < beats; i++) {
-			const note = new Note(CommonHelper.getRandomId(), scoreId, partId, measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
-			notes.push(note);
+		if (voiceType === VoiceType.FN_LVL_1) {
+			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
+			for (let i = 0; i < beats; i++) {
+				const note = new Note(CommonHelper.getRandomId(), scoreId, partId, measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
+				notes.push(note);
+			}
 		}
 		return new Voice(id, scoreId, partId, measureId, name, voiceType, '', notes, []);
 	}

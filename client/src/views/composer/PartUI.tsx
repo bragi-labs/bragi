@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
+import { Typography, TextField } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
 import { Part } from '../../model/part';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
@@ -37,7 +37,12 @@ export const PartUI = ({ part }: StageUIProps) => {
 		},
 		voice: {
 			display: 'flex',
-			border: '1px solid #999',
+			borderTop: '1px solid #999',
+			borderLeft: '1px solid #999',
+			borderRight: '1px solid #999',
+			'&:last-of-type': {
+				borderBottom: '1px solid #999',
+			},
 		},
 		note: {
 			position: 'relative',
@@ -45,7 +50,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 			border: '1px solid #eee',
 			'&.selected': {
 				backgroundColor: '#ddf',
-				border: '1px solid #33f',
+				border: '1px solid #3f51b5',
 			},
 			'@media print': {
 				backgroundColor: 'transparent !important',
@@ -85,6 +90,23 @@ export const PartUI = ({ part }: StageUIProps) => {
 				transform: 'rotate(-135deg)',
 			},
 		},
+		lyrics: {
+			display: 'flex',
+			width: '100%',
+			fontFamily: 'Arial, sans-serif',
+			'& .MuiTextField-root': {
+				width: '100%',
+				'& .MuiInput-formControl': {
+					width: '100%',
+					'& .MuiInput-input': {
+						width: '100%',
+						padding: 2,
+						fontSize: '10px',
+						color: '#000',
+					},
+				},
+			},
+		},
 	}));
 	const classes = useStyles();
 
@@ -121,6 +143,16 @@ export const PartUI = ({ part }: StageUIProps) => {
 		[setSelection, part],
 	);
 
+	const handleLyricsChange = useCallback(
+		(e) => {
+			const v = Part.findVoice(part, e.target.parentElement.parentElement.dataset.voiceId);
+			if (v) {
+				v.lyrics = e.target.value;
+			}
+		},
+		[part],
+	);
+
 	return (
 		<Box id="PartUI" className={classes.root} style={{ width: `${partsWidth}px` }}>
 			{part.name && (
@@ -131,76 +163,75 @@ export const PartUI = ({ part }: StageUIProps) => {
 			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOver}px` }}>
 				{part.measures.map((measure, m) => (
 					<Box key={m} style={{ marginRight: `${measure.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
-						<Box id="MeasureUI" className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${rowGap}px` }}>
+						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${rowGap}px` }}>
 							{measure.number % sizeVars.numberOfMeasuresPerRow === 1 && (
 								<Box className={classes.measureNumber}>
 									<Typography variant="body2">{measure.number}</Typography>
 								</Box>
 							)}
 							{measure.voices.map((voice, v) => (
-								<Box key={v}>
-									{voice.voiceType === VoiceType.FN_LVL_1 && (
-										<Box id="VoiceFnLvl1UI" className={classes.voice}>
-											{voice.notes.map((note, n) => (
-												<Box
-													key={n}
-													className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
-													style={{ flex: `${note.durationDivs} 0 0`, height: `${quarterSize}px` }}
-													onClick={handleClickNote}
-													data-measure-id={measure.id}
-													data-voice-id={voice.id}
-													data-note-id={note.id}
-												>
-													{note.fullName && (
+								<Box key={v} className={classes.voice}>
+									{voice.voiceType === VoiceType.FN_LVL_1 &&
+										voice.notes.map((note, n) => (
+											<Box
+												key={n}
+												className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
+												style={{ flex: `${note.durationDivs} 0 0`, height: `${quarterSize}px` }}
+												onClick={handleClickNote}
+												data-measure-id={measure.id}
+												data-voice-id={voice.id}
+												data-note-id={note.id}
+											>
+												{note.fullName && (
+													<Box
+														className={classes.fnSymbolContainer}
+														style={{
+															transform: `scaleX(${note.durationDivs >= 24 ? 1 : note.durationDivs / 24})`,
+														}}
+													>
 														<Box
-															className={classes.fnSymbolContainer}
+															className={classes.fnSymbol}
 															style={{
-																transform: `scaleX(${note.durationDivs >= 24 ? 1 : note.durationDivs / 24})`,
+																...FigurenotesHelper.getSymbolStyle(
+																	`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
+																	quarterSize - 2,
+																	'px',
+																),
 															}}
-														>
+														/>
+														{note.durationDivs > 24 && (
 															<Box
-																className={classes.fnSymbol}
+																className={classes.longNoteTail}
 																style={{
-																	...FigurenotesHelper.getSymbolStyle(
-																		`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
-																		quarterSize - 2,
-																		'px',
-																	),
+																	backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
+																	top: `${quarterSize - 12}px`,
+																	height: `10px`,
+																	left: MusicalHelper.parseNote(note.fullName).octave <= 3 ? `${quarterSize - 2}px` : `${quarterSize / 2 - 1}px`,
+																	width:
+																		MusicalHelper.parseNote(note.fullName).octave <= 3
+																			? `${((note.durationDivs - 24) * quarterSize) / 24 - 1}px`
+																			: `${quarterSize / 2 - 1 + ((note.durationDivs - 24) * quarterSize) / 24 - 1}px`,
 																}}
 															/>
-															{note.durationDivs > 24 && (
-																<Box
-																	className={classes.longNoteTail}
-																	style={{
-																		backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
-																		top: `${quarterSize - 12}px`,
-																		height: `10px`,
-																		left:
-																			MusicalHelper.parseNote(note.fullName).octave <= 3
-																				? `${quarterSize - 2}px`
-																				: `${quarterSize / 2 - 1}px`,
-																		width:
-																			MusicalHelper.parseNote(note.fullName).octave <= 3
-																				? `${((note.durationDivs - 24) * quarterSize) / 24 - 1}px`
-																				: `${quarterSize / 2 - 1 + ((note.durationDivs - 24) * quarterSize) / 24 - 1}px`,
-																	}}
-																/>
-															)}
-															{note.fullName.length >= 2 && note.fullName[1] === '#' && (
-																<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `${quarterSize / 2 - 8}px` }} />
-															)}
-															{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
-																<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${quarterSize / 2 - 18}px` }} />
-															)}
-															<Box className={`${classes.noteName} ${MusicalHelper.parseNote(note.fullName).alter ? 'alter' : ''}`}>
-																{MusicalHelper.parseNote(note.fullName).step}
-																{MusicalHelper.parseNote(note.fullName).alter}
-															</Box>
+														)}
+														{note.fullName.length >= 2 && note.fullName[1] === '#' && (
+															<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `${quarterSize / 2 - 8}px` }} />
+														)}
+														{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
+															<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${quarterSize / 2 - 18}px` }} />
+														)}
+														<Box className={`${classes.noteName} ${MusicalHelper.parseNote(note.fullName).alter ? 'alter' : ''}`}>
+															{MusicalHelper.parseNote(note.fullName).step}
+															{MusicalHelper.parseNote(note.fullName).alter}
 														</Box>
-													)}
-													{!note.fullName && <Box>{``}</Box>}
-												</Box>
-											))}
+													</Box>
+												)}
+												{!note.fullName && <Box>{``}</Box>}
+											</Box>
+										))}
+									{voice.voiceType === VoiceType.LYRICS && (
+										<Box className={classes.lyrics}>
+											<TextField data-voice-id={voice.id} defaultValue={voice.lyrics} onChange={handleLyricsChange} label="" />
 										</Box>
 									)}
 								</Box>
