@@ -85,6 +85,7 @@ export interface PartModel {
 export interface ScoreModel {
 	kind: EntityKind; //"SCORE"
 	id: string; //internal ID
+	timestamp: number; //timestamp in ms
 	scoreInfo: ScoreInfoModel;
 	parts: PartModel[];
 }

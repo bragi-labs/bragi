@@ -6,6 +6,7 @@ import { CommonHelper } from '../services/commonHelper';
 
 export class Score implements ScoreModel {
 	kind: EntityKind = EntityKind.SCORE;
+	timestamp: number = Date.now();
 
 	constructor(public id: string, public scoreInfo: ScoreInfo, public parts: Part[]) {}
 
