@@ -6,6 +6,7 @@ import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
 import { Typography } from '@material-ui/core';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
+import { DraggablePanel } from './DraggablePanel';
 
 export interface PianoProps {
 	smallPiano: boolean;
@@ -15,17 +16,17 @@ export interface PianoProps {
 export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
-			position: 'relative',
-			display: 'inline-block',
+			position: 'absolute',
+			backgroundColor: '#222',
 			//opacity: 0.9,
-			backgroundColor: '#111',
 			userSelect: 'none',
 			borderRadius: 8,
-			padding: 32,
+			padding: 24,
 			'&.small-piano': {
 				borderRadius: 4,
-				padding: 16,
+				padding: 12,
 			},
+			zIndex: 20,
 		},
 		controls: {
 			display: 'flex',
@@ -155,10 +156,12 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	}));
 	const classes = useStyles();
 
+	const [isDragging, setIsDragging] = useState(false);
 	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([true, true, true, true, true]);
+	const [position, setPosition] = useState({ x: 0, y: 0 });
 
 	useEffect(() => {
 		if (powerOn) {
@@ -243,22 +246,37 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const handleMouseEnter = useCallback(
 		(e) => {
 			const isMouseButtonPressed = 'buttons' in e ? e.buttons === 1 : (e.which || e.button) === 1;
-			if (isMouseButtonPressed) {
+			if (isMouseButtonPressed && !isDragging) {
 				startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 			}
 		},
-		[startNote],
+		[isDragging, startNote],
 	);
 
 	const handleMouseLeave = useCallback(
 		(e) => {
-			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
+			if (!isDragging) {
+				stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
+			}
 		},
-		[stopNote],
+		[isDragging, stopNote],
 	);
 
+	const handleDragStart = useCallback(() => {
+		setIsDragging(true);
+	}, []);
+
+	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
+		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+	}, []);
+
+	const handleDragEnd = useCallback(() => {
+		setIsDragging(false);
+	}, []);
+
 	return (
-		<Box id="Piano" className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}>
+		<Box id="Piano" className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.controls}>
 				<Box className={classes.powerSwitch}>
 					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />

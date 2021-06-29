@@ -10,7 +10,7 @@ export const PlayPage = React.memo(() => {
 			height: '100%',
 			userSelect: 'none',
 		},
-		pianoContainer: {
+		pianoAnchor: {
 			marginTop: 16,
 		},
 	}));
@@ -18,7 +18,7 @@ export const PlayPage = React.memo(() => {
 
 	return (
 		<Box id="PlayPage" className={classes.root}>
-			<Box className={classes.pianoContainer}>
+			<Box className={classes.pianoAnchor}>
 				<Piano smallPiano={false} />
 			</Box>
 		</Box>

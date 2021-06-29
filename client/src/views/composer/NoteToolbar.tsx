@@ -12,6 +12,7 @@ import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
 import { Voice } from '../../model/voice';
+import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
@@ -21,13 +22,21 @@ export interface NoteToolbarProps {
 export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
+			position: 'absolute',
+			backgroundColor: '#333',
+			//opacity: 0.9,
+			userSelect: 'none',
+			borderRadius: 4,
+			padding: 4,
+			zIndex: 10,
+		},
+		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto auto / 1fr',
 			gap: '24px 0',
-			borderRadius: 16,
 			backgroundColor: '#444',
 			padding: 24,
-			opacity: 0.9,
+			//opacity: 0.9,
 			//width: 827,
 		},
 		panel: {
@@ -97,6 +106,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
+	const [position, setPosition] = useState({ x: 0, y: 0 });
 
 	const noteDurationOptions = useMemo(
 		() => [
@@ -263,55 +273,62 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		[getSelectedNotes, score, onUpdateScore],
 	);
 
+	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
+		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+	}, []);
+
 	return (
-		<Box id="NoteToolbar" className={classes.root}>
-			<Box>
-				<Box className={classes.panel}>
-					{noteDurationOptions.map((o, i) => (
-						<Button
-							key={i}
-							data-duration-divs={o.durationDivs}
-							onClick={handleClickNoteDuration}
-							disabled={!canChangeDuration[o.durationDivs]}
-							className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'}`}
-						>
-							{o.label}
-						</Button>
-					))}
+		<Box id="NoteToolbar" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+			<DraggablePanel onDragMove={handleDragMove} />
+			<Box className={classes.content}>
+				<Box>
+					<Box className={classes.panel}>
+						{noteDurationOptions.map((o, i) => (
+							<Button
+								key={i}
+								data-duration-divs={o.durationDivs}
+								onClick={handleClickNoteDuration}
+								disabled={!canChangeDuration[o.durationDivs]}
+								className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'}`}
+							>
+								{o.label}
+							</Button>
+						))}
+					</Box>
 				</Box>
-			</Box>
-			<Box>
-				<Box className={classes.panel}>
-					<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
-						<ArrowDownwardIcon titleAccess="Pitch Down" />
-					</IconButton>
-					<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
-						<ArrowUpwardIcon titleAccess="Pitch Up" />
-					</IconButton>
-					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-						Semitone
-					</Typography>
+				<Box>
+					<Box className={classes.panel}>
+						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
+							<ArrowDownwardIcon titleAccess="Pitch Down" />
+						</IconButton>
+						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
+							<ArrowUpwardIcon titleAccess="Pitch Up" />
+						</IconButton>
+						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+							Semitone
+						</Typography>
+					</Box>
+					<Box className={classes.panel}>
+						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
+							<ArrowDownwardIcon titleAccess="Octave Down" />
+						</IconButton>
+						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
+							<ArrowUpwardIcon titleAccess="Octave Up" />
+						</IconButton>
+						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+							Octave
+						</Typography>
+					</Box>
 				</Box>
-				<Box className={classes.panel}>
-					<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
-						<ArrowDownwardIcon titleAccess="Octave Down" />
-					</IconButton>
-					<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
-						<ArrowUpwardIcon titleAccess="Octave Up" />
-					</IconButton>
-					<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-						Octave
-					</Typography>
-				</Box>
-			</Box>
-			<Box>
-				<Box className={classes.panel}>
-					<IconButton onClick={handleClickDelete} className={`${classes.actionButton}`} disabled={!canDelete}>
-						<DeleteForeverIcon titleAccess="Delete" />
-					</IconButton>
-					<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} clickable ${canDelete ? '' : 'disabled'}`}>
-						Delete
-					</Typography>
+				<Box>
+					<Box className={classes.panel}>
+						<IconButton onClick={handleClickDelete} className={`${classes.actionButton}`} disabled={!canDelete}>
+							<DeleteForeverIcon titleAccess="Delete" />
+						</IconButton>
+						<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} clickable ${canDelete ? '' : 'disabled'}`}>
+							Delete
+						</Typography>
+					</Box>
 				</Box>
 			</Box>
 		</Box>

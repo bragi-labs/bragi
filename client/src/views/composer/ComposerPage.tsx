@@ -31,18 +31,18 @@ export const ComposerPage = () => {
 			minHeight: '100%',
 			maxHeight: '100%',
 		},
-		pianoContainer: {
+		pianoAnchor: {
 			position: 'absolute',
-			left: '22cm',
+			left: 824,
 			top: 56,
 			'@media print': {
 				display: 'none',
 			},
 		},
-		noteToolbarContainer: {
+		noteToolbarAnchor: {
 			position: 'absolute',
-			left: '22cm',
-			top: 240,
+			left: 824,
+			top: 256,
 			'@media print': {
 				display: 'none',
 			},
@@ -97,10 +97,10 @@ export const ComposerPage = () => {
 					<Box className={classes.stageContainer}>
 						<StageUI score={score} />
 					</Box>
-					<Box className={classes.pianoContainer}>
+					<Box className={classes.pianoAnchor}>
 						<Piano smallPiano={true} onPianoNote={handlePianoNote} />
 					</Box>
-					<Box className={classes.noteToolbarContainer}>
+					<Box className={classes.noteToolbarAnchor}>
 						<NoteToolbar score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 				</>
