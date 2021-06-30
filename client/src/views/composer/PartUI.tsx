@@ -69,15 +69,10 @@ export const PartUI = ({ part }: StageUIProps) => {
 			position: 'absolute',
 		},
 		noteName: {
-			fontSize: '11px',
+			fontSize: '12px',
 			fontFamily: 'Arial, sans-serif',
 			color: '#fff',
 			position: 'absolute',
-			top: 9,
-			left: 13,
-			'&.alter': {
-				left: 10,
-			},
 		},
 		alter: {
 			position: 'absolute',
@@ -220,7 +215,13 @@ export const PartUI = ({ part }: StageUIProps) => {
 														{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
 															<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${quarterSize / 2 - 18}px` }} />
 														)}
-														<Box className={`${classes.noteName} ${MusicalHelper.parseNote(note.fullName).alter ? 'alter' : ''}`}>
+														<Box
+															className={classes.noteName}
+															style={{
+																top: `${quarterSize / 2 - 9}px`,
+																left: `${MusicalHelper.parseNote(note.fullName).alter ? quarterSize / 2 - 9 : quarterSize / 2 - 5.5}px`,
+															}}
+														>
 															{MusicalHelper.parseNote(note.fullName).step}
 															{MusicalHelper.parseNote(note.fullName).alter}
 														</Box>
