@@ -55,8 +55,11 @@ export const ComposerPage = () => {
 
 	const handleScoreChanged = useCallback(
 		(changedScore: Score) => {
-			setScore(changedScore);
 			clearSelection();
+			setScore(null);
+			setTimeout(() => {
+				setScore(changedScore);
+			}, 0);
 		},
 		[clearSelection],
 	);
