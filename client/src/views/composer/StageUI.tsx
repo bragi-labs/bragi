@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { ScoreModel } from '../../model/scoreModel';
 import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { PartUI } from './PartUI';
+import { AppDataHelper } from '../../services/appDataHelper';
 
 export interface StageUIProps {
 	score: ScoreModel | null;
@@ -50,15 +51,10 @@ export const StageUI = ({ score }: StageUIProps) => {
 			justifyContent: 'center',
 			color: '#666',
 		},
-		arrangerName: {
+		arrangedBy: {
 			display: 'flex',
-			justifyContent: 'flex-end',
-			color: '#666',
-		},
-		appName: {
-			display: 'flex',
-			justifyContent: 'flex-end',
-			color: '#666',
+			justifyContent: 'center',
+			color: '#999',
 		},
 		partContainer: {
 			display: 'flex',
@@ -81,20 +77,20 @@ export const StageUI = ({ score }: StageUIProps) => {
 							<Typography variant="h6" className={classes.scoreCredits}>
 								{score.scoreInfo.scoreCredits}
 							</Typography>
-							{score.scoreInfo.arrangerName && (
-								<Typography variant="body2" className={classes.arrangerName}>
-									Arranged by {score.scoreInfo.arrangerName}
-								</Typography>
-							)}
-							<Typography variant="body2" className={classes.appName}>
-								{`${score.scoreInfo.softwareName} v${score.scoreInfo.softwareVersion}`}
-							</Typography>
 						</Box>
 						{score.parts.map((part, i) => (
 							<Box key={i} className={classes.partContainer}>
 								<PartUI part={part} />
 							</Box>
 						))}
+						{score.scoreInfo.arrangerName && (
+							<Typography variant="body2" className={classes.arrangedBy}>{`Arranged by ${score.scoreInfo.arrangerName} using ${AppDataHelper.appName}`}</Typography>
+						)}
+						{!score.scoreInfo.arrangerName && (
+							<Typography variant="body2" className={classes.arrangedBy}>
+								{AppDataHelper.appName}
+							</Typography>
+						)}
 					</Box>
 				</Box>
 			)}
