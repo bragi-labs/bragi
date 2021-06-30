@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
 import { ScoreModel } from '../../model/scoreModel';
-import { SettingsContextContainer } from '../../hooks/useSettingsContext';
 import { PartUI } from './PartUI';
 import { AppDataHelper } from '../../services/appDataHelper';
 
@@ -64,7 +63,8 @@ export const StageUI = ({ score }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { pageWidth, stageWidth } = SettingsContextContainer.useContainer();
+	const pageWidth = 776;
+	const stageWidth = 718;
 
 	return (
 		<>
