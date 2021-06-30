@@ -33,7 +33,10 @@ export const PartUI = ({ part }: StageUIProps) => {
 		measureNumber: {
 			position: 'absolute',
 			left: 0,
-			top: -20,
+			top: -14,
+		},
+		measureNumberText: {
+			fontSize: '12px',
 		},
 		voice: {
 			display: 'flex',
@@ -88,7 +91,6 @@ export const PartUI = ({ part }: StageUIProps) => {
 		lyrics: {
 			display: 'flex',
 			width: '100%',
-			fontFamily: 'Arial, sans-serif',
 			'& .MuiTextField-root': {
 				width: '100%',
 				'& .MuiInput-formControl': {
@@ -96,7 +98,8 @@ export const PartUI = ({ part }: StageUIProps) => {
 					'& .MuiInput-input': {
 						width: '100%',
 						padding: 2,
-						fontSize: '10px',
+						fontFamily: 'Arial, sans-serif',
+						fontSize: '11px',
 						color: '#000',
 					},
 				},
@@ -161,7 +164,9 @@ export const PartUI = ({ part }: StageUIProps) => {
 						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${rowGap}px` }}>
 							{measure.number % sizeVars.numberOfMeasuresPerRow === 1 && (
 								<Box className={classes.measureNumber}>
-									<Typography variant="body2">{measure.number}</Typography>
+									<Typography variant="body2" className={classes.measureNumberText}>
+										{measure.number}
+									</Typography>
 								</Box>
 							)}
 							{measure.voices.map((voice, v) => (
