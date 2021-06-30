@@ -26,7 +26,6 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 				borderRadius: 4,
 				padding: 12,
 			},
-			zIndex: 20,
 		},
 		controls: {
 			display: 'flex',
@@ -275,7 +274,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	}, []);
 
 	return (
-		<Box id="Piano" className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
+		<Box id="Piano" className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: isDragging ? 100 : 20 }}>
 			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.controls}>
 				<Box className={classes.powerSwitch}>

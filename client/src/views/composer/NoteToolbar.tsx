@@ -28,7 +28,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			userSelect: 'none',
 			borderRadius: 4,
 			padding: 4,
-			zIndex: 10,
 		},
 		content: {
 			display: 'grid',
@@ -101,6 +100,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		72: false,
 		96: false,
 	});
+	const [isDragging, setIsDragging] = useState(false);
 	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
@@ -273,13 +273,21 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		[getSelectedNotes, score, onUpdateScore],
 	);
 
+	const handleDragStart = useCallback(() => {
+		setIsDragging(true);
+	}, []);
+
 	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
 		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
 	}, []);
 
+	const handleDragEnd = useCallback(() => {
+		setIsDragging(false);
+	}, []);
+
 	return (
-		<Box id="NoteToolbar" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px` }}>
-			<DraggablePanel onDragMove={handleDragMove} />
+		<Box id="NoteToolbar" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: isDragging ? 100 : 10 }}>
+			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				<Box>
 					<Box className={classes.panel}>
