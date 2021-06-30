@@ -55,6 +55,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 			display: 'flex',
 			justifyContent: 'center',
 			color: '#999',
+			fontSize: '12px',
 		},
 		partContainer: {
 			display: 'flex',
