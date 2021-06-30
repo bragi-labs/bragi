@@ -93,22 +93,37 @@ export const PartUI = ({ part }: StageUIProps) => {
 			width: '100%',
 			'& .MuiTextField-root': {
 				width: '100%',
-				'& .MuiInput-formControl': {
-					width: '100%',
-					'& .MuiInput-input': {
-						width: '100%',
-						padding: 2,
-						fontFamily: 'Arial, sans-serif',
-						fontSize: '11px',
-						color: '#000',
-					},
+				'&.lyricsSize-11 .MuiInput-input': {
+					fontSize: '11px',
 				},
+				'&.lyricsSize-12 .MuiInput-input': {
+					fontSize: '12px',
+				},
+				'&.lyricsSize-13 .MuiInput-input': {
+					fontSize: '13px',
+				},
+				'&.lyricsSize-14 .MuiInput-input': {
+					fontSize: '14px',
+				},
+				'&.lyricsSize-15 .MuiInput-input': {
+					fontSize: '15px',
+				},
+			},
+			'& .MuiInput-formControl': {
+				width: '100%',
+			},
+			'& .MuiInput-input': {
+				width: '100%',
+				padding: 2,
+				fontFamily: 'Arial, sans-serif',
+				fontSize: '11px',
+				color: '#000',
 			},
 		},
 	}));
 	const classes = useStyles();
 
-	const { partsWidth, quarterSize, rowGap } = SettingsContextContainer.useContainer();
+	const { partsWidth, quarterSize, lyricsSize, rowGap } = SettingsContextContainer.useContainer();
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
 	const sizeVars = useMemo(() => {
@@ -237,7 +252,13 @@ export const PartUI = ({ part }: StageUIProps) => {
 										))}
 									{voice.voiceType === VoiceType.LYRICS && (
 										<Box className={classes.lyrics}>
-											<TextField data-voice-id={voice.id} defaultValue={voice.lyrics} onChange={handleLyricsChange} label="" />
+											<TextField
+												data-voice-id={voice.id}
+												defaultValue={voice.lyrics}
+												onChange={handleLyricsChange}
+												label=""
+												className={`lyricsSize-${lyricsSize}`}
+											/>
 										</Box>
 									)}
 								</Box>

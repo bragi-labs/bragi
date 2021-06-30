@@ -4,7 +4,7 @@ import { createContainer } from 'unstated-next';
 const useSettingsContext = () => {
 	const [partsWidth, setPartsWidth] = useState(718); //718 and less
 	const [quarterSize, setQuarterSize] = useState(36); //20 to 44
-	//const [lyricsFontSize, setLyricsFontSize] = useState(11); //11 to 15
+	const [lyricsSize, setLyricsSize] = useState(11); //11 to 15
 	const [rowGap, setRowGap] = useState(36); //20 to 80
 
 	return {
@@ -12,8 +12,8 @@ const useSettingsContext = () => {
 		setPartsWidth,
 		quarterSize,
 		setQuarterSize,
-		// lyricsFontSize,
-		// setLyricsFontSize,
+		lyricsSize,
+		setLyricsSize,
 		rowGap,
 		setRowGap,
 	};
