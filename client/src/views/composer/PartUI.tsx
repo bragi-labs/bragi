@@ -153,7 +153,17 @@ export const PartUI = ({ part }: StageUIProps) => {
 				}
 			}
 		},
-		[setSelection, part],
+		[part, setSelection],
+	);
+
+	const handleLyricsFocus = useCallback(
+		(e) => {
+			const v = Part.findVoice(part, e.target.parentElement.parentElement.dataset.voiceId);
+			if (v) {
+				setSelection({ items: [{ partId: part.id, measureId: v.measureId, voiceId: v.id, noteId: '' }] });
+			}
+		},
+		[part, setSelection],
 	);
 
 	const handleLyricsChange = useCallback(
@@ -255,6 +265,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 											<TextField
 												data-voice-id={voice.id}
 												defaultValue={voice.lyrics}
+												onFocus={handleLyricsFocus}
 												onChange={handleLyricsChange}
 												label=""
 												className={`lyricsSize-${lyricsSize}`}
