@@ -57,6 +57,9 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 				pointerEvents: 'none',
 				color: '#999',
 			},
+			'@media print': {
+				display: 'none',
+			},
 		},
 		header: {
 			paddingBottom: 32,
