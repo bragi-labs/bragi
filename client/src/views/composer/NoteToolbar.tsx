@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
@@ -7,7 +8,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
-import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { uiSelection } from '../../atoms/uiSelection';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
@@ -89,7 +90,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	}));
 	const classes = useStyles();
 
-	const { selection } = SelectionContextContainer.useContainer();
+	const selection = useRecoilValue(uiSelection);
 	const [canChangeDuration, setCanChangeDuration] = useState<any>({
 		6: false,
 		12: false,
@@ -128,7 +129,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		setCanOctaveDown(false);
 		setCanOctaveUp(false);
 		setCanDelete(false);
-		if (!score || !selection || selection.items.length === 0) {
+		if (!score || !selection || selection.length === 0) {
 			return;
 		}
 		let m;
@@ -137,7 +138,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 
 		let noteDurationsOK: any = {};
 		noteDurationOptions.forEach((o) => {
-			noteDurationsOK[o.durationDivs] = selection.items.every((item) => {
+			noteDurationsOK[o.durationDivs] = selection.every((item) => {
 				m = item.measureId && Score.findMeasure(score, item.measureId);
 				if (!m) return false;
 				return Measure.canChangeNoteDuration(m, item.voiceId, item.noteId, o.durationDivs);
@@ -145,7 +146,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		});
 		setCanChangeDuration(noteDurationsOK);
 		setCanPitchDown(
-			selection.items.every((item) => {
+			selection.every((item) => {
 				n = item.noteId && Score.findNote(score, item.noteId);
 				if (!n || n.isRest) {
 					return false;
@@ -155,7 +156,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			}),
 		);
 		setCanPitchUp(
-			selection.items.every((item) => {
+			selection.every((item) => {
 				n = item.noteId && Score.findNote(score, item.noteId);
 				if (!n || n.isRest) {
 					return false;
@@ -165,7 +166,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			}),
 		);
 		setCanOctaveDown(
-			selection.items.every((item) => {
+			selection.every((item) => {
 				n = item.noteId && Score.findNote(score, item.noteId);
 				if (!n || n.isRest) {
 					return false;
@@ -175,7 +176,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			}),
 		);
 		setCanOctaveUp(
-			selection.items.every((item) => {
+			selection.every((item) => {
 				n = item.noteId && Score.findNote(score, item.noteId);
 				if (!n || n.isRest) {
 					return false;
@@ -185,7 +186,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			}),
 		);
 		setCanDelete(
-			selection.items.every((item) => {
+			selection.every((item) => {
 				n = item.noteId && Score.findNote(score, item.noteId);
 				return n && !n.isRest;
 			}),
@@ -198,7 +199,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				return [];
 			}
 			const notes: NoteModel[] = [];
-			selection.items.forEach((item) => {
+			selection.forEach((item) => {
 				const n = Score.findNote(score, item.noteId);
 				if (n && (!n.isRest || includeRests)) {
 					notes.push(n);

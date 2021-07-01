@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
@@ -7,7 +7,7 @@ import { Typography, TextField } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
 import { Part } from '../../model/part';
 import { uiSizes } from '../../atoms/uiSizes';
-import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { uiSelection } from '../../atoms/uiSelection';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
@@ -125,7 +125,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 	const classes = useStyles();
 
 	const { partsWidth, quarterSize, lyricsSize, rowGap } = useRecoilValue(uiSizes);
-	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
+	const [selection, setSelection] = useRecoilState(uiSelection);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
@@ -146,9 +146,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 		(e) => {
 			const note = Part.findNote(part, e.currentTarget.dataset.noteId);
 			if (note) {
-				setSelection({
-					items: [{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }],
-				});
+				setSelection([{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }]);
 				if (!note.isRest) {
 					SoundHelper.playShortNote(note.fullName);
 				}
@@ -161,7 +159,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 		(e) => {
 			const v = Part.findVoice(part, e.target.parentElement.parentElement.dataset.voiceId);
 			if (v) {
-				setSelection({ items: [{ partId: part.id, measureId: v.measureId, voiceId: v.id, noteId: '' }] });
+				setSelection([{ partId: part.id, measureId: v.measureId, voiceId: v.id, noteId: '' }]);
 			}
 		},
 		[part, setSelection],
@@ -201,7 +199,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 										voice.notes.map((note, n) => (
 											<Box
 												key={n}
-												className={`${classes.note} ${isSelected(note.id) ? 'selected' : ''}`}
+												className={`${classes.note} ${selection.find((si) => si.noteId === note.id) ? 'selected' : ''}`}
 												style={{ flex: `${note.durationDivs} 0 0`, height: `${quarterSize}px` }}
 												onClick={handleClickNote}
 												data-measure-id={measure.id}

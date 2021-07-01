@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
-import { SelectionContextContainer } from '../../hooks/useSelectionContext';
+import { uiSelection } from '../../atoms/uiSelection';
 import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
@@ -51,17 +52,18 @@ export const ComposerPage = () => {
 	const classes = useStyles();
 
 	const [score, setScore] = useState<ScoreModel | null>(null);
-	const { selection, clearSelection } = SelectionContextContainer.useContainer();
+	const selection = useRecoilValue(uiSelection);
+	const resetSelection = useResetRecoilState(uiSelection);
 
 	const handleScoreChanged = useCallback(
 		(changedScore: Score) => {
-			clearSelection();
+			resetSelection();
 			setScore(null);
 			setTimeout(() => {
 				setScore(changedScore);
 			}, 0);
 		},
-		[clearSelection],
+		[resetSelection],
 	);
 
 	const handleScoreUpdated = useCallback(() => {
@@ -72,8 +74,8 @@ export const ComposerPage = () => {
 
 	const handlePianoNote = useCallback(
 		(noteFullName: string) => {
-			if (score && selection && selection.items && selection.items.length === 1) {
-				const note = Score.findNote(score, selection.items[0].noteId);
+			if (score && selection && selection.length === 1) {
+				const note = Score.findNote(score, selection[0].noteId);
 				if (note) {
 					note.isRest = false;
 					note.fullName = noteFullName;
