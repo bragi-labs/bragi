@@ -114,7 +114,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ width: `${pageWidth}px`, padding: `${(pageWidth - stageWidth) / 2}px` }}>
 					<Box className={classes.content} style={{ width: `${stageWidth}px` }}>
 						<IconButton onClick={handleClickTune} className={`${classes.tuneButton}`} disabled={!score}>
-							<TuneIcon titleAccess="Settings" />
+							<TuneIcon titleAccess="Tune Page" />
 						</IconButton>
 						<Modal open={tuneStageDialogVisible} onClose={handleCloseTuneStageDialog}>
 							<TuneStageDialog score={score} onUpdateScore={handleScoreUpdated} onDoneTuneStageDialog={handleDoneTuneStageDialog} />
