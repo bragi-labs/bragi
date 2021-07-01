@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
@@ -14,6 +14,7 @@ import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
 import { Voice } from '../../model/voice';
 import { DraggablePanel } from '../../components/DraggablePanel';
+import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 
 export interface NoteToolbarProps {
 	score: ScoreModel | null;
@@ -91,6 +92,8 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(uiSelection);
+	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
+	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [canChangeDuration, setCanChangeDuration] = useState<any>({
 		6: false,
 		12: false,
@@ -101,7 +104,6 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		72: false,
 		96: false,
 	});
-	const [isDragging, setIsDragging] = useState(false);
 	const [canPitchDown, setCanPitchDown] = useState(false);
 	const [canPitchUp, setCanPitchUp] = useState(false);
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
@@ -275,19 +277,23 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	);
 
 	const handleDragStart = useCallback(() => {
-		setIsDragging(true);
-	}, []);
+		setDraggedItem(DraggedItem.NOTE_TOOLBAR_PANEL);
+	}, [setDraggedItem]);
 
 	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
 		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
 	}, []);
 
 	const handleDragEnd = useCallback(() => {
-		setIsDragging(false);
-	}, []);
+		resetDraggedItem();
+	}, [resetDraggedItem]);
 
 	return (
-		<Box id="NoteToolbar" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: isDragging ? 100 : 10 }}>
+		<Box
+			id="NoteToolbar"
+			className={classes.root}
+			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_TOOLBAR_PANEL ? 100 : 10 }}
+		>
 			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				<Box>

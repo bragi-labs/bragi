@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -10,6 +10,7 @@ import { SoundHelper } from '../services/soundHelper';
 import { Typography } from '@material-ui/core';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
 import { DraggablePanel } from './DraggablePanel';
+import { DraggedItem, uiDraggedItem } from '../atoms/uiDraggedItem';
 
 export interface PianoProps {
 	smallPiano: boolean;
@@ -159,7 +160,9 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	}));
 	const classes = useStyles();
 
-	const [isDragging, setIsDragging] = useState(false);
+	//const [isDragging, setIsDragging] = useState(false);
+	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
+	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
@@ -259,36 +262,38 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	const handleMouseEnter = useCallback(
 		(e) => {
 			const isMouseButtonPressed = 'buttons' in e ? e.buttons === 1 : (e.which || e.button) === 1;
-			if (isMouseButtonPressed && !isDragging) {
+			if (isMouseButtonPressed && draggedItem === DraggedItem.NA) {
 				startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 			}
 		},
-		[isDragging, startNote],
+		[draggedItem, startNote],
 	);
 
 	const handleMouseLeave = useCallback(
 		(e) => {
-			if (!isDragging) {
-				stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
-			}
+			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
-		[isDragging, stopNote],
+		[stopNote],
 	);
 
 	const handleDragStart = useCallback(() => {
-		setIsDragging(true);
-	}, []);
+		setDraggedItem(DraggedItem.PIANO_PANEL);
+	}, [setDraggedItem]);
 
 	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
 		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
 	}, []);
 
 	const handleDragEnd = useCallback(() => {
-		setIsDragging(false);
-	}, []);
+		resetDraggedItem();
+	}, [resetDraggedItem]);
 
 	return (
-		<Box id="Piano" className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: isDragging ? 100 : 20 }}>
+		<Box
+			id="Piano"
+			className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}
+			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PIANO_PANEL ? 100 : 20 }}
+		>
 			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.controls}>
 				<Box className={classes.powerSwitch}>
