@@ -11,9 +11,17 @@ export class SoundHelper {
 		}
 	}
 	static startNote(noteFullName: string, synth: Synth) {
-		synth.triggerAttack(noteFullName);
+		if (synth) {
+			synth.triggerAttack(noteFullName);
+		} else {
+			SoundHelper.synth.triggerAttack(noteFullName);
+		}
 	}
 	static stopNote(noteFullName: string, synth: Synth) {
-		synth.triggerRelease(noteFullName);
+		if (synth) {
+			synth.triggerRelease(noteFullName);
+		} else {
+			SoundHelper.synth.triggerRelease(noteFullName);
+		}
 	}
 }
