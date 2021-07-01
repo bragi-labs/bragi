@@ -88,7 +88,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		setNewScoreDialogVisible(false);
 	}, []);
 
-	const handleNewScoreDialogDone = useCallback(
+	const handleDoneNewScoreDialog = useCallback(
 		(newScore: Score | null) => {
 			setNewScoreDialogVisible(false);
 			if (newScore) {
@@ -139,6 +139,9 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 				<Typography onClick={handleClickNew} variant="body1" className={`${classes.panelText} clickable`}>
 					New
 				</Typography>
+				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
+					<NewScoreDialog onDoneNewScoreDialog={handleDoneNewScoreDialog} />
+				</Modal>
 				<IconButton onClick={handleClickOpen} className={classes.actionButton}>
 					<FolderOpenOutlinedIcon titleAccess="Open" />
 				</IconButton>
@@ -151,17 +154,14 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 				<Typography onClick={handleClickSave} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>
 					Save
 				</Typography>
+				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
+				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 				<IconButton onClick={handleClickPrint} className={classes.actionButton} disabled={!score}>
 					<PrintIcon titleAccess="Print" />
 				</IconButton>
 				<Typography onClick={handleClickPrint} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>
 					Print
 				</Typography>
-				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
-					<NewScoreDialog onNewScoreDialogDone={handleNewScoreDialogDone} />
-				</Modal>
-				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
-				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 			</Box>
 		</Box>
 	);

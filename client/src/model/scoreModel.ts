@@ -1,6 +1,7 @@
 export enum EntityKind {
 	SCORE = 'SCORE',
 	SCORE_INFO = 'SCORE_INFO',
+	SCORE_SETTINGS = 'SCORE_SETTINGS',
 	PART = 'PART',
 	MEASURE = 'MEASURE',
 	VOICE = 'VOICE',
@@ -15,6 +16,13 @@ export interface ScoreInfoModel {
 	arrangerName: string; //e.g. "Uri Kalish"
 	softwareName: string; //e.g. "Figurenotes Composer"
 	softwareVersion: string; //e.g. "1.0.0"
+}
+export interface ScoreSettingsModel {
+	kind: EntityKind; //"SCORE_SETTINGS"
+	partsWidth: number; //e.g. 718
+	rowGap: number; //e.g. 36
+	quarterSize: number; //e.g. 36
+	lyricsSize: number; //e.g. 11
 }
 export interface NoteModel {
 	kind: EntityKind; //"NOTE"
@@ -87,5 +95,6 @@ export interface ScoreModel {
 	id: string; //internal ID
 	timestamp: number; //timestamp in ms
 	scoreInfo: ScoreInfoModel;
+	scoreSettings: ScoreSettingsModel;
 	parts: PartModel[];
 }

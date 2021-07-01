@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { Typography, TextField } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
 import { Part } from '../../model/part';
-import { uiSizes } from '../../atoms/uiSizes';
+import { ScoreSettings } from '../../model/scoreSettings';
 import { uiSelection } from '../../atoms/uiSelection';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
@@ -14,9 +14,10 @@ import { SoundHelper } from '../../services/soundHelper';
 
 export interface StageUIProps {
 	part: PartModel;
+	scoreSettings: ScoreSettings;
 }
 
-export const PartUI = ({ part }: StageUIProps) => {
+export const PartUI = ({ part, scoreSettings }: StageUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {},
 		partName: {
@@ -94,6 +95,15 @@ export const PartUI = ({ part }: StageUIProps) => {
 			width: '100%',
 			'& .MuiTextField-root': {
 				width: '100%',
+				'&.lyricsSize-8 .MuiInput-input': {
+					fontSize: '8px',
+				},
+				'&.lyricsSize-9 .MuiInput-input': {
+					fontSize: '9px',
+				},
+				'&.lyricsSize-10 .MuiInput-input': {
+					fontSize: '10px',
+				},
 				'&.lyricsSize-11 .MuiInput-input': {
 					fontSize: '11px',
 				},
@@ -108,6 +118,9 @@ export const PartUI = ({ part }: StageUIProps) => {
 				},
 				'&.lyricsSize-15 .MuiInput-input': {
 					fontSize: '15px',
+				},
+				'&.lyricsSize-16 .MuiInput-input': {
+					fontSize: '16px',
 				},
 			},
 			'& .MuiInput-formControl': {
@@ -124,23 +137,22 @@ export const PartUI = ({ part }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { partsWidth, quarterSize, lyricsSize, rowGap } = useRecoilValue(uiSizes);
 	const [selection, setSelection] = useRecoilState(uiSelection);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
-		const measureWidth = (4 * quarterSize * timeData.beats) / timeData.beatType + 2;
-		const numberOfMeasuresPerRow = Math.trunc(partsWidth / measureWidth);
+		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
+		const numberOfMeasuresPerRow = Math.trunc(scoreSettings.partsWidth / measureWidth);
 		const pickupMeasureLeftOver = measureWidth * (numberOfMeasuresPerRow - 1);
-		const leftOver = (partsWidth - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftOver = (scoreSettings.partsWidth - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidth,
 			pickupMeasureLeftOver,
 			leftOver,
 		};
-	}, [part.measures, partsWidth, quarterSize]);
+	}, [part.measures, scoreSettings.partsWidth, scoreSettings.quarterSize]);
 
 	const handleClickNote = useCallback(
 		(e) => {
@@ -176,7 +188,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 	);
 
 	return (
-		<Box id="PartUI" className={classes.root} style={{ width: `${partsWidth}px` }}>
+		<Box id="PartUI" className={classes.root} style={{ width: `${scoreSettings.partsWidth}px` }}>
 			{part.name && (
 				<Typography variant="h6" className={classes.partName}>
 					{part.name}
@@ -185,7 +197,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOver}px` }}>
 				{part.measures.map((measure, m) => (
 					<Box key={m} style={{ marginRight: `${measure.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
-						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${rowGap}px` }}>
+						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${scoreSettings.rowGap}px` }}>
 							{measure.number % sizeVars.numberOfMeasuresPerRow === 1 && (
 								<Box className={classes.measureNumber}>
 									<Typography variant="body2" className={classes.measureNumberText}>
@@ -200,7 +212,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 											<Box
 												key={n}
 												className={`${classes.note} ${selection.find((si) => si.noteId === note.id) ? 'selected' : ''}`}
-												style={{ flex: `${note.durationDivs} 0 0`, height: `${quarterSize}px` }}
+												style={{ flex: `${note.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
 												onClick={handleClickNote}
 												data-measure-id={measure.id}
 												data-voice-id={voice.id}
@@ -218,7 +230,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 															style={{
 																...FigurenotesHelper.getSymbolStyle(
 																	`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
-																	quarterSize - 2,
+																	scoreSettings.quarterSize - 2,
 																	'px',
 																),
 															}}
@@ -228,27 +240,39 @@ export const PartUI = ({ part }: StageUIProps) => {
 																className={classes.longNoteTail}
 																style={{
 																	backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
-																	top: `${quarterSize - 12}px`,
+																	top: `${scoreSettings.quarterSize - 12}px`,
 																	height: `10px`,
-																	left: MusicalHelper.parseNote(note.fullName).octave <= 3 ? `${quarterSize - 2}px` : `${quarterSize / 2 - 1}px`,
+																	left:
+																		MusicalHelper.parseNote(note.fullName).octave <= 3
+																			? `${scoreSettings.quarterSize - 2}px`
+																			: `${scoreSettings.quarterSize / 2 - 1}px`,
 																	width:
 																		MusicalHelper.parseNote(note.fullName).octave <= 3
-																			? `${((note.durationDivs - 24) * quarterSize) / 24 - 1}px`
-																			: `${quarterSize / 2 - 1 + ((note.durationDivs - 24) * quarterSize) / 24 - 1}px`,
+																			? `${((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 - 1}px`
+																			: `${
+																					scoreSettings.quarterSize / 2 -
+																					1 +
+																					((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 -
+																					1
+																			  }px`,
 																}}
 															/>
 														)}
 														{note.fullName.length >= 2 && note.fullName[1] === '#' && (
-															<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `${quarterSize / 2 - 8}px` }} />
+															<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `${scoreSettings.quarterSize / 2 - 8}px` }} />
 														)}
 														{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
-															<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${quarterSize / 2 - 18}px` }} />
+															<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }} />
 														)}
 														<Box
 															className={classes.noteName}
 															style={{
-																top: `${quarterSize / 2 - 9}px`,
-																left: `${MusicalHelper.parseNote(note.fullName).alter ? quarterSize / 2 - 9 : quarterSize / 2 - 5.5}px`,
+																top: `${scoreSettings.quarterSize / 2 - 9}px`,
+																left: `${
+																	MusicalHelper.parseNote(note.fullName).alter
+																		? scoreSettings.quarterSize / 2 - 9
+																		: scoreSettings.quarterSize / 2 - 5.5
+																}px`,
 															}}
 														>
 															{MusicalHelper.parseNote(note.fullName).step}
@@ -267,7 +291,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 												onFocus={handleLyricsFocus}
 												onChange={handleLyricsChange}
 												label=""
-												className={`lyricsSize-${lyricsSize}`}
+												className={`lyricsSize-${scoreSettings.lyricsSize}`}
 											/>
 										</Box>
 									)}

@@ -78,7 +78,7 @@ export const ComposerPage = () => {
 			{score && (
 				<>
 					<Box className={classes.stageContainer}>
-						<StageUI score={score} />
+						<StageUI score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 					<Box className={classes.pianoAnchor}>
 						<Piano smallPiano={true} score={score} onUpdateScore={handleScoreUpdated} />

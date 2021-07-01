@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
+import { IconButton, Modal, Typography } from '@material-ui/core';
+import TuneIcon from '@material-ui/icons/Tune';
 import { ScoreModel } from '../../model/scoreModel';
 import { PartUI } from './PartUI';
 import { AppDataHelper } from '../../services/appDataHelper';
+import { TuneStageDialog } from './TuneStageDialog';
 
 export interface StageUIProps {
-	score: ScoreModel | null;
+	score: ScoreModel;
+	onUpdateScore: () => void;
 }
 
-export const StageUI = ({ score }: StageUIProps) => {
+export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
@@ -36,6 +39,24 @@ export const StageUI = ({ score }: StageUIProps) => {
 			overflow: 'hidden',
 			backgroundColor: '#fff',
 			color: '#000',
+		},
+		tuneButton: {
+			position: 'absolute',
+			left: 16,
+			top: 16,
+			width: 24,
+			height: 24,
+			textAlign: 'center',
+			cursor: 'pointer',
+			transition: 'all 0.2s ease-in-out',
+			color: '#666',
+			'&:hover': {
+				color: '#333',
+			},
+			'&.disabled': {
+				pointerEvents: 'none',
+				color: '#999',
+			},
 		},
 		header: {
 			paddingBottom: 32,
@@ -66,11 +87,35 @@ export const StageUI = ({ score }: StageUIProps) => {
 	const pageWidth = 776;
 	const stageWidth = 718;
 
+	const [tuneStageDialogVisible, setTuneStageDialogVisible] = useState(false);
+
+	const handleClickTune = useCallback(() => {
+		setTuneStageDialogVisible(true);
+	}, []);
+
+	const handleScoreUpdated = useCallback(() => {
+		onUpdateScore();
+	}, [onUpdateScore]);
+
+	const handleCloseTuneStageDialog = useCallback(() => {
+		setTuneStageDialogVisible(false);
+	}, []);
+
+	const handleDoneTuneStageDialog = useCallback(() => {
+		setTuneStageDialogVisible(false);
+	}, []);
+
 	return (
 		<>
 			{score && (
 				<Box id="StageUI" className={`${classes.root} no-scrollbar`} style={{ width: `${pageWidth}px`, padding: `${(pageWidth - stageWidth) / 2}px` }}>
 					<Box className={classes.content} style={{ width: `${stageWidth}px` }}>
+						<IconButton onClick={handleClickTune} className={`${classes.tuneButton}`} disabled={!score}>
+							<TuneIcon titleAccess="Settings" />
+						</IconButton>
+						<Modal open={tuneStageDialogVisible} onClose={handleCloseTuneStageDialog}>
+							<TuneStageDialog score={score} onUpdateScore={handleScoreUpdated} onDoneTuneStageDialog={handleDoneTuneStageDialog} />
+						</Modal>
 						<Box className={classes.header}>
 							<Typography variant="h4" className={classes.scoreTitle}>
 								{score.scoreInfo.scoreTitle}
@@ -81,7 +126,7 @@ export const StageUI = ({ score }: StageUIProps) => {
 						</Box>
 						{score.parts.map((part, i) => (
 							<Box key={i} className={classes.partContainer}>
-								<PartUI part={part} />
+								<PartUI part={part} scoreSettings={score.scoreSettings} />
 							</Box>
 						))}
 						{score.scoreInfo.arrangerName && (

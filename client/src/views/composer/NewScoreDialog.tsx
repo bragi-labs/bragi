@@ -6,10 +6,10 @@ import { Score } from '../../model/score';
 import { VoiceType } from '../../model/scoreModel';
 
 interface NewScoreDialogProps {
-	onNewScoreDialogDone: (newScore: Score | null) => void;
+	onDoneNewScoreDialog: (newScore: Score | null) => void;
 }
 
-export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewScoreDialogProps, _ref) => {
+export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewScoreDialogProps, _ref) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'fixed',
@@ -111,8 +111,8 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 	};
 
 	const handleClickCancel = useCallback(() => {
-		onNewScoreDialogDone(null);
-	}, [onNewScoreDialogDone]);
+		onDoneNewScoreDialog(null);
+	}, [onDoneNewScoreDialog]);
 
 	const handleClickOK = useCallback(() => {
 		const newScore = Score.createFromNewDialog({
@@ -126,8 +126,8 @@ export const NewScoreDialog = React.forwardRef(({ onNewScoreDialogDone }: NewSco
 			pickupMeasure,
 			numberOfMeasures: Number(numberOfMeasures) || 16,
 		});
-		onNewScoreDialogDone(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, voiceTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onNewScoreDialogDone]);
+		onDoneNewScoreDialog(newScore);
+	}, [scoreTitle, scoreCredits, arrangerName, voiceTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
