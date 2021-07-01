@@ -1,11 +1,12 @@
 import React, { useCallback, useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { Typography, TextField } from '@material-ui/core';
 import { PartModel, VoiceType } from '../../model/scoreModel';
 import { Part } from '../../model/part';
-import { SettingsContextContainer } from '../../hooks/useSettingsContext';
+import { uiSizes } from '../../atoms/uiSizes';
 import { SelectionContextContainer } from '../../hooks/useSelectionContext';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
@@ -123,7 +124,7 @@ export const PartUI = ({ part }: StageUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const { partsWidth, quarterSize, lyricsSize, rowGap } = SettingsContextContainer.useContainer();
+	const { partsWidth, quarterSize, lyricsSize, rowGap } = useRecoilValue(uiSizes);
 	const { setSelection, isSelected } = SelectionContextContainer.useContainer();
 
 	const sizeVars = useMemo(() => {
