@@ -24,7 +24,7 @@ export const Masthead = React.memo(() => {
 			justifyContent: 'space-between',
 			alignItems: 'center',
 		},
-		leftPart: {
+		leftSection: {
 			display: 'flex',
 			alignItems: 'center',
 		},
@@ -60,7 +60,7 @@ export const Masthead = React.memo(() => {
 			textShadow: '1px 1px #000',
 			pointerEvents: 'none',
 		},
-		centerPart: {
+		centerSection: {
 			position: 'absolute',
 			left: '50%',
 			transform: 'translateX(-50%)',
@@ -75,7 +75,7 @@ export const Masthead = React.memo(() => {
 			color: '#ddd',
 			textShadow: '2px 2px #000',
 		},
-		rightPart: {
+		rightSection: {
 			display: 'flex',
 			alignItems: 'center',
 		},
@@ -115,7 +115,7 @@ export const Masthead = React.memo(() => {
 	return (
 		<Box id="Masthead" className={classes.root}>
 			<Box className={classes.content}>
-				<Box className={classes.leftPart}>
+				<Box className={classes.leftSection}>
 					<Box className={classes.navLinks}>
 						<List className={classes.list}>
 							{leftLinks.map((link, i) => (
@@ -128,12 +128,12 @@ export const Masthead = React.memo(() => {
 						</List>
 					</Box>
 				</Box>
-				<Box onClick={handleClickHomeIcon} className={classes.centerPart}>
+				<Box onClick={handleClickHomeIcon} className={classes.centerSection}>
 					<Typography variant="h4" className={`${classes.appTitle}`}>
 						{AppDataHelper.appName}
 					</Typography>
 				</Box>
-				<Box className={classes.rightPart}>
+				<Box className={classes.rightSection}>
 					{/*<Box className={classes.navLinks}>*/}
 					{/*	<List className={classes.list}>*/}
 					{/*		{rightLinks.map((link, i) => (*/}

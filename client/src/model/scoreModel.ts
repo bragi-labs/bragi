@@ -19,7 +19,7 @@ export interface ScoreInfoModel {
 }
 export interface ScoreSettingsModel {
 	kind: EntityKind; //"SCORE_SETTINGS"
-	partsWidth: number; //e.g. 718
+	musicWidth: number; //e.g. 718
 	rowGap: number; //e.g. 36
 	quarterSize: number; //e.g. 36
 	lyricsSize: number; //e.g. 11

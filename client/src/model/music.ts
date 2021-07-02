@@ -1,7 +1,6 @@
 import { MusicModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
-import { CommonHelper } from '../services/commonHelper';
 
 export class Music implements MusicModel {
 	kind: EntityKind = EntityKind.MUSIC;
@@ -18,14 +17,13 @@ export class Music implements MusicModel {
 	}
 
 	static createFromNewDialog(scoreId: string, newScoreData: NewScoreData) {
-		const id = CommonHelper.getRandomId();
 		const measures: Measure[] = [];
 		if (newScoreData.pickupMeasure !== 'no') {
-			const pickupMeasure = Measure.createFromNewDialog(scoreId, id, true, 0, newScoreData);
+			const pickupMeasure = Measure.createFromNewDialog(true, 0, newScoreData);
 			measures.push(pickupMeasure);
 		}
 		for (let i = 1; i <= newScoreData.numberOfMeasures; i++) {
-			const measure = Measure.createFromNewDialog(scoreId, id, false, i, newScoreData);
+			const measure = Measure.createFromNewDialog(false, i, newScoreData);
 			measures.push(measure);
 		}
 		return new Music(measures);

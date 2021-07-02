@@ -27,7 +27,7 @@ export class Measure implements MeasureModel {
 		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, voices);
 	}
 
-	static createFromNewDialog(scoreId: string, partId: string, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
+	static createFromNewDialog(isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
 		const voices: Voice[] = [];

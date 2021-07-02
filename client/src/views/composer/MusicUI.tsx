@@ -139,16 +139,16 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
 		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
-		const numberOfMeasuresPerRow = Math.trunc(scoreSettings.partsWidth / measureWidth);
+		const numberOfMeasuresPerRow = Math.trunc(scoreSettings.musicWidth / measureWidth);
 		const pickupMeasureLeftOver = measureWidth * (numberOfMeasuresPerRow - 1);
-		const leftOver = (scoreSettings.partsWidth - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftOver = (scoreSettings.musicWidth - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidth,
 			pickupMeasureLeftOver,
 			leftOver,
 		};
-	}, [music.measures, scoreSettings.partsWidth, scoreSettings.quarterSize]);
+	}, [music.measures, scoreSettings.musicWidth, scoreSettings.quarterSize]);
 
 	const handleClickNote = useCallback(
 		(e) => {
@@ -184,7 +184,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	);
 
 	return (
-		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.partsWidth}px` }}>
+		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
 			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOver}px` }}>
 				{music.measures.map((measure, m) => (
 					<Box key={m} style={{ marginRight: `${measure.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>

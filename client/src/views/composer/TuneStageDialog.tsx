@@ -89,12 +89,12 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 	}));
 	const classes = useStyles();
 
-	const handleChangePartsWidth = useCallback(
+	const handleChangeMusicWidth = useCallback(
 		(_e, value) => {
-			if (score.scoreSettings.partsWidth === value) {
+			if (score.scoreSettings.musicWidth === value) {
 				return;
 			}
-			score.scoreSettings.partsWidth = value;
+			score.scoreSettings.musicWidth = value;
 			onUpdateScore();
 		},
 		[score, onUpdateScore],
@@ -146,18 +146,18 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 				<form className={classes.form} noValidate autoComplete="off">
 					<Box className={classes.section}>
 						<Typography variant="body1" className={classes.label}>
-							Page Width
+							Music Section Width
 						</Typography>
 						<Typography variant="body2" className={classes.value}>
-							{score.scoreSettings.partsWidth}
+							{score.scoreSettings.musicWidth}
 						</Typography>
 						<Box className={classes.slider}>
 							<Slider
-								onChange={handleChangePartsWidth}
-								min={ScoreSettings.ranges.partsWidth.min}
-								max={ScoreSettings.ranges.partsWidth.max}
+								onChange={handleChangeMusicWidth}
+								min={ScoreSettings.ranges.musicWidth.min}
+								max={ScoreSettings.ranges.musicWidth.max}
 								step={1}
-								value={score.scoreSettings.partsWidth}
+								value={score.scoreSettings.musicWidth}
 								marks
 								track={false}
 								valueLabelDisplay="off"
@@ -166,7 +166,7 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 					</Box>
 					<Box className={classes.section}>
 						<Typography variant="body1" className={classes.label}>
-							Row Gap
+							Gap Between Rows
 						</Typography>
 						<Typography variant="body2" className={classes.value}>
 							{score.scoreSettings.rowGap}
@@ -186,7 +186,7 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 					</Box>
 					<Box className={classes.section}>
 						<Typography variant="body1" className={classes.label}>
-							Note Size
+							Quarter Note Size
 						</Typography>
 						<Typography variant="body2" className={classes.value}>
 							{score.scoreSettings.quarterSize}
@@ -206,7 +206,7 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 					</Box>
 					<Box className={classes.section}>
 						<Typography variant="body1" className={classes.label}>
-							Lyrics Size
+							Lyrics Font Size
 						</Typography>
 						<Typography variant="body2" className={classes.value}>
 							{score.scoreSettings.lyricsSize}
