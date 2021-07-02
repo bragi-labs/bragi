@@ -142,8 +142,10 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 					<FormControl className={classes.formControl}>
 						<InputLabel id="part-types-label">Part Types</InputLabel>
 						<Select id="part-types" value={partTypes} onChange={handleChangePartTypes}>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1])}>Figurenotes</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Figurenotes + Lyrics</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1])}>Melody Only</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Melody + Lyrics</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1])}>2 x Melody + Lyrics</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1])}>3 x Melody + Lyrics</MenuItem>
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>
