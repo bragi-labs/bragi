@@ -202,7 +202,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 									{Music.isPartVisible(music, part.partInfoId) && (
 										<Box
 											className={`${classes.part} ${
-												p > 0 && part.partType === PartType.FN_LVL_1 && Music.doesPartHasSharpsOrFlats(music, part.partInfoId) ? classes.partSpaceAbove : ''
+												p > 0 && part.partType === PartType.FN_LVL_1 /*&& Music.doesPartHasSharpsOrFlats(music, part.partInfoId)*/
+													? classes.partSpaceAbove
+													: ''
 											}`}
 										>
 											{part.partType === PartType.FN_LVL_1 &&

@@ -51,7 +51,7 @@ export const ComposerPage = () => {
 		partsPanelAnchor: {
 			position: 'absolute',
 			left: 824,
-			top: 441,
+			top: 448,
 			'@media print': {
 				display: 'none',
 			},

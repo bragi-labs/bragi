@@ -65,7 +65,7 @@ export const MainPage = React.memo(() => {
 			top: 90,
 			height: 'calc(100% - 90px)',
 			backgroundColor: '#000',
-			opacity: 0.5,
+			opacity: 0.25,
 			'@media print': {
 				display: 'none',
 			},

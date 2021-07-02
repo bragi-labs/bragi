@@ -19,10 +19,10 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 		root: {
 			position: 'absolute',
 			width: 501,
-			backgroundColor: '#333',
-			userSelect: 'none',
+			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
+			userSelect: 'none',
 			//opacity: 0.9,
 		},
 		content: {
@@ -112,18 +112,18 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 
 	return (
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
-			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
+			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				{partsInfo.map((pi, i) => (
 					<Box key={i} className={classes.panel}>
 						{pi.isVisible && (
 							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
-								<VisibilityIcon titleAccess="Show" />
+								<VisibilityIcon titleAccess="Hide" />
 							</IconButton>
 						)}
 						{!pi.isVisible && (
 							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
-								<VisibilityOffIcon titleAccess="Hide" />
+								<VisibilityOffIcon titleAccess="Show" />
 							</IconButton>
 						)}
 						<Typography variant="body1" className={classes.partName}>

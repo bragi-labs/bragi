@@ -26,7 +26,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		root: {
 			position: 'absolute',
 			width: 501,
-			backgroundColor: '#333',
+			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
 			userSelect: 'none',
@@ -311,7 +311,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 
 	return (
 		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_PANEL ? 100 : 10 }}>
-			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
+			<DraggablePanel title="Note" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
 					{noteDurationOptions.map((o, i) => (

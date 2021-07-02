@@ -23,23 +23,28 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 		root: {
 			position: 'absolute',
 			backgroundColor: '#222',
-			//opacity: 0.9,
 			userSelect: 'none',
 			borderRadius: 8,
 			padding: 24,
 			'&.small-piano': {
+				backgroundColor: '#222',
 				borderRadius: 4,
-				padding: 12,
+				padding: 4,
 			},
+			//opacity: 0.9,
 		},
 		controls: {
 			display: 'flex',
 			alignItems: 'center',
 			height: 24,
-			marginBottom: 4,
-			borderRadius: 4,
-			backgroundColor: '#222',
+			borderTopLeftRadius: 4,
+			borderTopRightRadius: 4,
+			backgroundColor: '#444',
 			padding: '0 6px',
+			margin: '8px 8px 4px 8px',
+			'&.small-piano': {
+				margin: '0 8px 4px 8px',
+			},
 		},
 		powerSwitch: {
 			display: 'flex',
@@ -77,6 +82,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 		keyboard: {
 			position: 'relative',
 			display: 'flex',
+			padding: '0 8px 8px 8px',
 		},
 		octave: {
 			position: 'relative',
@@ -160,7 +166,6 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	}));
 	const classes = useStyles();
 
-	//const [isDragging, setIsDragging] = useState(false);
 	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
 	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [powerOn, setPowerOn] = useState(true);
@@ -294,8 +299,8 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 			className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}
 			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PIANO_PANEL ? 100 : 20 }}
 		>
-			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
-			<Box className={classes.controls}>
+			{smallPiano && <DraggablePanel title="Piano" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />}
+			<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
 				<Box className={classes.powerSwitch}>
 					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
 					<Typography className={classes.powerSwitchText}>Power</Typography>

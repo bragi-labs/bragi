@@ -1,20 +1,27 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { Typography } from '@material-ui/core';
 
 export interface DraggablePanelProps {
+	title: string;
 	onDragStart?: () => void;
 	onDragMove?: (deltaX: number, deltaY: number) => void;
 	onDragEnd?: () => void;
 }
 
-export const DraggablePanel = React.memo(({ onDragStart, onDragMove, onDragEnd }: DraggablePanelProps) => {
+export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDragEnd }: DraggablePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
-			height: '16px',
-			backgroundImage: 'linear-gradient(135deg, #fa3 25%, #333 25%, #333 50%, #fa3 50%, #fa3 75%, #333 75%, #333 100%)',
-			backgroundSize: '56px 56px',
+			backgroundColor: '#222',
+			//backgroundImage: 'linear-gradient(135deg, #fa3 25%, #333 25%, #333 50%, #fa3 50%, #fa3 75%, #333 75%, #333 100%)',
+			//backgroundSize: '56px 56px',
+			padding: '2px 8px 6px 8px',
 			userSelect: 'none',
 			cursor: 'move',
+		},
+		title: {
+			color: '#fa3',
+			fontSize: 14,
 		},
 	}));
 	const classes = useStyles();
@@ -44,14 +51,14 @@ export const DraggablePanel = React.memo(({ onDragStart, onDragMove, onDragEnd }
 			if (!isDragging) {
 				return;
 			}
-			const roundedX = Math.trunc(e.clientX / 4) * 4;
-			const roundedY = Math.trunc(e.clientY / 4) * 4;
-			const deltaX = roundedX - position.x;
-			const deltaY = roundedY - position.y;
+			//const roundedX = Math.trunc(e.clientX / 4) * 4;
+			//const roundedY = Math.trunc(e.clientY / 4) * 4;
+			const deltaX = e.clientX - position.x;
+			const deltaY = e.clientY - position.y;
 			if (deltaX === 0 && deltaY === 0) {
 				return;
 			}
-			setPosition({ x: roundedX, y: roundedY });
+			setPosition({ x: e.clientX, y: e.clientY });
 			if (onDragMove) {
 				onDragMove(deltaX, deltaY);
 			}
@@ -89,5 +96,9 @@ export const DraggablePanel = React.memo(({ onDragStart, onDragMove, onDragEnd }
 		};
 	}, [handleMouseDown, handleMouseMove, handleMouseUp]);
 
-	return <div id="DraggablePanel" ref={panelRef} className={classes.root} />;
+	return (
+		<div id="DraggablePanel" ref={panelRef} className={classes.root}>
+			<Typography className={classes.title}>{title}</Typography>
+		</div>
+	);
 });
