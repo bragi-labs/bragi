@@ -8,7 +8,7 @@ import { uiSelection } from '../../atoms/uiSelection';
 import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
-import { NoteToolbar } from './NoteToolbar';
+import { NotePanel } from './NotePanel';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -84,7 +84,7 @@ export const ComposerPage = () => {
 						<Piano smallPiano={true} score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 					<Box className={classes.noteToolbarAnchor}>
-						<NoteToolbar score={score} onUpdateScore={handleScoreUpdated} />
+						<NotePanel score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 				</>
 			)}

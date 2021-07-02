@@ -16,12 +16,12 @@ import { Part } from '../../model/part';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 
-export interface NoteToolbarProps {
+export interface NotePanelProps {
 	score: ScoreModel | null;
 	onUpdateScore: () => void;
 }
 
-export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
+export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -300,7 +300,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 
 	return (
 		<Box
-			id="NoteToolbar"
+			id="NotePanel"
 			className={classes.root}
 			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_TOOLBAR_PANEL ? 100 : 10 }}
 		>
