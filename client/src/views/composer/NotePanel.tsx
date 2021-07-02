@@ -25,11 +25,12 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
+			width: 501,
 			backgroundColor: '#333',
-			//opacity: 0.9,
-			userSelect: 'none',
 			borderRadius: 4,
 			padding: 4,
+			userSelect: 'none',
+			//opacity: 0.9,
 		},
 		content: {
 			display: 'grid',
@@ -55,7 +56,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		panelDuration: {
 			paddingRight: 4,
 			'& .MuiButton-root': {
-				minWidth: 56,
+				minWidth: 55,
 			},
 		},
 		buttonsRow: {
