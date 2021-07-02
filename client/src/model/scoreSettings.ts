@@ -21,7 +21,7 @@ export class ScoreSettings implements ScoreSettingsModel {
 		);
 	}
 
-	static createFromNewDialog(/*newScoreData: NewScoreData*/) {
+	static createFromNewDialog() {
 		return new ScoreSettings(
 			ScoreSettings.ranges.musicWidth.default,
 			ScoreSettings.ranges.rowGap.default,

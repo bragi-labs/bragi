@@ -1,22 +1,53 @@
-import { MusicModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
+import { EntityKind, MeasureModel, MusicModel, NoteModel, PartModel, PartType } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
+import { PartInfo } from './partInfo';
 
 export class Music implements MusicModel {
 	kind: EntityKind = EntityKind.MUSIC;
 
-	constructor(public measures: Measure[]) {}
+	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
 	static createFromModel(u: MusicModel) {
+		const partsInfo: PartInfo[] = [];
+		u.partsInfo.forEach((pi) => {
+			const partInfo = PartInfo.createFromModel(pi);
+			partsInfo.push(partInfo);
+		});
 		const measures: Measure[] = [];
 		u.measures.forEach((m) => {
 			const measure = Measure.createFromModel(m);
 			measures.push(measure);
 		});
-		return new Music(measures);
+		return new Music(partsInfo, measures);
 	}
 
-	static createFromNewDialog(scoreId: string, newScoreData: NewScoreData) {
+	static createFromNewDialog(newScoreData: NewScoreData) {
+		const partsInfo: PartInfo[] = [];
+		newScoreData.partTypes.forEach((pt) => {
+			let partName;
+			switch (pt) {
+				case PartType.FN_LVL_1:
+					partName = 'Melody';
+					break;
+				case PartType.LYRICS:
+					partName = 'Lyrics';
+					break;
+				case PartType.FN_CHORDS:
+					partName = 'Chords';
+					break;
+				case PartType.CHORD_NAMES:
+					partName = 'Chords';
+					break;
+				case PartType.RHYTHM:
+					partName = 'Rhythm';
+					break;
+				default:
+					partName = '';
+			}
+			const partInfo = PartInfo.createFromNewDialog(pt, partName, true);
+			partsInfo.push(partInfo);
+		});
 		const measures: Measure[] = [];
 		if (newScoreData.pickupMeasure !== 'no') {
 			const pickupMeasure = Measure.createFromNewDialog(true, 0, newScoreData);
@@ -26,7 +57,7 @@ export class Music implements MusicModel {
 			const measure = Measure.createFromNewDialog(false, i, newScoreData);
 			measures.push(measure);
 		}
-		return new Music(measures);
+		return new Music(partsInfo, measures);
 	}
 
 	static findMeasure(u: MusicModel, measureId: string): MeasureModel | null {

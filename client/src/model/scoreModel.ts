@@ -3,6 +3,7 @@ export enum EntityKind {
 	SCORE_INFO = 'SCORE_INFO',
 	SCORE_SETTINGS = 'SCORE_SETTINGS',
 	MUSIC = 'MUSIC',
+	PART_INFO = 'PART_INFO',
 	MEASURE = 'MEASURE',
 	PART = 'PART',
 	NOTE = 'NOTE',
@@ -74,8 +75,16 @@ export interface MeasureModel {
 	musicalScale: string; //e.g. "Am"
 	parts: PartModel[];
 }
+export interface PartInfoModel {
+	kind: EntityKind; //"PART_INFO"
+	id: string; //internal ID
+	partType: PartType; //e.g. FN_LVL_1
+	name: string; //e.g. "Melody"
+	isVisible: boolean; //e.g. true
+}
 export interface MusicModel {
 	kind: EntityKind; //"MUSIC"
+	partsInfo: PartInfoModel[];
 	measures: MeasureModel[];
 }
 export interface ScoreModel {

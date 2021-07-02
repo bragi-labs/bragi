@@ -21,8 +21,8 @@ export class Score implements ScoreModel {
 	static createFromNewDialog(newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const scoreInfo = ScoreInfo.createFromNewDialog(newScoreData);
-		const scoreSettings = ScoreSettings.createFromNewDialog(/*newScoreData*/);
-		const music = Music.createFromNewDialog(id, newScoreData);
+		const scoreSettings = ScoreSettings.createFromNewDialog();
+		const music = Music.createFromNewDialog(newScoreData);
 		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 
