@@ -1,6 +1,5 @@
 import { EntityKind, MeasureModel, MusicModel, NoteModel, PartModel, PartType } from './scoreModel';
 import { Measure } from './measure';
-import { NewScoreData } from '../services/newScoreData';
 import { PartInfo } from './partInfo';
 
 export class Music implements MusicModel {
@@ -8,9 +7,9 @@ export class Music implements MusicModel {
 
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
-	static createNew(newScoreData: NewScoreData) {
+	static createNew(partTypes: PartType[], timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
 		const partsInfo: PartInfo[] = [];
-		newScoreData.partTypes.forEach((pt) => {
+		partTypes.forEach((pt) => {
 			let partName;
 			switch (pt) {
 				case PartType.FN_LVL_1:
@@ -35,12 +34,12 @@ export class Music implements MusicModel {
 			partsInfo.push(partInfo);
 		});
 		const measures: Measure[] = [];
-		if (newScoreData.pickupMeasure !== 'no') {
-			const pickupMeasure = Measure.createNew(true, 0, partsInfo, newScoreData);
+		if (hasPickupMeasure) {
+			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, musicalScale);
 			measures.push(pickupMeasure);
 		}
-		for (let i = 1; i <= newScoreData.numberOfMeasures; i++) {
-			const measure = Measure.createNew(false, i, partsInfo, newScoreData);
+		for (let i = 1; i <= numberOfMeasures; i++) {
+			const measure = Measure.createNew(false, i, partsInfo, timeSignature, tempoBpm, musicalScale);
 			measures.push(measure);
 		}
 		return new Music(partsInfo, measures);

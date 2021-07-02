@@ -115,17 +115,17 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 	}, [onDoneNewScoreDialog]);
 
 	const handleClickOK = useCallback(() => {
-		const newScore = Score.createNew({
+		const newScore = Score.createNew(
 			scoreTitle,
 			scoreCredits,
 			arrangerName,
-			partTypes: JSON.parse(partTypes),
-			musicalScale: (musicalScale || 'C').toUpperCase(),
-			tempoBpm: Number(tempoBpm) || 120,
+			JSON.parse(partTypes),
 			timeSignature,
-			pickupMeasure,
-			numberOfMeasures: Number(numberOfMeasures) || 16,
-		});
+			Number(tempoBpm) || 120,
+			pickupMeasure === 'yes',
+			Number(numberOfMeasures) || 16,
+			(musicalScale || 'C').toUpperCase(),
+		);
 		onDoneNewScoreDialog(newScore);
 	}, [scoreTitle, scoreCredits, arrangerName, partTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
 
@@ -140,7 +140,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
 					<FormControl className={classes.formControl}>
-						<InputLabel id="part-types-label">Parts</InputLabel>
+						<InputLabel id="part-types-label">Part Types</InputLabel>
 						<Select id="part-types" value={partTypes} onChange={handleChangePartTypes}>
 							<MenuItem value={JSON.stringify([PartType.FN_LVL_1])}>Figurenotes</MenuItem>
 							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Figurenotes + Lyrics</MenuItem>

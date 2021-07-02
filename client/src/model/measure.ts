@@ -1,6 +1,5 @@
 import { EntityKind, MeasureModel, NoteModel, PartModel } from './scoreModel';
 import { Part } from './part';
-import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 import { PartInfo } from './partInfo';
@@ -19,15 +18,15 @@ export class Measure implements MeasureModel {
 		public parts: Part[],
 	) {}
 
-	static createNew(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], newScoreData: NewScoreData) {
+	static createNew(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], timeSignature: string, tempoBpm: number, musicalScale: string) {
 		const id = CommonHelper.getRandomId();
-		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
+		const durationDivs = MusicalHelper.parseTimeSignature(timeSignature).measureDurationDivs;
 		const parts: Part[] = [];
 		partsInfo.forEach((pi) => {
-			const part = Part.createNew(id, pi, newScoreData.timeSignature);
+			const part = Part.createNew(id, pi, timeSignature);
 			parts.push(part);
 		});
-		return new Measure(id, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, parts);
+		return new Measure(id, measureNumber, isPickupMeasure, timeSignature, durationDivs, tempoBpm, musicalScale, parts);
 	}
 
 	static createFromModel(m: MeasureModel) {

@@ -1,8 +1,7 @@
-import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
+import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind, PartType } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { ScoreSettings } from './scoreSettings';
 import { Music } from './music';
-import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
 export class Score implements ScoreModel {
@@ -11,11 +10,21 @@ export class Score implements ScoreModel {
 
 	constructor(public id: string, public scoreInfo: ScoreInfo, public scoreSettings: ScoreSettings, public music: Music) {}
 
-	static createNew(newScoreData: NewScoreData) {
+	static createNew(
+		scoreTitle: string,
+		scoreCredits: string,
+		arrangerName: string,
+		partTypes: PartType[],
+		timeSignature: string,
+		tempoBpm: number,
+		hasPickupMeasure: boolean,
+		numberOfMeasures: number,
+		musicalScale: string,
+	) {
 		const id = CommonHelper.getRandomId();
-		const scoreInfo = ScoreInfo.createNew(newScoreData);
+		const scoreInfo = ScoreInfo.createNew(scoreTitle, scoreCredits, arrangerName);
 		const scoreSettings = ScoreSettings.createNew();
-		const music = Music.createNew(newScoreData);
+		const music = Music.createNew(partTypes, timeSignature, tempoBpm, hasPickupMeasure, numberOfMeasures, musicalScale);
 		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 
