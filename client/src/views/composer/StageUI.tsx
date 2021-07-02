@@ -6,7 +6,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import { ScoreModel } from '../../model/scoreModel';
 import { MusicUI } from './MusicUI';
 import { AppDataHelper } from '../../services/appDataHelper';
-import { TuneStageDialog } from './TuneStageDialog';
+import { TunePageDialog } from './TunePageDialog';
 
 export interface StageUIProps {
 	score: ScoreModel;
@@ -117,7 +117,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 							<TuneIcon titleAccess="Tune Page" />
 						</IconButton>
 						<Modal open={tuneStageDialogVisible} onClose={handleCloseTuneStageDialog}>
-							<TuneStageDialog score={score} onUpdateScore={handleScoreUpdated} onDoneTuneStageDialog={handleDoneTuneStageDialog} />
+							<TunePageDialog score={score} onUpdateScore={handleScoreUpdated} onDoneTuneStageDialog={handleDoneTuneStageDialog} />
 						</Modal>
 						<Box className={classes.header}>
 							<Typography variant="h4" className={classes.scoreTitle}>

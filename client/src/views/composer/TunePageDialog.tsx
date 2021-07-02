@@ -5,13 +5,13 @@ import { Button, Slider, Typography } from '@material-ui/core';
 import { Score } from '../../model/score';
 import { ScoreSettings } from '../../model/scoreSettings';
 
-interface TuneStageDialogProps {
+interface TunePageDialogProps {
 	score: Score;
 	onUpdateScore: () => void;
 	onDoneTuneStageDialog: () => void;
 }
 
-export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTuneStageDialog }: TuneStageDialogProps, _ref) => {
+export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTuneStageDialog }: TunePageDialogProps, _ref) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'fixed',
@@ -19,7 +19,7 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 			top: '50%',
 			transform: 'translate(-50%, -50%)',
 			borderRadius: 8,
-			width: 600,
+			width: 800,
 			display: 'grid',
 			gridTemplate: 'auto 1fr auto / auto',
 			border: '1px solid #666',
@@ -138,7 +138,7 @@ export const TuneStageDialog = React.forwardRef(({ score, onUpdateScore, onDoneT
 	}, [onDoneTuneStageDialog]);
 
 	return (
-		<Box id="TuneStageDialog" className={classes.root}>
+		<Box id="TunePageDialog" className={classes.root}>
 			<Box className={classes.header}>
 				<Box className={classes.title}>Tune Page</Box>
 			</Box>
