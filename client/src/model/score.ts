@@ -1,7 +1,7 @@
-import { ScoreModel, PartModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
+import { ScoreModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { ScoreSettings } from './scoreSettings';
-import { Part } from './part';
+import { Music } from './music';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
@@ -9,59 +9,33 @@ export class Score implements ScoreModel {
 	kind: EntityKind = EntityKind.SCORE;
 	timestamp: number = Date.now();
 
-	constructor(public id: string, public scoreInfo: ScoreInfo, public scoreSettings: ScoreSettings, public parts: Part[]) {}
+	constructor(public id: string, public scoreInfo: ScoreInfo, public scoreSettings: ScoreSettings, public music: Music) {}
 
 	static createFromModel(s: ScoreModel) {
 		const scoreInfo = ScoreInfo.createFromModel(s.scoreInfo || {});
 		const scoreSettings = ScoreSettings.createFromModel(s.scoreSettings || {});
-		const parts: Part[] = [];
-		s.parts.forEach((p) => {
-			const part = Part.createFromModel(p);
-			parts.push(part);
-		});
-		return new Score(s.id, scoreInfo, scoreSettings, parts);
+		const music = Music.createFromModel(s.music || {});
+		return new Score(s.id, scoreInfo, scoreSettings, music);
 	}
 
 	static createFromNewDialog(newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const scoreInfo = ScoreInfo.createFromNewDialog(newScoreData);
 		const scoreSettings = ScoreSettings.createFromNewDialog(/*newScoreData*/);
-		const part = Part.createFromNewDialog(id, newScoreData);
-		return new Score(id, scoreInfo, scoreSettings, [part]);
-	}
-
-	static findPart(s: ScoreModel, partId: string): PartModel | null {
-		return s.parts.find((p) => (p.id = partId)) || null;
+		const music = Music.createFromNewDialog(id, newScoreData);
+		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 
 	static findMeasure(s: ScoreModel, measureId: string): MeasureModel | null {
-		let result: MeasureModel | null = null;
-		s.parts.forEach((p) => {
-			if (!result) {
-				result = Part.findMeasure(p, measureId);
-			}
-		});
-		return result;
+		return Music.findMeasure(s.music, measureId) || null;
 	}
 
 	static findVoice(s: ScoreModel, voiceId: string): VoiceModel | null {
-		let result: VoiceModel | null = null;
-		s.parts.forEach((p) => {
-			if (!result) {
-				result = Part.findVoice(p, voiceId);
-			}
-		});
-		return result;
+		return Music.findVoice(s.music, voiceId) || null;
 	}
 
 	static findNote(s: ScoreModel, noteId: string): NoteModel | null {
-		let result: NoteModel | null = null;
-		s.parts.forEach((p) => {
-			if (!result) {
-				result = Part.findNote(p, noteId);
-			}
-		});
-		return result;
+		return Music.findNote(s.music, noteId) || null;
 	}
 
 	static findNotes(s: ScoreModel, noteIds: string[]): NoteModel[] {

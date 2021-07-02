@@ -4,26 +4,22 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { Typography, TextField } from '@material-ui/core';
-import { PartModel, VoiceType } from '../../model/scoreModel';
-import { Part } from '../../model/part';
+import { MusicModel, VoiceType } from '../../model/scoreModel';
+import { Music } from '../../model/music';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { uiSelection } from '../../atoms/uiSelection';
 import { FigurenotesHelper } from '../../services/figurenotesHelper';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 
-export interface StageUIProps {
-	part: PartModel;
+export interface MusicUIProps {
+	music: MusicModel;
 	scoreSettings: ScoreSettings;
 }
 
-export const PartUI = ({ part, scoreSettings }: StageUIProps) => {
+export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {},
-		partName: {
-			color: '#666',
-			marginBottom: 24,
-		},
 		measures: {
 			position: 'relative',
 			display: 'flex',
@@ -140,7 +136,7 @@ export const PartUI = ({ part, scoreSettings }: StageUIProps) => {
 	const [selection, setSelection] = useRecoilState(uiSelection);
 
 	const sizeVars = useMemo(() => {
-		const exampleMeasure = part.measures[0].isPickup ? part.measures[1] : part.measures[0];
+		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
 		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
 		const numberOfMeasuresPerRow = Math.trunc(scoreSettings.partsWidth / measureWidth);
@@ -152,50 +148,45 @@ export const PartUI = ({ part, scoreSettings }: StageUIProps) => {
 			pickupMeasureLeftOver,
 			leftOver,
 		};
-	}, [part.measures, scoreSettings.partsWidth, scoreSettings.quarterSize]);
+	}, [music.measures, scoreSettings.partsWidth, scoreSettings.quarterSize]);
 
 	const handleClickNote = useCallback(
 		(e) => {
-			const note = Part.findNote(part, e.currentTarget.dataset.noteId);
+			const note = Music.findNote(music, e.currentTarget.dataset.noteId);
 			if (note) {
-				setSelection([{ partId: part.id, measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }]);
+				setSelection([{ measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }]);
 				if (!note.isRest) {
 					SoundHelper.playShortNote(note.fullName);
 				}
 			}
 		},
-		[part, setSelection],
+		[music, setSelection],
 	);
 
 	const handleLyricsFocus = useCallback(
 		(e) => {
-			const v = Part.findVoice(part, e.target.parentElement.parentElement.dataset.voiceId);
+			const v = Music.findVoice(music, e.target.parentElement.parentElement.dataset.voiceId);
 			if (v) {
-				setSelection([{ partId: part.id, measureId: v.measureId, voiceId: v.id, noteId: '' }]);
+				setSelection([{ measureId: v.measureId, voiceId: v.id, noteId: '' }]);
 			}
 		},
-		[part, setSelection],
+		[music, setSelection],
 	);
 
 	const handleLyricsChange = useCallback(
 		(e) => {
-			const v = Part.findVoice(part, e.target.parentElement.parentElement.dataset.voiceId);
+			const v = Music.findVoice(music, e.target.parentElement.parentElement.dataset.voiceId);
 			if (v) {
 				v.lyrics = e.target.value;
 			}
 		},
-		[part],
+		[music],
 	);
 
 	return (
-		<Box id="PartUI" className={classes.root} style={{ width: `${scoreSettings.partsWidth}px` }}>
-			{part.name && (
-				<Typography variant="h6" className={classes.partName}>
-					{part.name}
-				</Typography>
-			)}
+		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.partsWidth}px` }}>
 			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOver}px` }}>
-				{part.measures.map((measure, m) => (
+				{music.measures.map((measure, m) => (
 					<Box key={m} style={{ marginRight: `${measure.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
 						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${scoreSettings.rowGap}px` }}>
 							{measure.number % sizeVars.numberOfMeasuresPerRow === 1 && (

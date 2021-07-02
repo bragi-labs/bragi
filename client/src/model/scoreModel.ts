@@ -2,7 +2,7 @@ export enum EntityKind {
 	SCORE = 'SCORE',
 	SCORE_INFO = 'SCORE_INFO',
 	SCORE_SETTINGS = 'SCORE_SETTINGS',
-	PART = 'PART',
+	MUSIC = 'MUSIC',
 	MEASURE = 'MEASURE',
 	VOICE = 'VOICE',
 	NOTE = 'NOTE',
@@ -27,8 +27,6 @@ export interface ScoreSettingsModel {
 export interface NoteModel {
 	kind: EntityKind; //"NOTE"
 	id: string; //internal ID
-	scoreId: string; //internal ID
-	partId: string; //internal ID
 	measureId: string; //internal ID
 	voiceId: string; //internal ID
 	fullName: string; //e.g. "F#4"
@@ -41,8 +39,6 @@ export interface NoteModel {
 export interface ChordModel {
 	kind: EntityKind; //"CHORD"
 	id: string; //internal ID
-	scoreId: string; //internal ID
-	partId: string; //internal ID
 	measureId: string; //internal ID
 	voiceId: string; //internal ID
 	name: string; //e.g. "Am"
@@ -61,8 +57,6 @@ export enum VoiceType {
 export interface VoiceModel {
 	kind: EntityKind; //"VOICE"
 	id: string; //internal ID
-	scoreId: string; //internal ID
-	partId: string; //internal ID
 	measureId: string; //internal ID
 	name: string; //e.g. "Piano"
 	voiceType: VoiceType; //e.g. FN_LVL_1
@@ -73,8 +67,6 @@ export interface VoiceModel {
 export interface MeasureModel {
 	kind: EntityKind; //"MEASURE"
 	id: string; //internal ID
-	scoreId: string; //internal ID
-	partId: string; //internal ID
 	number: number; //e.g. 1
 	isPickup: boolean; //e.g. false
 	timeSignature: string; //e.g. "4/4"
@@ -83,11 +75,8 @@ export interface MeasureModel {
 	musicalScale: string; //e.g. "Am"
 	voices: VoiceModel[];
 }
-export interface PartModel {
-	kind: EntityKind; //"PART"
-	id: string; //internal ID
-	scoreId: string; //internal ID
-	name: string; //e.g. "Part 1"
+export interface MusicModel {
+	kind: EntityKind; //"MUSIC"
 	measures: MeasureModel[];
 }
 export interface ScoreModel {
@@ -96,5 +85,5 @@ export interface ScoreModel {
 	timestamp: number; //timestamp in ms
 	scoreInfo: ScoreInfoModel;
 	scoreSettings: ScoreSettingsModel;
-	parts: PartModel[];
+	music: MusicModel;
 }

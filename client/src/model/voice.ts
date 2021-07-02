@@ -10,8 +10,6 @@ export class Voice implements VoiceModel {
 
 	constructor(
 		public id: string,
-		public scoreId: string,
-		public partId: string,
 		public measureId: string,
 		public name: string,
 		public voiceType: VoiceType,
@@ -31,20 +29,20 @@ export class Voice implements VoiceModel {
 			const chord = Chord.createFromModel(c);
 			chords.push(chord);
 		});
-		return new Voice(v.id, v.scoreId, v.partId, v.measureId, v.name, v.voiceType, v.lyrics, notes, chords);
+		return new Voice(v.id, v.measureId, v.name, v.voiceType, v.lyrics, notes, chords);
 	}
 
-	static createFromNewDialog(scoreId: string, partId: string, measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
+	static createFromNewDialog(measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const notes = [];
 		if (voiceType === VoiceType.FN_LVL_1) {
 			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
 			for (let i = 0; i < beats; i++) {
-				const note = new Note(CommonHelper.getRandomId(), scoreId, partId, measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
+				const note = new Note(CommonHelper.getRandomId(), measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
 				notes.push(note);
 			}
 		}
-		return new Voice(id, scoreId, partId, measureId, name, voiceType, '', notes, []);
+		return new Voice(id, measureId, name, voiceType, '', notes, []);
 	}
 
 	static findNote(v: VoiceModel, noteId: string): NoteModel | null {
@@ -73,19 +71,7 @@ export class Voice implements VoiceModel {
 		if (isShorting) {
 			targetNote.durationDivs = newDurationDivs;
 			const curStartDivs = targetNote.startDiv + targetNote.durationDivs;
-			const newNote = new Note(
-				CommonHelper.getRandomId(),
-				targetNote.scoreId,
-				targetNote.partId,
-				targetNote.measureId,
-				targetNote.voiceId,
-				'',
-				true,
-				curStartDivs,
-				-deltaDivs,
-				false,
-				false,
-			);
+			const newNote = new Note(CommonHelper.getRandomId(), targetNote.measureId, targetNote.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
 			v.notes.splice(targetNoteIndex + 1, 0, newNote);
 		} else {
 			targetNote.durationDivs = newDurationDivs;

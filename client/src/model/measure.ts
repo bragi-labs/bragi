@@ -9,8 +9,6 @@ export class Measure implements MeasureModel {
 
 	constructor(
 		public id: string,
-		public scoreId: string,
-		public partId: string,
 		public number: number,
 		public isPickup: boolean,
 		public timeSignature: string,
@@ -26,7 +24,7 @@ export class Measure implements MeasureModel {
 			const voice = Voice.createFromModel(v);
 			voices.push(voice);
 		});
-		return new Measure(m.id, m.scoreId, m.partId, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, voices);
+		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, voices);
 	}
 
 	static createFromNewDialog(scoreId: string, partId: string, isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
@@ -45,10 +43,10 @@ export class Measure implements MeasureModel {
 				default:
 					voiceName = '';
 			}
-			const voice = Voice.createFromNewDialog(scoreId, partId, id, voiceName, vt, newScoreData);
+			const voice = Voice.createFromNewDialog(id, voiceName, vt, newScoreData);
 			voices.push(voice);
 		});
-		return new Measure(id, scoreId, partId, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, voices);
+		return new Measure(id, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, voices);
 	}
 
 	static findVoice(m: MeasureModel, voiceId: string): VoiceModel | null {

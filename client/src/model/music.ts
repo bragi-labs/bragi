@@ -1,20 +1,20 @@
-import { PartModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
+import { MusicModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 
-export class Part implements PartModel {
-	kind: EntityKind = EntityKind.PART;
+export class Music implements MusicModel {
+	kind: EntityKind = EntityKind.MUSIC;
 
-	constructor(public id: string, public scoreId: string, public name: string, public measures: Measure[]) {}
+	constructor(public measures: Measure[]) {}
 
-	static createFromModel(p: PartModel) {
+	static createFromModel(u: MusicModel) {
 		const measures: Measure[] = [];
-		p.measures.forEach((m) => {
+		u.measures.forEach((m) => {
 			const measure = Measure.createFromModel(m);
 			measures.push(measure);
 		});
-		return new Part(p.id, p.scoreId, p.name, measures);
+		return new Music(measures);
 	}
 
 	static createFromNewDialog(scoreId: string, newScoreData: NewScoreData) {
@@ -28,16 +28,16 @@ export class Part implements PartModel {
 			const measure = Measure.createFromNewDialog(scoreId, id, false, i, newScoreData);
 			measures.push(measure);
 		}
-		return new Part(id, scoreId, '', measures);
+		return new Music(measures);
 	}
 
-	static findMeasure(p: PartModel, measureId: string): MeasureModel | null {
-		return p.measures.find((m) => m.id === measureId) || null;
+	static findMeasure(u: MusicModel, measureId: string): MeasureModel | null {
+		return u.measures.find((m) => m.id === measureId) || null;
 	}
 
-	static findVoice(p: PartModel, voiceId: string): VoiceModel | null {
+	static findVoice(u: MusicModel, voiceId: string): VoiceModel | null {
 		let result: VoiceModel | null = null;
-		p.measures.forEach((m) => {
+		u.measures.forEach((m) => {
 			if (!result) {
 				result = Measure.findVoice(m, voiceId);
 			}
@@ -45,9 +45,9 @@ export class Part implements PartModel {
 		return result;
 	}
 
-	static findNote(p: PartModel, noteId: string): NoteModel | null {
+	static findNote(u: MusicModel, noteId: string): NoteModel | null {
 		let result: NoteModel | null = null;
-		p.measures.forEach((m) => {
+		u.measures.forEach((m) => {
 			if (!result) {
 				result = Measure.findNote(m, noteId);
 			}

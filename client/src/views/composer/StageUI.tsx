@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import { IconButton, Modal, Typography } from '@material-ui/core';
 import TuneIcon from '@material-ui/icons/Tune';
 import { ScoreModel } from '../../model/scoreModel';
-import { PartUI } from './PartUI';
+import { MusicUI } from './MusicUI';
 import { AppDataHelper } from '../../services/appDataHelper';
 import { TuneStageDialog } from './TuneStageDialog';
 
@@ -80,7 +80,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			color: '#999',
 			fontSize: '12px',
 		},
-		partContainer: {
+		musicContainer: {
 			display: 'flex',
 			justifyContent: 'center',
 		},
@@ -127,11 +127,9 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 								{score.scoreInfo.scoreCredits}
 							</Typography>
 						</Box>
-						{score.parts.map((part, i) => (
-							<Box key={i} className={classes.partContainer}>
-								<PartUI part={part} scoreSettings={score.scoreSettings} />
-							</Box>
-						))}
+						<Box className={classes.musicContainer}>
+							<MusicUI music={score.music} scoreSettings={score.scoreSettings} />
+						</Box>
 						{score.scoreInfo.arrangerName && (
 							<Typography variant="body2" className={classes.arrangedBy}>{`Arranged by ${score.scoreInfo.arrangerName} using ${AppDataHelper.appName}`}</Typography>
 						)}
