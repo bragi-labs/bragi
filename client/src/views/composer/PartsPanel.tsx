@@ -107,7 +107,7 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 			pi.isVisible = !pi.isVisible;
 			onUpdateScore();
 		},
-		[onUpdateScore],
+		[partsInfo, onUpdateScore],
 	);
 
 	return (
