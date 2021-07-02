@@ -8,21 +8,7 @@ export class Music implements MusicModel {
 
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
-	static createFromModel(u: MusicModel) {
-		const partsInfo: PartInfo[] = [];
-		u.partsInfo.forEach((pi) => {
-			const partInfo = PartInfo.createFromModel(pi);
-			partsInfo.push(partInfo);
-		});
-		const measures: Measure[] = [];
-		u.measures.forEach((m) => {
-			const measure = Measure.createFromModel(m);
-			measures.push(measure);
-		});
-		return new Music(partsInfo, measures);
-	}
-
-	static createFromNewDialog(newScoreData: NewScoreData) {
+	static createNew(newScoreData: NewScoreData) {
 		const partsInfo: PartInfo[] = [];
 		newScoreData.partTypes.forEach((pt) => {
 			let partName;
@@ -45,18 +31,32 @@ export class Music implements MusicModel {
 				default:
 					partName = '';
 			}
-			const partInfo = PartInfo.createFromNewDialog(pt, partName, true);
+			const partInfo = PartInfo.createNew(pt, partName, true);
 			partsInfo.push(partInfo);
 		});
 		const measures: Measure[] = [];
 		if (newScoreData.pickupMeasure !== 'no') {
-			const pickupMeasure = Measure.createFromNewDialog(true, 0, partsInfo, newScoreData);
+			const pickupMeasure = Measure.createNew(true, 0, partsInfo, newScoreData);
 			measures.push(pickupMeasure);
 		}
 		for (let i = 1; i <= newScoreData.numberOfMeasures; i++) {
-			const measure = Measure.createFromNewDialog(false, i, partsInfo, newScoreData);
+			const measure = Measure.createNew(false, i, partsInfo, newScoreData);
 			measures.push(measure);
 		}
+		return new Music(partsInfo, measures);
+	}
+
+	static createFromModel(u: MusicModel) {
+		const partsInfo: PartInfo[] = [];
+		u.partsInfo.forEach((pi) => {
+			const partInfo = PartInfo.createFromModel(pi);
+			partsInfo.push(partInfo);
+		});
+		const measures: Measure[] = [];
+		u.measures.forEach((m) => {
+			const measure = Measure.createFromModel(m);
+			measures.push(measure);
+		});
 		return new Music(partsInfo, measures);
 	}
 

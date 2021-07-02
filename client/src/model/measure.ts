@@ -19,6 +19,17 @@ export class Measure implements MeasureModel {
 		public parts: Part[],
 	) {}
 
+	static createNew(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], newScoreData: NewScoreData) {
+		const id = CommonHelper.getRandomId();
+		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
+		const parts: Part[] = [];
+		partsInfo.forEach((pi) => {
+			const part = Part.createNew(id, pi, newScoreData.timeSignature);
+			parts.push(part);
+		});
+		return new Measure(id, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, parts);
+	}
+
 	static createFromModel(m: MeasureModel) {
 		const parts: Part[] = [];
 		m.parts.forEach((p) => {
@@ -26,17 +37,6 @@ export class Measure implements MeasureModel {
 			parts.push(part);
 		});
 		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, parts);
-	}
-
-	static createFromNewDialog(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], newScoreData: NewScoreData) {
-		const id = CommonHelper.getRandomId();
-		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
-		const parts: Part[] = [];
-		partsInfo.forEach((pi) => {
-			const part = Part.createFromNewDialog(id, pi, newScoreData.timeSignature);
-			parts.push(part);
-		});
-		return new Measure(id, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, parts);
 	}
 
 	static findPart(m: MeasureModel, partId: string): PartModel | null {

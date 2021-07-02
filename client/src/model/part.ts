@@ -18,6 +18,19 @@ export class Part implements PartModel {
 		public chords: Chord[],
 	) {}
 
+	static createNew(measureId: string, partInfo: PartInfo, timeSignature: string) {
+		const id = CommonHelper.getRandomId();
+		const notes = [];
+		if (partInfo.partType === PartType.FN_LVL_1) {
+			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(timeSignature);
+			for (let i = 0; i < beats; i++) {
+				const note = new Note(CommonHelper.getRandomId(), measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
+				notes.push(note);
+			}
+		}
+		return new Part(id, partInfo.id, measureId, partInfo.partType, '', notes, []);
+	}
+
 	static createFromModel(p: PartModel) {
 		const notes: Note[] = [];
 		p.notes.forEach((n) => {
@@ -30,19 +43,6 @@ export class Part implements PartModel {
 			chords.push(chord);
 		});
 		return new Part(p.id, p.partInfoId, p.measureId, p.partType, p.lyrics, notes, chords);
-	}
-
-	static createFromNewDialog(measureId: string, partInfo: PartInfo, timeSignature: string) {
-		const id = CommonHelper.getRandomId();
-		const notes = [];
-		if (partInfo.partType === PartType.FN_LVL_1) {
-			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(timeSignature);
-			for (let i = 0; i < beats; i++) {
-				const note = new Note(CommonHelper.getRandomId(), measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
-				notes.push(note);
-			}
-		}
-		return new Part(id, partInfo.id, measureId, partInfo.partType, '', notes, []);
 	}
 
 	static findNote(p: PartModel, noteId: string): NoteModel | null {

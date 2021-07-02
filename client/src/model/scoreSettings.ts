@@ -12,21 +12,21 @@ export class ScoreSettings implements ScoreSettingsModel {
 		lyricsSize: { min: 8, max: 16, default: 11 },
 	};
 
+	static createNew() {
+		return new ScoreSettings(
+			ScoreSettings.ranges.musicWidth.default,
+			ScoreSettings.ranges.rowGap.default,
+			ScoreSettings.ranges.quarterSize.default,
+			ScoreSettings.ranges.lyricsSize.default,
+		);
+	}
+
 	static createFromModel(ss: ScoreSettingsModel) {
 		return new ScoreSettings(
 			ss.musicWidth || ScoreSettings.ranges.musicWidth.default,
 			ss.rowGap || ScoreSettings.ranges.rowGap.default,
 			ss.quarterSize || ScoreSettings.ranges.quarterSize.default,
 			ss.lyricsSize || ScoreSettings.ranges.lyricsSize.default,
-		);
-	}
-
-	static createFromNewDialog() {
-		return new ScoreSettings(
-			ScoreSettings.ranges.musicWidth.default,
-			ScoreSettings.ranges.rowGap.default,
-			ScoreSettings.ranges.quarterSize.default,
-			ScoreSettings.ranges.lyricsSize.default,
 		);
 	}
 }

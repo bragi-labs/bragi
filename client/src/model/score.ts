@@ -11,19 +11,19 @@ export class Score implements ScoreModel {
 
 	constructor(public id: string, public scoreInfo: ScoreInfo, public scoreSettings: ScoreSettings, public music: Music) {}
 
+	static createNew(newScoreData: NewScoreData) {
+		const id = CommonHelper.getRandomId();
+		const scoreInfo = ScoreInfo.createNew(newScoreData);
+		const scoreSettings = ScoreSettings.createNew();
+		const music = Music.createNew(newScoreData);
+		return new Score(id, scoreInfo, scoreSettings, music);
+	}
+
 	static createFromModel(s: ScoreModel) {
 		const scoreInfo = ScoreInfo.createFromModel(s.scoreInfo || {});
 		const scoreSettings = ScoreSettings.createFromModel(s.scoreSettings || {});
 		const music = Music.createFromModel(s.music || {});
 		return new Score(s.id, scoreInfo, scoreSettings, music);
-	}
-
-	static createFromNewDialog(newScoreData: NewScoreData) {
-		const id = CommonHelper.getRandomId();
-		const scoreInfo = ScoreInfo.createFromNewDialog(newScoreData);
-		const scoreSettings = ScoreSettings.createFromNewDialog();
-		const music = Music.createFromNewDialog(newScoreData);
-		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 
 	static findMeasure(s: ScoreModel, measureId: string): MeasureModel | null {
