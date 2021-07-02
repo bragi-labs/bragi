@@ -67,41 +67,50 @@ export class Voice implements VoiceModel {
 		if (!targetNote) {
 			return;
 		}
+		const targetNoteIndex = v.notes.findIndex((n) => n.id === noteId);
 		const deltaDivs = newDurationDivs - targetNote.durationDivs;
 		const isShorting = deltaDivs < 0;
 		if (isShorting) {
-			let targetNoteIndex = 0;
-			let newNote: NoteModel | null = null;
-			let curStartDivs = 0;
-			v.notes.forEach((n, i) => {
-				if (n.id === noteId) {
-					targetNoteIndex = i;
-					targetNote.durationDivs = newDurationDivs;
-					curStartDivs = n.startDiv + n.durationDivs;
-					if (isShorting) {
-						newNote = new Note(CommonHelper.getRandomId(), n.scoreId, n.partId, n.measureId, n.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
+			targetNote.durationDivs = newDurationDivs;
+			const curStartDivs = targetNote.startDiv + targetNote.durationDivs;
+			const newNote = new Note(
+				CommonHelper.getRandomId(),
+				targetNote.scoreId,
+				targetNote.partId,
+				targetNote.measureId,
+				targetNote.voiceId,
+				'',
+				true,
+				curStartDivs,
+				-deltaDivs,
+				false,
+				false,
+			);
+			v.notes.splice(targetNoteIndex + 1, 0, newNote);
+		} else {
+			targetNote.durationDivs = newDurationDivs;
+			if (v.notes.length > targetNoteIndex + 1) {
+				const nextNote = v.notes[targetNoteIndex + 1];
+				nextNote.durationDivs = nextNote.durationDivs - deltaDivs;
+				if (nextNote.durationDivs <= 0) {
+					if ([6, 18].includes(newDurationDivs)) {
+						nextNote.durationDivs = 6;
+					} else if ([12, 36].includes(newDurationDivs)) {
+						nextNote.durationDivs = 12;
+					} else {
+						nextNote.durationDivs = 24;
 					}
 				}
-			});
-			if (newNote) {
-				v.notes.splice(targetNoteIndex + 1, 0, newNote);
 			}
-		} else {
-			let passedTarget = false;
 			let lastOkIndex = -1;
+			v.notes[v.notes.length - 1].durationDivs = measureDurationDivs;
 			v.notes.forEach((n, i) => {
-				if (n.id === noteId) {
-					lastOkIndex = i;
-					targetNote.durationDivs = newDurationDivs;
-					passedTarget = true;
-				} else if (passedTarget) {
-					n.startDiv += deltaDivs;
-					const endDiv = n.startDiv + n.durationDivs;
-					if (endDiv >= measureDurationDivs) {
-						n.durationDivs = Math.max(n.durationDivs - (endDiv - measureDurationDivs), 0);
-						if (n.durationDivs > 0) {
-							lastOkIndex = i;
-						}
+				n.startDiv = i === 0 ? 0 : v.notes[i - 1].startDiv + v.notes[i - 1].durationDivs;
+				const endDiv = n.startDiv + n.durationDivs;
+				if (endDiv >= measureDurationDivs) {
+					n.durationDivs = Math.max(n.durationDivs - (endDiv - measureDurationDivs), 0);
+					if (n.durationDivs > 0) {
+						lastOkIndex = i;
 					}
 				}
 			});
