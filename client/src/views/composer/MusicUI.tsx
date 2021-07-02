@@ -38,7 +38,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		part: {
 			display: 'flex',
-			border: '1px solid #aaa',
+			border: '1px solid #999',
 		},
 		note: {
 			position: 'relative',
