@@ -50,11 +50,11 @@ export class Music implements MusicModel {
 		});
 		const measures: Measure[] = [];
 		if (newScoreData.pickupMeasure !== 'no') {
-			const pickupMeasure = Measure.createFromNewDialog(true, 0, newScoreData);
+			const pickupMeasure = Measure.createFromNewDialog(true, 0, partsInfo, newScoreData);
 			measures.push(pickupMeasure);
 		}
 		for (let i = 1; i <= newScoreData.numberOfMeasures; i++) {
-			const measure = Measure.createFromNewDialog(false, i, newScoreData);
+			const measure = Measure.createFromNewDialog(false, i, partsInfo, newScoreData);
 			measures.push(measure);
 		}
 		return new Music(partsInfo, measures);

@@ -3,6 +3,7 @@ import { Part } from './part';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
+import { PartInfo } from './partInfo';
 
 export class Measure implements MeasureModel {
 	kind: EntityKind = EntityKind.MEASURE;
@@ -27,12 +28,12 @@ export class Measure implements MeasureModel {
 		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, m.musicalScale, parts);
 	}
 
-	static createFromNewDialog(isPickupMeasure: boolean, measureNumber: number, newScoreData: NewScoreData) {
+	static createFromNewDialog(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const durationDivs = MusicalHelper.parseTimeSignature(newScoreData.timeSignature).measureDurationDivs;
 		const parts: Part[] = [];
-		newScoreData.partTypes.forEach((pt) => {
-			const part = Part.createFromNewDialog(id, pt, newScoreData);
+		partsInfo.forEach((pi) => {
+			const part = Part.createFromNewDialog(id, pi, newScoreData.timeSignature);
 			parts.push(part);
 		});
 		return new Measure(id, measureNumber, isPickupMeasure, newScoreData.timeSignature, durationDivs, newScoreData.tempoBpm, newScoreData.musicalScale, parts);

@@ -1,9 +1,9 @@
 import { EntityKind, NoteModel, PartModel, PartType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
-import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
+import { PartInfo } from './partInfo';
 
 export class Part implements PartModel {
 	kind: EntityKind = EntityKind.PART;
@@ -24,17 +24,17 @@ export class Part implements PartModel {
 		return new Part(v.id, v.measureId, v.partType, v.lyrics, notes, chords);
 	}
 
-	static createFromNewDialog(measureId: string, partType: PartType, newScoreData: NewScoreData) {
+	static createFromNewDialog(measureId: string, partInfo: PartInfo, timeSignature: string) {
 		const id = CommonHelper.getRandomId();
 		const notes = [];
-		if (partType === PartType.FN_LVL_1) {
-			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
+		if (partInfo.partType === PartType.FN_LVL_1) {
+			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(timeSignature);
 			for (let i = 0; i < beats; i++) {
 				const note = new Note(CommonHelper.getRandomId(), measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
 				notes.push(note);
 			}
 		}
-		return new Part(id, measureId, partType, '', notes, []);
+		return new Part(id, measureId, partInfo.partType, '', notes, []);
 	}
 
 	static findNote(v: PartModel, noteId: string): NoteModel | null {
