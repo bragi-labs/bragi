@@ -9,6 +9,7 @@ import { ComposerToolbar } from './ComposerToolbar';
 import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
 import { NotePanel } from './NotePanel';
+import { PartsPanel } from './PartsPanel';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -39,10 +40,18 @@ export const ComposerPage = () => {
 				display: 'none',
 			},
 		},
-		noteToolbarAnchor: {
+		notePanelAnchor: {
 			position: 'absolute',
 			left: 824,
 			top: 256,
+			'@media print': {
+				display: 'none',
+			},
+		},
+		partsPanelAnchor: {
+			position: 'absolute',
+			left: 824,
+			top: 441,
 			'@media print': {
 				display: 'none',
 			},
@@ -83,8 +92,11 @@ export const ComposerPage = () => {
 					<Box className={classes.pianoAnchor}>
 						<Piano smallPiano={true} score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
-					<Box className={classes.noteToolbarAnchor}>
+					<Box className={classes.notePanelAnchor}>
 						<NotePanel score={score} onUpdateScore={handleScoreUpdated} />
+					</Box>
+					<Box className={classes.partsPanelAnchor}>
+						<PartsPanel partsInfo={score.music.partsInfo} onUpdateScore={handleScoreUpdated} />
 					</Box>
 				</>
 			)}
