@@ -2,16 +2,19 @@ import React, { useCallback, useState } from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 import { PartInfo } from '../../model/partInfo';
+import { IconButton, Typography } from '@material-ui/core';
 
 export interface PartsPanelProps {
 	partsInfo: PartInfo[];
 	onUpdateScore: () => void;
 }
 
-export const PartsPanel = ({ partsInfo /*, onUpdateScore*/ }: PartsPanelProps) => {
+export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -60,6 +63,7 @@ export const PartsPanel = ({ partsInfo /*, onUpdateScore*/ }: PartsPanelProps) =
 		actionButton: {
 			width: 24,
 			height: 24,
+			marginRight: 8,
 			textAlign: 'center',
 			cursor: 'pointer',
 			transition: 'all 0.2s ease-in-out',
@@ -71,6 +75,9 @@ export const PartsPanel = ({ partsInfo /*, onUpdateScore*/ }: PartsPanelProps) =
 				pointerEvents: 'none',
 				color: '#666',
 			},
+		},
+		partName: {
+			color: '#999',
 		},
 	}));
 	const classes = useStyles();
@@ -91,13 +98,37 @@ export const PartsPanel = ({ partsInfo /*, onUpdateScore*/ }: PartsPanelProps) =
 		resetDraggedItem();
 	}, [resetDraggedItem]);
 
+	const handleClickShowOrHide = useCallback(
+		(e) => {
+			const pi = partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partId);
+			if (!pi) {
+				return;
+			}
+			pi.isVisible = !pi.isVisible;
+			onUpdateScore();
+		},
+		[onUpdateScore],
+	);
+
 	return (
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
 			<DraggablePanel onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				{partsInfo.map((pi, i) => (
 					<Box key={i} className={classes.panel}>
-						{pi.name}
+						{pi.isVisible && (
+							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
+								<VisibilityIcon titleAccess="Show" />
+							</IconButton>
+						)}
+						{!pi.isVisible && (
+							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
+								<VisibilityOffIcon titleAccess="Hide" />
+							</IconButton>
+						)}
+						<Typography variant="body1" className={classes.partName}>
+							{pi.name}
+						</Typography>
 					</Box>
 				))}
 			</Box>

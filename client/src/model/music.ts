@@ -59,6 +59,15 @@ export class Music implements MusicModel {
 		return new Music(partsInfo, measures);
 	}
 
+	static findPartInfo(u: MusicModel, partInfoId: string): PartInfo | null {
+		return u.partsInfo.find((pi) => pi.id === partInfoId) || null;
+	}
+
+	static isPartVisible(u: MusicModel, partInfoId: string) {
+		const pi = Music.findPartInfo(u, partInfoId);
+		return pi && pi.isVisible;
+	}
+
 	static findMeasure(u: MusicModel, measureId: string): MeasureModel | null {
 		return u.measures.find((m) => m.id === measureId) || null;
 	}

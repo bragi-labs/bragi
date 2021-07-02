@@ -38,12 +38,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		part: {
 			display: 'flex',
-			borderTop: '1px solid #999',
-			borderLeft: '1px solid #999',
-			borderRight: '1px solid #999',
-			'&:last-of-type': {
-				borderBottom: '1px solid #999',
-			},
+			border: '1px solid #999',
 		},
 		note: {
 			position: 'relative',
@@ -77,7 +72,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		alter: {
 			position: 'absolute',
-			top: -20,
+			top: -19,
 			transformOrigin: 'center',
 			'&.sharp': {
 				transform: 'rotate(-45deg)',
@@ -197,93 +192,103 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 								</Box>
 							)}
 							{measure.parts.map((part, v) => (
-								<Box key={v} className={classes.part}>
-									{part.partType === PartType.FN_LVL_1 &&
-										part.notes.map((note, n) => (
-											<Box
-												key={n}
-												className={`${classes.note} ${selection.find((si) => si.noteId === note.id) ? 'selected' : ''}`}
-												style={{ flex: `${note.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
-												onClick={handleClickNote}
-												data-measure-id={measure.id}
-												data-part-id={part.id}
-												data-note-id={note.id}
-											>
-												{note.fullName && (
+								<Box key={v}>
+									{Music.isPartVisible(music, part.partInfoId) && (
+										<Box className={classes.part}>
+											{part.partType === PartType.FN_LVL_1 &&
+												part.notes.map((note, n) => (
 													<Box
-														className={classes.fnSymbolContainer}
-														style={{
-															transform: `scaleX(${note.durationDivs >= 24 ? 1 : note.durationDivs / 24})`,
-														}}
+														key={n}
+														className={`${classes.note} ${selection.find((si) => si.noteId === note.id) ? 'selected' : ''}`}
+														style={{ flex: `${note.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
+														onClick={handleClickNote}
+														data-measure-id={measure.id}
+														data-part-id={part.id}
+														data-note-id={note.id}
 													>
-														<Box
-															className={classes.fnSymbol}
-															style={{
-																...FigurenotesHelper.getSymbolStyle(
-																	`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
-																	scoreSettings.quarterSize - 2,
-																	'px',
-																),
-															}}
-														/>
-														{note.durationDivs > 24 && (
+														{note.fullName && (
 															<Box
-																className={classes.longNoteTail}
+																className={classes.fnSymbolContainer}
 																style={{
-																	backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
-																	top: `${scoreSettings.quarterSize - 12}px`,
-																	height: `10px`,
-																	left:
-																		MusicalHelper.parseNote(note.fullName).octave <= 3
-																			? `${scoreSettings.quarterSize - 2}px`
-																			: `${scoreSettings.quarterSize / 2 - 1}px`,
-																	width:
-																		MusicalHelper.parseNote(note.fullName).octave <= 3
-																			? `${((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 - 1}px`
-																			: `${
-																					scoreSettings.quarterSize / 2 -
-																					1 +
-																					((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 -
-																					1
-																			  }px`,
+																	transform: `scaleX(${note.durationDivs >= 24 ? 1 : note.durationDivs / 24})`,
 																}}
-															/>
+															>
+																<Box
+																	className={classes.fnSymbol}
+																	style={{
+																		...FigurenotesHelper.getSymbolStyle(
+																			`${MusicalHelper.parseNote(note.fullName).step}${MusicalHelper.parseNote(note.fullName).octave}`,
+																			scoreSettings.quarterSize - 2,
+																			'px',
+																		),
+																	}}
+																/>
+																{note.durationDivs > 24 && (
+																	<Box
+																		className={classes.longNoteTail}
+																		style={{
+																			backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(note.fullName).step)}`,
+																			top: `${scoreSettings.quarterSize - 12}px`,
+																			height: `10px`,
+																			left:
+																				MusicalHelper.parseNote(note.fullName).octave <= 3
+																					? `${scoreSettings.quarterSize - 2}px`
+																					: `${scoreSettings.quarterSize / 2 - 1}px`,
+																			width:
+																				MusicalHelper.parseNote(note.fullName).octave <= 3
+																					? `${((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 - 1}px`
+																					: `${
+																							scoreSettings.quarterSize / 2 -
+																							1 +
+																							((note.durationDivs - 24) * scoreSettings.quarterSize) / 24 -
+																							1
+																					  }px`,
+																		}}
+																	/>
+																)}
+																{note.fullName.length >= 2 && note.fullName[1] === '#' && (
+																	<ArrowRightAltIcon
+																		className={`${classes.alter} sharp`}
+																		style={{ left: `${scoreSettings.quarterSize / 2 - 8}px` }}
+																	/>
+																)}
+																{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
+																	<ArrowRightAltIcon
+																		className={`${classes.alter} flat`}
+																		style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }}
+																	/>
+																)}
+																<Box
+																	className={classes.noteName}
+																	style={{
+																		top: `${scoreSettings.quarterSize / 2 - 9}px`,
+																		left: `${
+																			MusicalHelper.parseNote(note.fullName).alter
+																				? scoreSettings.quarterSize / 2 - 9
+																				: scoreSettings.quarterSize / 2 - 5.5
+																		}px`,
+																	}}
+																>
+																	{MusicalHelper.parseNote(note.fullName).step}
+																	{MusicalHelper.parseNote(note.fullName).alter}
+																</Box>
+															</Box>
 														)}
-														{note.fullName.length >= 2 && note.fullName[1] === '#' && (
-															<ArrowRightAltIcon className={`${classes.alter} sharp`} style={{ left: `${scoreSettings.quarterSize / 2 - 8}px` }} />
-														)}
-														{note.fullName.length >= 2 && note.fullName[1] === 'b' && (
-															<ArrowRightAltIcon className={`${classes.alter} flat`} style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }} />
-														)}
-														<Box
-															className={classes.noteName}
-															style={{
-																top: `${scoreSettings.quarterSize / 2 - 9}px`,
-																left: `${
-																	MusicalHelper.parseNote(note.fullName).alter
-																		? scoreSettings.quarterSize / 2 - 9
-																		: scoreSettings.quarterSize / 2 - 5.5
-																}px`,
-															}}
-														>
-															{MusicalHelper.parseNote(note.fullName).step}
-															{MusicalHelper.parseNote(note.fullName).alter}
-														</Box>
+														{!note.fullName && <Box>{``}</Box>}
 													</Box>
-												)}
-												{!note.fullName && <Box>{``}</Box>}
-											</Box>
-										))}
-									{part.partType === PartType.LYRICS && (
-										<Box className={classes.lyrics}>
-											<TextField
-												data-part-id={part.id}
-												defaultValue={part.lyrics}
-												onFocus={handleLyricsFocus}
-												onChange={handleLyricsChange}
-												label=""
-												className={`lyricsSize-${scoreSettings.lyricsSize}`}
-											/>
+												))}
+											{part.partType === PartType.LYRICS && (
+												<Box className={classes.lyrics}>
+													<TextField
+														data-part-id={part.id}
+														defaultValue={part.lyrics}
+														onFocus={handleLyricsFocus}
+														onChange={handleLyricsChange}
+														label=""
+														className={`lyricsSize-${scoreSettings.lyricsSize}`}
+													/>
+												</Box>
+											)}
 										</Box>
 									)}
 								</Box>
