@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
-import { Typography, TextField } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import { MusicModel, PartType } from '../../model/scoreModel';
 import { Music } from '../../model/music';
 import { ScoreSettings } from '../../model/scoreSettings';
@@ -27,18 +27,21 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		measure: {
 			position: 'relative',
+			border: '1px solid #ccc',
 		},
 		measureNumber: {
 			position: 'absolute',
 			left: 0,
-			top: -14,
+			top: -15,
 		},
 		measureNumberText: {
 			fontSize: '12px',
 		},
 		part: {
 			display: 'flex',
-			border: '1px solid #999',
+		},
+		partSpaceAbove: {
+			marginTop: 11,
 		},
 		note: {
 			position: 'relative',
@@ -72,7 +75,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		alter: {
 			position: 'absolute',
-			top: -19,
+			top: -16,
 			transformOrigin: 'center',
 			'&.sharp': {
 				transform: 'rotate(-45deg)',
@@ -80,10 +83,13 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			'&.flat': {
 				transform: 'rotate(-135deg)',
 			},
+			zIndex: -1,
 		},
 		lyrics: {
 			display: 'flex',
 			width: '100%',
+			backgroundColor: '#f9f9f9',
+			borderBottom: '1px solid #eee',
 			'& .MuiTextField-root': {
 				width: '100%',
 				'&.lyricsSize-8 .MuiInput-input': {
@@ -191,10 +197,14 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 									</Typography>
 								</Box>
 							)}
-							{measure.parts.map((part, v) => (
-								<Box key={v}>
+							{measure.parts.map((part, p) => (
+								<Box key={p}>
 									{Music.isPartVisible(music, part.partInfoId) && (
-										<Box className={classes.part}>
+										<Box
+											className={`${classes.part} ${
+												p > 0 && part.partType === PartType.FN_LVL_1 && Music.doesPartHasSharpsOrFlats(music, part.partInfoId) ? classes.partSpaceAbove : ''
+											}`}
+										>
 											{part.partType === PartType.FN_LVL_1 &&
 												part.notes.map((note, n) => (
 													<Box

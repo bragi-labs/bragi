@@ -42,6 +42,10 @@ export class Measure implements MeasureModel {
 		return m.parts.find((p) => p.id === partId) || null;
 	}
 
+	static findPartByPartInfoId(m: MeasureModel, partInfoId: string): PartModel | null {
+		return m.parts.find((p) => p.partInfoId === partInfoId) || null;
+	}
+
 	static findNote(m: MeasureModel, noteId: string): NoteModel | null {
 		let result: NoteModel | null = null;
 		m.parts.forEach((p) => {

@@ -1,6 +1,7 @@
 import { EntityKind, MeasureModel, MusicModel, NoteModel, PartModel, PartType } from './scoreModel';
 import { Measure } from './measure';
 import { PartInfo } from './partInfo';
+import { MusicalHelper } from '../services/musicalHelper';
 
 export class Music implements MusicModel {
 	kind: EntityKind = EntityKind.MUSIC;
@@ -90,5 +91,18 @@ export class Music implements MusicModel {
 			}
 		});
 		return result;
+	}
+
+	static doesPartHasSharpsOrFlats(u: MusicModel, partInfoId: string) {
+		let found = false;
+		let m;
+		for (let i = 0; i < u.measures.length && !found; i++) {
+			m = u.measures[i];
+			const part = Measure.findPartByPartInfoId(m, partInfoId);
+			if (part) {
+				found = part.notes.some((n) => MusicalHelper.parseNote(n.fullName).alter !== '');
+			}
+		}
+		return found;
 	}
 }
