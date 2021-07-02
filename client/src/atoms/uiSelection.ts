@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 export interface SelectionItem {
 	measureId: string;
-	voiceId: string;
+	partId: string;
 	noteId: string;
 }
 

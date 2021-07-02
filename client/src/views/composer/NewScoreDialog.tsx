@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Score } from '../../model/score';
-import { VoiceType } from '../../model/scoreModel';
+import { PartType } from '../../model/scoreModel';
 
 interface NewScoreDialogProps {
 	onDoneNewScoreDialog: (newScore: Score | null) => void;
@@ -66,7 +66,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
 	const [arrangerName, setArrangerName] = useState('');
-	const [voiceTypes, setVoiceTypes] = useState<string>(JSON.stringify([VoiceType.FN_LVL_1, VoiceType.LYRICS]));
+	const [partTypes, setPartTypes] = useState<string>(JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS]));
 	const [timeSignature, setTimeSignature] = useState('4/4');
 	const [pickupMeasure, setPickupMeasure] = useState('no');
 	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
@@ -86,8 +86,8 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 		setArrangerName(e.target.value);
 	};
 
-	const handleChangeVoiceTypes = (e: any) => {
-		setVoiceTypes(e.target.value);
+	const handleChangePartTypes = (e: any) => {
+		setPartTypes(e.target.value);
 	};
 
 	const handleChangeTimeSignature = (e: any) => {
@@ -119,7 +119,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 			scoreTitle,
 			scoreCredits,
 			arrangerName,
-			voiceTypes: JSON.parse(voiceTypes),
+			partTypes: JSON.parse(partTypes),
 			musicalScale: (musicalScale || 'C').toUpperCase(),
 			tempoBpm: Number(tempoBpm) || 120,
 			timeSignature,
@@ -127,7 +127,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 			numberOfMeasures: Number(numberOfMeasures) || 16,
 		});
 		onDoneNewScoreDialog(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, voiceTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
+	}, [scoreTitle, scoreCredits, arrangerName, partTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
@@ -140,10 +140,10 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
 					<FormControl className={classes.formControl}>
-						<InputLabel id="voice-types-label">Voice Types</InputLabel>
-						<Select id="voice=types" value={voiceTypes} onChange={handleChangeVoiceTypes}>
-							<MenuItem value={JSON.stringify([VoiceType.FN_LVL_1])}>Figurenotes</MenuItem>
-							<MenuItem value={JSON.stringify([VoiceType.FN_LVL_1, VoiceType.LYRICS])}>Figurenotes + Lyrics</MenuItem>
+						<InputLabel id="part-types-label">Parts</InputLabel>
+						<Select id="part-types" value={partTypes} onChange={handleChangePartTypes}>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1])}>Figurenotes</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Figurenotes + Lyrics</MenuItem>
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>

@@ -12,7 +12,7 @@ import { uiSelection } from '../../atoms/uiSelection';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
-import { Voice } from '../../model/voice';
+import { Part } from '../../model/part';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 
@@ -153,7 +153,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 			noteDurationsOK[o.durationDivs] = selection.every((item) => {
 				m = item.measureId && Score.findMeasure(score, item.measureId);
 				if (!m) return false;
-				return Measure.canChangeNoteDuration(m, item.voiceId, item.noteId, o.durationDivs);
+				return Measure.canChangeNoteDuration(m, item.partId, item.noteId, o.durationDivs);
 			});
 		});
 		setCanChangeDuration(noteDurationsOK);
@@ -275,11 +275,11 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 				if (!m) {
 					return;
 				}
-				const v = Measure.findVoice(m, n.voiceId);
-				if (!v) {
+				const p = Measure.findPart(m, n.partId);
+				if (!p) {
 					return;
 				}
-				Voice.changeNoteDuration(v, n.id, Number(e.currentTarget.dataset['durationDivs']), m.timeSignature, m.durationDivs);
+				Part.changeNoteDuration(p, n.id, Number(e.currentTarget.dataset['durationDivs']), m.timeSignature, m.durationDivs);
 				onUpdateScore();
 			});
 		},

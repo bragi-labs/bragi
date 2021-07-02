@@ -4,9 +4,9 @@ export enum EntityKind {
 	SCORE_SETTINGS = 'SCORE_SETTINGS',
 	MUSIC = 'MUSIC',
 	MEASURE = 'MEASURE',
-	VOICE = 'VOICE',
+	PART = 'PART',
 	NOTE = 'NOTE',
-	CHORD = 'NOTE',
+	CHORD = 'CHORD',
 	NA = 'NA',
 }
 export interface ScoreInfoModel {
@@ -28,7 +28,7 @@ export interface NoteModel {
 	kind: EntityKind; //"NOTE"
 	id: string; //internal ID
 	measureId: string; //internal ID
-	voiceId: string; //internal ID
+	partId: string; //internal ID
 	fullName: string; //e.g. "F#4"
 	isRest: boolean; //e.g. false
 	startDiv: number; //e.g. 0
@@ -40,26 +40,25 @@ export interface ChordModel {
 	kind: EntityKind; //"CHORD"
 	id: string; //internal ID
 	measureId: string; //internal ID
-	voiceId: string; //internal ID
+	partId: string; //internal ID
 	name: string; //e.g. "Am"
 	isRest: boolean; //e.g. false
 	startDiv: number; //e.g. 0
 	durationDivs: number; //e.g. 96
 }
-export enum VoiceType {
+export enum PartType {
 	FN_LVL_1 = 'FN_LVL_1',
-	FN_CHORDS = 'FN_CHORDS',
 	LYRICS = 'LYRICS',
+	FN_CHORDS = 'FN_CHORDS',
 	CHORD_NAMES = 'CHORD_NAMES',
 	RHYTHM = 'RHYTHM',
 	NA = 'NA',
 }
-export interface VoiceModel {
-	kind: EntityKind; //"VOICE"
+export interface PartModel {
+	kind: EntityKind; //"PART"
 	id: string; //internal ID
 	measureId: string; //internal ID
-	name: string; //e.g. "Piano"
-	voiceType: VoiceType; //e.g. FN_LVL_1
+	partType: PartType; //e.g. FN_LVL_1
 	lyrics: string; //e.g. "Is this the real life?"
 	notes: NoteModel[];
 	chords: ChordModel[];
@@ -73,7 +72,7 @@ export interface MeasureModel {
 	durationDivs: number; //e.g. 96
 	tempoBpm: number; //e.g. 120
 	musicalScale: string; //e.g. "Am"
-	voices: VoiceModel[];
+	parts: PartModel[];
 }
 export interface MusicModel {
 	kind: EntityKind; //"MUSIC"

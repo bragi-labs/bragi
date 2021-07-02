@@ -1,4 +1,4 @@
-import { MusicModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
+import { MusicModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
 import { Measure } from './measure';
 import { NewScoreData } from '../services/newScoreData';
 
@@ -33,11 +33,11 @@ export class Music implements MusicModel {
 		return u.measures.find((m) => m.id === measureId) || null;
 	}
 
-	static findVoice(u: MusicModel, voiceId: string): VoiceModel | null {
-		let result: VoiceModel | null = null;
+	static findPart(u: MusicModel, partId: string): PartModel | null {
+		let result: PartModel | null = null;
 		u.measures.forEach((m) => {
 			if (!result) {
-				result = Measure.findVoice(m, voiceId);
+				result = Measure.findPart(m, partId);
 			}
 		});
 		return result;

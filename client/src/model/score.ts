@@ -1,4 +1,4 @@
-import { ScoreModel, MeasureModel, VoiceModel, NoteModel, EntityKind } from './scoreModel';
+import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { ScoreSettings } from './scoreSettings';
 import { Music } from './music';
@@ -30,8 +30,8 @@ export class Score implements ScoreModel {
 		return Music.findMeasure(s.music, measureId) || null;
 	}
 
-	static findVoice(s: ScoreModel, voiceId: string): VoiceModel | null {
-		return Music.findVoice(s.music, voiceId) || null;
+	static findPart(s: ScoreModel, partId: string): PartModel | null {
+		return Music.findPart(s.music, partId) || null;
 	}
 
 	static findNote(s: ScoreModel, noteId: string): NoteModel | null {

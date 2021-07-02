@@ -6,7 +6,7 @@ export class Chord implements ChordModel {
 	constructor(
 		public id: string,
 		public measureId: string,
-		public voiceId: string,
+		public partId: string,
 		public name: string,
 		public isRest: boolean,
 		public startDiv: number,
@@ -14,6 +14,6 @@ export class Chord implements ChordModel {
 	) {}
 
 	static createFromModel(c: ChordModel) {
-		return new Chord(c.id, c.measureId, c.voiceId, c.name, c.isRest, c.startDiv, c.durationDivs);
+		return new Chord(c.id, c.measureId, c.partId, c.name, c.isRest, c.startDiv, c.durationDivs);
 	}
 }

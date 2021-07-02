@@ -6,7 +6,7 @@ export class Note implements NoteModel {
 	constructor(
 		public id: string,
 		public measureId: string,
-		public voiceId: string,
+		public partId: string,
 		public fullName: string,
 		public isRest: boolean,
 		public startDiv: number,
@@ -16,6 +16,6 @@ export class Note implements NoteModel {
 	) {}
 
 	static createFromModel(n: NoteModel) {
-		return new Note(n.id, n.measureId, n.voiceId, n.fullName, n.isRest, n.startDiv, n.durationDivs, n.isTiedToNext, n.isTiedToPrev);
+		return new Note(n.id, n.measureId, n.partId, n.fullName, n.isRest, n.startDiv, n.durationDivs, n.isTiedToNext, n.isTiedToPrev);
 	}
 }

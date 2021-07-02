@@ -1,10 +1,10 @@
-import { VoiceType } from '../model/scoreModel';
+import { PartType } from '../model/scoreModel';
 
 export interface NewScoreData {
 	scoreTitle: string;
 	scoreCredits: string;
 	arrangerName: string;
-	voiceTypes: VoiceType[];
+	partTypes: PartType[];
 	musicalScale: string;
 	tempoBpm: number;
 	timeSignature: string;

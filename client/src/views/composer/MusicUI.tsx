@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { Typography, TextField } from '@material-ui/core';
-import { MusicModel, VoiceType } from '../../model/scoreModel';
+import { MusicModel, PartType } from '../../model/scoreModel';
 import { Music } from '../../model/music';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { uiSelection } from '../../atoms/uiSelection';
@@ -36,7 +36,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		measureNumberText: {
 			fontSize: '12px',
 		},
-		voice: {
+		part: {
 			display: 'flex',
 			borderTop: '1px solid #999',
 			borderLeft: '1px solid #999',
@@ -154,7 +154,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(e) => {
 			const note = Music.findNote(music, e.currentTarget.dataset.noteId);
 			if (note) {
-				setSelection([{ measureId: note.measureId, voiceId: note.voiceId, noteId: note.id }]);
+				setSelection([{ measureId: note.measureId, partId: note.partId, noteId: note.id }]);
 				if (!note.isRest) {
 					SoundHelper.playShortNote(note.fullName);
 				}
@@ -165,9 +165,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 
 	const handleLyricsFocus = useCallback(
 		(e) => {
-			const v = Music.findVoice(music, e.target.parentElement.parentElement.dataset.voiceId);
-			if (v) {
-				setSelection([{ measureId: v.measureId, voiceId: v.id, noteId: '' }]);
+			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
+			if (p) {
+				setSelection([{ measureId: p.measureId, partId: p.id, noteId: '' }]);
 			}
 		},
 		[music, setSelection],
@@ -175,9 +175,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 
 	const handleLyricsChange = useCallback(
 		(e) => {
-			const v = Music.findVoice(music, e.target.parentElement.parentElement.dataset.voiceId);
-			if (v) {
-				v.lyrics = e.target.value;
+			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
+			if (p) {
+				p.lyrics = e.target.value;
 			}
 		},
 		[music],
@@ -196,17 +196,17 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 									</Typography>
 								</Box>
 							)}
-							{measure.voices.map((voice, v) => (
-								<Box key={v} className={classes.voice}>
-									{voice.voiceType === VoiceType.FN_LVL_1 &&
-										voice.notes.map((note, n) => (
+							{measure.parts.map((part, v) => (
+								<Box key={v} className={classes.part}>
+									{part.partType === PartType.FN_LVL_1 &&
+										part.notes.map((note, n) => (
 											<Box
 												key={n}
 												className={`${classes.note} ${selection.find((si) => si.noteId === note.id) ? 'selected' : ''}`}
 												style={{ flex: `${note.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
 												onClick={handleClickNote}
 												data-measure-id={measure.id}
-												data-voice-id={voice.id}
+												data-part-id={part.id}
 												data-note-id={note.id}
 											>
 												{note.fullName && (
@@ -274,11 +274,11 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 												{!note.fullName && <Box>{``}</Box>}
 											</Box>
 										))}
-									{voice.voiceType === VoiceType.LYRICS && (
+									{part.partType === PartType.LYRICS && (
 										<Box className={classes.lyrics}>
 											<TextField
-												data-voice-id={voice.id}
-												defaultValue={voice.lyrics}
+												data-part-id={part.id}
+												defaultValue={part.lyrics}
 												onFocus={handleLyricsFocus}
 												onChange={handleLyricsChange}
 												label=""

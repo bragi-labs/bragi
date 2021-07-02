@@ -1,24 +1,16 @@
-import { EntityKind, NoteModel, VoiceModel, VoiceType } from './scoreModel';
+import { EntityKind, NoteModel, PartModel, PartType } from './scoreModel';
 import { Note } from './note';
 import { Chord } from './chord';
 import { NewScoreData } from '../services/newScoreData';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 
-export class Voice implements VoiceModel {
-	kind: EntityKind = EntityKind.VOICE;
+export class Part implements PartModel {
+	kind: EntityKind = EntityKind.PART;
 
-	constructor(
-		public id: string,
-		public measureId: string,
-		public name: string,
-		public voiceType: VoiceType,
-		public lyrics: string,
-		public notes: Note[],
-		public chords: Chord[],
-	) {}
+	constructor(public id: string, public measureId: string, public partType: PartType, public lyrics: string, public notes: Note[], public chords: Chord[]) {}
 
-	static createFromModel(v: VoiceModel) {
+	static createFromModel(v: PartModel) {
 		const notes: Note[] = [];
 		v.notes.forEach((n) => {
 			const note = Note.createFromModel(n);
@@ -29,39 +21,39 @@ export class Voice implements VoiceModel {
 			const chord = Chord.createFromModel(c);
 			chords.push(chord);
 		});
-		return new Voice(v.id, v.measureId, v.name, v.voiceType, v.lyrics, notes, chords);
+		return new Part(v.id, v.measureId, v.partType, v.lyrics, notes, chords);
 	}
 
-	static createFromNewDialog(measureId: string, name: string, voiceType: VoiceType, newScoreData: NewScoreData) {
+	static createFromNewDialog(measureId: string, partType: PartType, newScoreData: NewScoreData) {
 		const id = CommonHelper.getRandomId();
 		const notes = [];
-		if (voiceType === VoiceType.FN_LVL_1) {
+		if (partType === PartType.FN_LVL_1) {
 			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(newScoreData.timeSignature);
 			for (let i = 0; i < beats; i++) {
 				const note = new Note(CommonHelper.getRandomId(), measureId, id, '', true, i * beatDurationDivs, beatDurationDivs, false, false);
 				notes.push(note);
 			}
 		}
-		return new Voice(id, measureId, name, voiceType, '', notes, []);
+		return new Part(id, measureId, partType, '', notes, []);
 	}
 
-	static findNote(v: VoiceModel, noteId: string): NoteModel | null {
+	static findNote(v: PartModel, noteId: string): NoteModel | null {
 		return v.notes.find((n) => n.id === noteId) || null;
 	}
 
-	static canChangeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureDurationDivs: number): boolean {
-		if (v.voiceType !== VoiceType.FN_LVL_1) {
+	static canChangeNoteDuration(v: PartModel, noteId: string, newDurationDivs: number, measureDurationDivs: number): boolean {
+		if (v.partType !== PartType.FN_LVL_1) {
 			return false;
 		}
-		const n = Voice.findNote(v, noteId);
+		const n = Part.findNote(v, noteId);
 		return !!n && n.durationDivs !== newDurationDivs && n.startDiv + newDurationDivs <= measureDurationDivs;
 	}
 
-	static changeNoteDuration(v: VoiceModel, noteId: string, newDurationDivs: number, measureTimeSignature: string, measureDurationDivs: number) {
-		if (!Voice.canChangeNoteDuration(v, noteId, newDurationDivs, measureDurationDivs)) {
+	static changeNoteDuration(v: PartModel, noteId: string, newDurationDivs: number, measureTimeSignature: string, measureDurationDivs: number) {
+		if (!Part.canChangeNoteDuration(v, noteId, newDurationDivs, measureDurationDivs)) {
 			return;
 		}
-		const targetNote = Voice.findNote(v, noteId);
+		const targetNote = Part.findNote(v, noteId);
 		if (!targetNote) {
 			return;
 		}
@@ -71,7 +63,7 @@ export class Voice implements VoiceModel {
 		if (isShorting) {
 			targetNote.durationDivs = newDurationDivs;
 			const curStartDivs = targetNote.startDiv + targetNote.durationDivs;
-			const newNote = new Note(CommonHelper.getRandomId(), targetNote.measureId, targetNote.voiceId, '', true, curStartDivs, -deltaDivs, false, false);
+			const newNote = new Note(CommonHelper.getRandomId(), targetNote.measureId, targetNote.partId, '', true, curStartDivs, -deltaDivs, false, false);
 			v.notes.splice(targetNoteIndex + 1, 0, newNote);
 		} else {
 			targetNote.durationDivs = newDurationDivs;
