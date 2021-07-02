@@ -58,6 +58,7 @@ export enum PartType {
 export interface PartModel {
 	kind: EntityKind; //"PART"
 	id: string; //internal ID
+	partInfoId: string; //internal ID
 	measureId: string; //internal ID
 	partType: PartType; //e.g. FN_LVL_1
 	lyrics: string; //e.g. "Is this the real life?"
