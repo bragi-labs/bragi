@@ -27,7 +27,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		measure: {
 			position: 'relative',
-			border: '1px solid #ccc',
+			border: '1px solid #999',
 		},
 		measureNumber: {
 			position: 'absolute',
