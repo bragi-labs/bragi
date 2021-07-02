@@ -166,7 +166,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
-	const [octaves, setOctaves] = useState<boolean[]>([true, true, true, true, true]);
+	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const selection = useRecoilValue(uiSelection);
 
