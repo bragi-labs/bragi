@@ -87,6 +87,9 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		},
 		noteDurationButton: {
 			borderRadius: 24,
+			'&.current': {
+				color: '#fa3',
+			},
 		},
 	}));
 	const classes = useStyles();
@@ -110,6 +113,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
+	const [curDuration, setCurDuration] = useState(0);
 
 	const noteDurationOptions = useMemo(
 		() => [
@@ -126,6 +130,7 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 	);
 
 	useEffect(() => {
+		setCurDuration(0);
 		setCanPitchDown(false);
 		setCanPitchUp(false);
 		setCanOctaveDown(false);
@@ -137,7 +142,12 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 		let m;
 		let n;
 		let noteDetails;
-
+		if (selection.length === 1 && selection[0].noteId) {
+			n = Score.findNote(score, selection[0].noteId);
+			if (n) {
+				setCurDuration(n.durationDivs);
+			}
+		}
 		let noteDurationsOK: any = {};
 		noteDurationOptions.forEach((o) => {
 			noteDurationsOK[o.durationDivs] = selection.every((item) => {
@@ -304,7 +314,9 @@ export const NoteToolbar = ({ score, onUpdateScore }: NoteToolbarProps) => {
 								data-duration-divs={o.durationDivs}
 								onClick={handleClickNoteDuration}
 								disabled={!canChangeDuration[o.durationDivs]}
-								className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'}`}
+								className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'} ${
+									o.durationDivs === curDuration ? 'current' : ''
+								}`}
 							>
 								{o.label}
 							</Button>
