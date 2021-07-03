@@ -35,7 +35,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
-			gap: '16px 0',
+			gap: '12px 0',
 			backgroundColor: '#444',
 			padding: 24,
 			//opacity: 0.9,
