@@ -35,13 +35,11 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			backgroundColor: '#444',
 			padding: 24,
 			//opacity: 0.9,
-			//width: 827,
 		},
-		panel: {
+		partRow: {
 			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
-			//borderRadius: 16,
 			backgroundColor: '#333',
 			padding: '0 12px 0 12px',
 		},
@@ -138,7 +136,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				{music.partsInfo.map((pi, piIndex) => (
-					<Box key={pi.id} className={classes.panel}>
+					<Box key={pi.id} className={classes.partRow}>
 						<IconButton
 							onClick={handleClickUpOrDown}
 							disabled={piIndex === 0}
