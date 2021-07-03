@@ -80,7 +80,7 @@ export const ComposerPage = () => {
 	}, []);
 
 	return (
-		<Box id="ComposerPage" className={classes.root} key={score ? `${score.id}-${score.timestamp}` : null}>
+		<Box id="ComposerPage" className={classes.root} key={score ? `${score.id}-${score.timestamp}` : ''}>
 			<Box className={classes.toolbarContainer}>
 				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} />
 			</Box>
