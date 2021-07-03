@@ -30,7 +30,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			borderRadius: 4,
 			padding: 4,
 			userSelect: 'none',
-			//opacity: 0.9,
 		},
 		content: {
 			display: 'grid',
@@ -38,8 +37,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			gap: '12px 0',
 			backgroundColor: '#444',
 			padding: 24,
-			//opacity: 0.9,
-			//width: 827,
 		},
 		panel: {
 			display: 'inline-flex',
