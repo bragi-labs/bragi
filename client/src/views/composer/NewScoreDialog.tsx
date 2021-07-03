@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core';
 import { Score } from '../../model/score';
-import { PartType } from '../../model/scoreModel';
 
 interface NewScoreDialogProps {
 	onDoneNewScoreDialog: (newScore: Score | null) => void;
@@ -66,12 +65,11 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 	const [scoreTitle, setScoreTitle] = useState('');
 	const [scoreCredits, setScoreCredits] = useState('');
 	const [arrangerName, setArrangerName] = useState('');
-	const [partTypes, setPartTypes] = useState<string>(JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS]));
 	const [timeSignature, setTimeSignature] = useState('4/4');
-	const [pickupMeasure, setPickupMeasure] = useState('no');
-	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
 	const [tempoBpm, setTempoBpm] = useState<string>('120');
 	const [musicalScale, setMusicalScale] = useState<string>('C');
+	const [pickupMeasure, setPickupMeasure] = useState('no');
+	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
 
 	const handleChangeScoreTitle = (e: any) => {
 		setScoreTitle(e.target.value);
@@ -86,20 +84,8 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 		setArrangerName(e.target.value);
 	};
 
-	const handleChangePartTypes = (e: any) => {
-		setPartTypes(e.target.value);
-	};
-
 	const handleChangeTimeSignature = (e: any) => {
 		setTimeSignature(e.target.value);
-	};
-
-	const handleChangePickupMeasure = (e: any) => {
-		setPickupMeasure(e.target.value);
-	};
-
-	const handleChangeNumberOfMeasurements = (e: any) => {
-		setNumberOfMeasures(e.target.value);
 	};
 
 	const handleChangeTempoBpm = (e: any) => {
@@ -108,6 +94,14 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 
 	const handleChangeMusicalScale = (e: any) => {
 		setMusicalScale(e.target.value);
+	};
+
+	const handleChangePickupMeasure = (e: any) => {
+		setPickupMeasure(e.target.value);
+	};
+
+	const handleChangeNumberOfMeasurements = (e: any) => {
+		setNumberOfMeasures(e.target.value);
 	};
 
 	const handleClickCancel = useCallback(() => {
@@ -119,15 +113,14 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 			scoreTitle,
 			scoreCredits,
 			arrangerName,
-			JSON.parse(partTypes),
 			timeSignature,
 			Number(tempoBpm) || 120,
+			(musicalScale || 'C').toUpperCase(),
 			pickupMeasure === 'yes',
 			Number(numberOfMeasures) || 16,
-			(musicalScale || 'C').toUpperCase(),
 		);
 		onDoneNewScoreDialog(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, partTypes, musicalScale, tempoBpm, timeSignature, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
+	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, tempoBpm, musicalScale, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>
@@ -139,21 +132,6 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" autoFocus={true} />
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
-					<FormControl className={classes.formControl}>
-						<InputLabel id="part-types-label">Part Types</InputLabel>
-						<Select id="part-types" value={partTypes} onChange={handleChangePartTypes}>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1])}>Melody Only</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Melody + Lyrics</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1])}>2 x Melody + Lyrics</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1])}>3 x Melody + Lyrics</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1])}>
-								4 x Melody + Lyrics
-							</MenuItem>
-							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1])}>
-								5 x Melody + Lyrics
-							</MenuItem>
-						</Select>
-					</FormControl>
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
@@ -174,6 +152,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 						</Select>
 					</FormControl>
 					<TextField label="Tempo (bpm)" value={tempoBpm} onChange={handleChangeTempoBpm} placeholder="e.g. 120" />
+					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
 					<FormControl className={classes.formControl}>
 						<InputLabel id="pickup-measure-label">Pickup Measure (initial bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
@@ -182,7 +161,6 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 						</Select>
 					</FormControl>
 					<TextField label="Number of Measurements" value={numberOfMeasures} onChange={handleChangeNumberOfMeasurements} placeholder="e.g. 16" />
-					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
 				</form>
 			</Box>
 			<Box className={classes.footer}>

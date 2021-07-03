@@ -9,32 +9,16 @@ export class Music implements MusicModel {
 
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
-	static createNew(partTypes: PartType[], timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
-		const partsInfo: PartInfo[] = [];
-		partTypes.forEach((pt) => {
-			let partName;
-			switch (pt) {
-				case PartType.FN_LVL_1:
-					partName = 'Melody';
-					break;
-				case PartType.LYRICS:
-					partName = 'Lyrics';
-					break;
-				case PartType.FN_CHORDS:
-					partName = 'Chords';
-					break;
-				case PartType.CHORD_NAMES:
-					partName = 'Chords';
-					break;
-				case PartType.RHYTHM:
-					partName = 'Rhythm';
-					break;
-				default:
-					partName = '';
-			}
-			const partInfo = PartInfo.createNew(pt, partName, true);
-			partsInfo.push(partInfo);
-		});
+	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
+		const partsInfo: PartInfo[] = [
+			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true),
+			PartInfo.createNew(PartType.LYRICS, 'Lyrics', true),
+			PartInfo.createNew(PartType.FN_CHORDS, 'Chords', false),
+			//PartInfo.createNew(PartType.RHYTHM, 'Rhythm', false),
+			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
+			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
+			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
+		];
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
 			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, musicalScale);

@@ -1,4 +1,4 @@
-import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind, PartType } from './scoreModel';
+import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { ScoreSettings } from './scoreSettings';
 import { Music } from './music';
@@ -14,17 +14,16 @@ export class Score implements ScoreModel {
 		scoreTitle: string,
 		scoreCredits: string,
 		arrangerName: string,
-		partTypes: PartType[],
 		timeSignature: string,
 		tempoBpm: number,
+		musicalScale: string,
 		hasPickupMeasure: boolean,
 		numberOfMeasures: number,
-		musicalScale: string,
 	) {
 		const id = CommonHelper.getRandomId();
 		const scoreInfo = ScoreInfo.createNew(scoreTitle, scoreCredits, arrangerName);
 		const scoreSettings = ScoreSettings.createNew();
-		const music = Music.createNew(partTypes, timeSignature, tempoBpm, hasPickupMeasure, numberOfMeasures, musicalScale);
+		const music = Music.createNew(timeSignature, tempoBpm, hasPickupMeasure, numberOfMeasures, musicalScale);
 		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 

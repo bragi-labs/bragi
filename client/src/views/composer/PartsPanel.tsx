@@ -39,7 +39,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		partRow: {
 			display: 'inline-flex',
 			alignItems: 'center',
-			height: 28,
+			height: 24,
 			backgroundColor: '#333',
 			padding: '0 12px 0 12px',
 		},
