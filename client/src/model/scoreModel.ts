@@ -24,6 +24,8 @@ export interface ScoreSettingsModel {
 	rowGap: number; //e.g. 36
 	quarterSize: number; //e.g. 36
 	lyricsSize: number; //e.g. 11
+	measureNumbers: boolean; //e.g. true
+	noteLetters: boolean; //e.g. true
 }
 export interface NoteModel {
 	kind: EntityKind; //"NOTE"

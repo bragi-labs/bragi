@@ -197,7 +197,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				{music.measures.map((m) => (
 					<Box key={m.id} style={{ marginRight: `${m.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
 						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${scoreSettings.rowGap}px` }}>
-							{m.number % sizeVars.numberOfMeasuresPerRow === 1 && (
+							{scoreSettings.measureNumbers && m.number % sizeVars.numberOfMeasuresPerRow === 1 && (
 								<Box className={classes.measureNumber}>
 									<Typography variant="body2" className={classes.measureNumberText}>
 										{m.number}
@@ -278,20 +278,22 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 																		style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }}
 																	/>
 																)}
-																<Box
-																	className={classes.noteName}
-																	style={{
-																		top: `${scoreSettings.quarterSize / 2 - 9}px`,
-																		left: `${
-																			MusicalHelper.parseNote(n.fullName).alter
-																				? scoreSettings.quarterSize / 2 - 9
-																				: scoreSettings.quarterSize / 2 - 5.5
-																		}px`,
-																	}}
-																>
-																	{MusicalHelper.parseNote(n.fullName).step}
-																	{MusicalHelper.parseNote(n.fullName).alter}
-																</Box>
+																{scoreSettings.noteLetters && (
+																	<Box
+																		className={classes.noteName}
+																		style={{
+																			top: `${scoreSettings.quarterSize / 2 - 9}px`,
+																			left: `${
+																				MusicalHelper.parseNote(n.fullName).alter
+																					? scoreSettings.quarterSize / 2 - 9
+																					: scoreSettings.quarterSize / 2 - 5.5
+																			}px`,
+																		}}
+																	>
+																		{MusicalHelper.parseNote(n.fullName).step}
+																		{MusicalHelper.parseNote(n.fullName).alter}
+																	</Box>
+																)}
 															</Box>
 														)}
 														{!n.fullName && <Box>{``}</Box>}

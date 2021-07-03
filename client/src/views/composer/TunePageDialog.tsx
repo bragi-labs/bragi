@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Button, Slider, Typography } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, Slider, Typography } from '@material-ui/core';
 import { Score } from '../../model/score';
 import { ScoreSettings } from '../../model/scoreSettings';
 
@@ -75,6 +75,10 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 				},
 			},
 		},
+		checkbox: {
+			marginRight: 56,
+			color: '#fff',
+		},
 		footer: {
 			display: 'flex',
 			justifyContent: 'flex-end',
@@ -128,6 +132,28 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 				return;
 			}
 			score.scoreSettings.lyricsSize = value;
+			onUpdateScore();
+		},
+		[score, onUpdateScore],
+	);
+
+	const handleChangeMeasureNumbers = useCallback(
+		(_e, value) => {
+			if (score.scoreSettings.measureNumbers === value) {
+				return;
+			}
+			score.scoreSettings.measureNumbers = value;
+			onUpdateScore();
+		},
+		[score, onUpdateScore],
+	);
+
+	const handleChangeNoteLetters = useCallback(
+		(_e, value) => {
+			if (score.scoreSettings.noteLetters === value) {
+				return;
+			}
+			score.scoreSettings.noteLetters = value;
 			onUpdateScore();
 		},
 		[score, onUpdateScore],
@@ -223,6 +249,18 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 								valueLabelDisplay="off"
 							/>
 						</Box>
+					</Box>
+					<Box className={classes.section}>
+						<FormControlLabel
+							control={<Checkbox checked={score.scoreSettings.measureNumbers} onChange={handleChangeMeasureNumbers} name="measureNumbers" color="default" />}
+							label="Measure Numbers"
+							className={classes.checkbox}
+						/>
+						<FormControlLabel
+							control={<Checkbox checked={score.scoreSettings.noteLetters} onChange={handleChangeNoteLetters} name="noteLetters" color="default" />}
+							label="Note Letters"
+							className={classes.checkbox}
+						/>
 					</Box>
 				</form>
 			</Box>
