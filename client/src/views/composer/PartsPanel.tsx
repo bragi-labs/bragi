@@ -31,7 +31,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
-			gap: '4px 0',
+			gap: '1px 0',
 			backgroundColor: '#444',
 			padding: 24,
 			//opacity: 0.9,
@@ -41,7 +41,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
-			borderRadius: 16,
+			//borderRadius: 16,
 			backgroundColor: '#333',
 			padding: '0 12px 0 12px',
 		},
