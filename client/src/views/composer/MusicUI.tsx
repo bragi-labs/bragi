@@ -88,7 +88,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		lyrics: {
 			display: 'flex',
 			width: '100%',
-			backgroundColor: '#f9f9f9',
+			backgroundColor: '#eee',
 			borderBottom: '1px solid #eee',
 			'& .MuiTextField-root': {
 				width: '100%',
