@@ -31,6 +31,7 @@ export const ComposerPage = () => {
 			position: 'relative',
 			minHeight: '100%',
 			maxHeight: '100%',
+			transform: 'translate(0, 0)',
 		},
 		pianoAnchor: {
 			position: 'absolute',

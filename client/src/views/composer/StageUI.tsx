@@ -41,7 +41,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			color: '#000',
 		},
 		tuneButton: {
-			position: 'absolute',
+			position: 'fixed',
 			left: 16,
 			top: 16,
 			width: 24,
