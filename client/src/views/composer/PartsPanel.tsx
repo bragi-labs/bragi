@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
@@ -10,6 +10,7 @@ import { IconButton, Typography } from '@material-ui/core';
 import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 import { Music } from '../../model/music';
 import { DraggablePanel } from '../../components/DraggablePanel';
+import { uiSelection } from '../../atoms/uiSelection';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -57,6 +58,9 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			// '&.clickable:not(.disabled):hover': {
 			// 	color: '#fff',
 			// },
+			'&.selected': {
+				color: '#fa3',
+			},
 			'&.disabled': {
 				color: '#666',
 				pointerEvents: 'none',
@@ -86,6 +90,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}));
 	const classes = useStyles();
 
+	const selection = useRecoilValue(uiSelection);
 	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
 	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -162,7 +167,10 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								<VisibilityOffIcon titleAccess="Show" />
 							</IconButton>
 						)}
-						<Typography variant="body1" className={`${classes.partName} ${pi.isVisible ? '' : 'disabled'}`}>
+						<Typography
+							variant="body1"
+							className={`${classes.partName} ${selection.length === 1 && selection[0].partInfoId === pi.id ? 'selected' : ''} ${pi.isVisible ? '' : 'disabled'}`}
+						>
 							{pi.name}
 						</Typography>
 					</Box>

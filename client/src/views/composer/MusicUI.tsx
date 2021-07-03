@@ -155,7 +155,8 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(e) => {
 			const note = Music.findNote(music, e.currentTarget.dataset.noteId);
 			if (note) {
-				setSelection([{ measureId: note.measureId, partId: note.partId, noteId: note.id }]);
+				const partInfoId = e.currentTarget.dataset.partInfoId;
+				setSelection([{ partInfoId, measureId: note.measureId, partId: note.partId, noteId: note.id }]);
 				if (!note.isRest) {
 					SoundHelper.playShortNote(note.fullName);
 				}
@@ -168,7 +169,8 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(e) => {
 			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
 			if (p) {
-				setSelection([{ measureId: p.measureId, partId: p.id, noteId: '' }]);
+				const partInfoId = e.target.parentElement.parentElement.dataset.partInfoId;
+				setSelection([{ partInfoId, measureId: p.measureId, partId: p.id, noteId: '' }]);
 			}
 		},
 		[music, setSelection],
@@ -211,12 +213,13 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 												p.notes.map((n) => (
 													<Box
 														key={n.id}
-														className={`${classes.note} ${selection.find((si) => si.noteId === n.id) ? 'selected' : ''}`}
-														style={{ flex: `${n.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
-														onClick={handleClickNote}
+														data-part-info-id={p.partInfoId}
 														data-measure-id={m.id}
 														data-part-id={p.id}
 														data-note-id={n.id}
+														onClick={handleClickNote}
+														className={`${classes.note} ${selection.find((si) => si.noteId === n.id) ? 'selected' : ''}`}
+														style={{ flex: `${n.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
 													>
 														{n.fullName && (
 															<Box
@@ -292,6 +295,8 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 											{p.partType === PartType.LYRICS && (
 												<Box className={classes.lyrics}>
 													<TextField
+														data-part-info-id={p.partInfoId}
+														data-measure-id={m.id}
 														data-part-id={p.id}
 														defaultValue={p.lyrics}
 														onFocus={handleLyricsFocus}
