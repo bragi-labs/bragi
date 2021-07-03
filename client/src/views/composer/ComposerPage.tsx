@@ -34,7 +34,7 @@ export const ComposerPage = () => {
 		},
 		pianoAnchor: {
 			position: 'absolute',
-			left: 824,
+			left: 800,
 			top: 56,
 			'@media print': {
 				display: 'none',
@@ -42,7 +42,7 @@ export const ComposerPage = () => {
 		},
 		notePanelAnchor: {
 			position: 'absolute',
-			left: 824,
+			left: 800,
 			top: 256,
 			'@media print': {
 				display: 'none',
@@ -50,7 +50,7 @@ export const ComposerPage = () => {
 		},
 		partsPanelAnchor: {
 			position: 'absolute',
-			left: 824,
+			left: 800,
 			top: 448,
 			'@media print': {
 				display: 'none',

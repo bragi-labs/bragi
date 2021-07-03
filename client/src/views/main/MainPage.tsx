@@ -51,6 +51,7 @@ export const MainPage = React.memo(() => {
 			right: 0,
 			top: 90,
 			height: 'calc(100% - 90px)',
+			backgroundColor: '#ccc',
 			backgroundImage: 'url("/img/music-sheet.jpg")',
 			backgroundSize: 'cover',
 			filter: 'grayscale(1) blur(5px)',
