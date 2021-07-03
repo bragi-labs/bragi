@@ -20,7 +20,7 @@ export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDr
 			cursor: 'move',
 		},
 		title: {
-			color: '#fa3',
+			color: '#eee',
 			fontSize: 14,
 		},
 	}));
