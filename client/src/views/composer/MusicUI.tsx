@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
@@ -135,6 +135,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const classes = useStyles();
 
 	const [selection, setSelection] = useRecoilState(uiSelection);
+	const resetSelection = useResetRecoilState(uiSelection);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
@@ -185,6 +186,10 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		},
 		[music],
 	);
+
+	const handleLyricsBlur = useCallback(() => {
+		resetSelection();
+	}, [resetSelection]);
 
 	return (
 		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
@@ -301,6 +306,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														defaultValue={p.lyrics}
 														onFocus={handleLyricsFocus}
 														onChange={handleLyricsChange}
+														onBlur={handleLyricsBlur}
 														label=""
 														className={`lyricsSize-${scoreSettings.lyricsSize}`}
 													/>
