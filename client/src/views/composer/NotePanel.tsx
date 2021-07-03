@@ -65,7 +65,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		},
 		panelText: {
 			marginLeft: 4,
-			color: '#999',
+			color: '#aaa',
 			transition: 'all 0.2s ease-in-out',
 			'&.clickable': {
 				marginLeft: 2,
