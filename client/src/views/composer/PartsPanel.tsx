@@ -44,19 +44,19 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			backgroundColor: '#333',
 			padding: '0 12px 0 12px',
 		},
-		panelText: {
+		partName: {
 			marginLeft: 4,
-			color: '#999',
+			color: '#aaa',
 			transition: 'all 0.2s ease-in-out',
-			'&.clickable': {
-				marginLeft: 2,
-			},
-			'&.clickable:not(.disabled)': {
-				cursor: 'pointer',
-			},
-			'&.clickable:not(.disabled):hover': {
-				color: '#fff',
-			},
+			// '&.clickable': {
+			// 	marginLeft: 2,
+			// },
+			// '&.clickable:not(.disabled)': {
+			// 	cursor: 'pointer',
+			// },
+			// '&.clickable:not(.disabled):hover': {
+			// 	color: '#fff',
+			// },
 			'&.disabled': {
 				color: '#666',
 				pointerEvents: 'none',
@@ -82,9 +82,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			'&:first-of-type': {
 				marginRight: 0,
 			},
-		},
-		partName: {
-			color: '#999',
 		},
 	}));
 	const classes = useStyles();
@@ -165,7 +162,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								<VisibilityOffIcon titleAccess="Show" />
 							</IconButton>
 						)}
-						<Typography variant="body1" className={classes.partName}>
+						<Typography variant="body1" className={`${classes.partName} ${pi.isVisible ? '' : 'disabled'}`}>
 							{pi.name}
 						</Typography>
 					</Box>
