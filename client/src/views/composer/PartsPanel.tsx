@@ -6,6 +6,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { IconButton, Typography } from '@material-ui/core';
 import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 import { Music } from '../../model/music';
@@ -26,7 +27,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			borderRadius: 4,
 			padding: 4,
 			userSelect: 'none',
-			//opacity: 0.9,
 		},
 		content: {
 			display: 'grid',
@@ -34,12 +34,11 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			gap: '1px 0',
 			backgroundColor: '#444',
 			padding: 24,
-			//opacity: 0.9,
 		},
 		partRow: {
 			display: 'inline-flex',
 			alignItems: 'center',
-			height: 24,
+			height: 32,
 			backgroundColor: '#333',
 			padding: '0 12px 0 12px',
 		},
@@ -47,17 +46,26 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			marginLeft: 4,
 			color: '#aaa',
 			transition: 'all 0.2s ease-in-out',
-			// '&.clickable': {
-			// 	marginLeft: 2,
-			// },
-			// '&.clickable:not(.disabled)': {
-			// 	cursor: 'pointer',
-			// },
-			// '&.clickable:not(.disabled):hover': {
-			// 	color: '#fff',
-			// },
 			'&.selected': {
 				color: '#fa3',
+			},
+			'&.disabled': {
+				color: '#666',
+				pointerEvents: 'none',
+			},
+		},
+		buttonText: {
+			color: '#aaa',
+			transition: 'all 0.2s ease-in-out',
+			'&.selected': {
+				color: '#fa3',
+			},
+			marginLeft: 2,
+			'&:not(.disabled)': {
+				cursor: 'pointer',
+			},
+			'&:not(.disabled):hover': {
+				color: '#fff',
 			},
 			'&.disabled': {
 				color: '#666',
@@ -84,6 +92,9 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			'&:first-of-type': {
 				marginRight: 0,
 			},
+		},
+		noRightMargin: {
+			marginRight: 0,
 		},
 	}));
 	const classes = useStyles();
@@ -131,6 +142,11 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		[music, onUpdateScore],
 	);
 
+	const handleClickAddPart = useCallback(() => {
+		//Music.addPart(music);
+		onUpdateScore();
+	}, [music, onUpdateScore]);
+
 	return (
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
 			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
@@ -173,6 +189,11 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 						</Typography>
 					</Box>
 				))}
+				<Box className={classes.partRow}>
+					<IconButton onClick={handleClickAddPart} className={`${classes.actionButton} ${classes.noRightMargin}`}>
+						<AddCircleOutlineIcon titleAccess="Add melody part" />
+					</IconButton>
+				</Box>
 			</Box>
 		</Box>
 	);
