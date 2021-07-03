@@ -56,9 +56,12 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 			fontSize: 12,
 		},
 		fnSymbolsSwitch: {
-			marginLeft: 32,
 			display: 'flex',
 			alignItems: 'center',
+			marginLeft: 32,
+			'&.small-piano': {
+				marginLeft: 16,
+			},
 		},
 		fnSymbolsSwitchText: {
 			margin: '0 4px',
@@ -66,10 +69,13 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 			fontSize: 12,
 		},
 		octaveSwitches: {
-			marginLeft: 32,
 			display: 'flex',
 			alignItems: 'center',
 			height: '100%',
+			marginLeft: 32,
+			'&.small-piano': {
+				marginLeft: 16,
+			},
 		},
 		octaveSwitchesText: {
 			margin: '0 4px',
@@ -306,14 +312,14 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
 					<Typography className={classes.powerSwitchText}>Power</Typography>
 				</Box>
-				<Box className={classes.fnSymbolsSwitch}>
+				<Box className={`${classes.fnSymbolsSwitch} ${smallPiano ? 'small-piano' : ''}`}>
 					<Box
 						onClick={toggleFnSymbols}
 						className={`led ${powerOn && fnSymbolsOn ? 'led--on' : ''} ${powerOn && !fnSymbolsOn ? 'led--off' : ''} ${powerOn ? '' : 'pointer-events-none'}`}
 					/>
 					<Typography className={classes.fnSymbolsSwitchText}>Figurenotes</Typography>
 				</Box>
-				<Box className={classes.octaveSwitches}>
+				<Box className={`${classes.octaveSwitches} ${smallPiano ? 'small-piano' : ''}`}>
 					{octaves.map((oct, octIndex) => (
 						<Box
 							key={octIndex}
