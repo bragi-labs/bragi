@@ -106,6 +106,9 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 				color: '#fa3',
 			},
 		},
+		buttonOnly: {
+			padding: '0 4px',
+		},
 	}));
 	const classes = useStyles();
 
@@ -358,13 +361,10 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 						</Box>
 					</Box>
 					<Box>
-						<Box className={classes.panel}>
-							<IconButton onClick={handleClickDelete} className={`${classes.actionButton}`} disabled={!canDelete}>
+						<Box className={`${classes.panel} ${classes.buttonOnly}`}>
+							<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
 								<DeleteForeverIcon titleAccess="Delete" />
 							</IconButton>
-							<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} ${classes.clickablePanelText} ${canDelete ? '' : 'disabled'}`}>
-								Delete
-							</Typography>
 						</Box>
 					</Box>
 				</Box>
