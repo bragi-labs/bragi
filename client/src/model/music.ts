@@ -1,6 +1,7 @@
 import { EntityKind, MeasureModel, MusicModel, NoteModel, PartModel, PartType } from './scoreModel';
 import { Measure } from './measure';
 import { PartInfo } from './partInfo';
+import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
 
 export class Music implements MusicModel {
@@ -104,5 +105,16 @@ export class Music implements MusicModel {
 			}
 		}
 		return found;
+	}
+
+	static movePart(u: MusicModel, partInfoId: string, isUp: boolean) {
+		const partInfoIndex = u.partsInfo.findIndex((pi) => pi.id === partInfoId);
+		if (partInfoIndex === -1) {
+			return;
+		}
+		CommonHelper.arrayMove(u.partsInfo, partInfoIndex, partInfoIndex + (isUp ? -1 : 1));
+		u.measures.forEach((m) => {
+			Measure.movePart(m, partInfoId, isUp);
+		});
 	}
 }

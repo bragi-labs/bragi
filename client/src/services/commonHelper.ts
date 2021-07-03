@@ -11,4 +11,13 @@ export class CommonHelper {
 	static pxToCm(px: number) {
 		return px * 0.0264583333;
 	}
+	static arrayMove(arr: any[], old_index: number, new_index: number) {
+		if (new_index >= arr.length) {
+			let k = new_index - arr.length + 1;
+			while (k--) {
+				arr.push(undefined);
+			}
+		}
+		arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+	}
 }

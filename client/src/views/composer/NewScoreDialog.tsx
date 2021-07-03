@@ -146,6 +146,12 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS])}>Melody + Lyrics</MenuItem>
 							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1])}>2 x Melody + Lyrics</MenuItem>
 							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1])}>3 x Melody + Lyrics</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1])}>
+								4 x Melody + Lyrics
+							</MenuItem>
+							<MenuItem value={JSON.stringify([PartType.FN_LVL_1, PartType.LYRICS, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1, PartType.FN_LVL_1])}>
+								5 x Melody + Lyrics
+							</MenuItem>
 						</Select>
 					</FormControl>
 					<FormControl className={classes.formControl}>

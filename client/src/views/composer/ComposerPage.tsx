@@ -96,7 +96,7 @@ export const ComposerPage = () => {
 						<NotePanel score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 					<Box className={classes.partsPanelAnchor}>
-						<PartsPanel partsInfo={score.music.partsInfo} onUpdateScore={handleScoreUpdated} />
+						<PartsPanel music={score.music} onUpdateScore={handleScoreUpdated} />
 					</Box>
 				</>
 			)}

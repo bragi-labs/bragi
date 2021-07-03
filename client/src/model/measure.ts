@@ -63,4 +63,12 @@ export class Measure implements MeasureModel {
 		}
 		return Part.canChangeNoteDuration(p, noteId, newDurationDivs, m.durationDivs);
 	}
+
+	static movePart(m: Measure, partInfoId: string, isUp: boolean) {
+		const partIndex = m.parts.findIndex((p) => p.partInfoId === partInfoId);
+		if (partIndex === -1) {
+			return;
+		}
+		CommonHelper.arrayMove(m.parts, partIndex, partIndex + (isUp ? -1 : 1));
+	}
 }

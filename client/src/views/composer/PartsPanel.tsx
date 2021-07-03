@@ -2,19 +2,21 @@ import React, { useCallback, useState } from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
-import { DraggablePanel } from '../../components/DraggablePanel';
-import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
-import { PartInfo } from '../../model/partInfo';
 import { IconButton, Typography } from '@material-ui/core';
+import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
+import { Music } from '../../model/music';
+import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface PartsPanelProps {
-	partsInfo: PartInfo[];
+	music: Music;
 	onUpdateScore: () => void;
 }
 
-export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
+export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -28,7 +30,7 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
-			gap: '16px 0',
+			gap: '4px 0',
 			backgroundColor: '#444',
 			padding: 24,
 			//opacity: 0.9,
@@ -76,6 +78,11 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 				color: '#666',
 			},
 		},
+		smallActionButton: {
+			'&:first-of-type': {
+				marginRight: 0,
+			},
+		},
 		partName: {
 			color: '#999',
 		},
@@ -100,29 +107,61 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 
 	const handleClickShowOrHide = useCallback(
 		(e) => {
-			const pi = partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partId);
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
 			}
 			pi.isVisible = !pi.isVisible;
 			onUpdateScore();
 		},
-		[partsInfo, onUpdateScore],
+		[music.partsInfo, onUpdateScore],
+	);
+
+	const handleClickUpOrDown = useCallback(
+		(e) => {
+			const partInfoId = e.currentTarget.dataset.partInfoId;
+			const pi = music.partsInfo.find((pi) => pi.id === partInfoId);
+			if (!pi) {
+				return;
+			}
+			const isUp = e.currentTarget.dataset.direction === 'up';
+			Music.movePart(music, partInfoId, isUp);
+			onUpdateScore();
+		},
+		[music, onUpdateScore],
 	);
 
 	return (
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
 			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
-				{partsInfo.map((pi) => (
+				{music.partsInfo.map((pi, piIndex) => (
 					<Box key={pi.id} className={classes.panel}>
+						<IconButton
+							onClick={handleClickUpOrDown}
+							disabled={piIndex === 0}
+							data-part-info-id={pi.id}
+							data-direction="up"
+							className={`${classes.actionButton} ${classes.smallActionButton}`}
+						>
+							<ArrowDropUpIcon titleAccess="Move up" />
+						</IconButton>
+						<IconButton
+							onClick={handleClickUpOrDown}
+							disabled={piIndex === music.partsInfo.length - 1}
+							data-part-info-id={pi.id}
+							data-direction="down"
+							className={`${classes.actionButton} ${classes.smallActionButton}`}
+						>
+							<ArrowDropDownIcon titleAccess="Move down" />
+						</IconButton>
 						{pi.isVisible && (
-							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
+							<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
 								<VisibilityIcon titleAccess="Hide" />
 							</IconButton>
 						)}
 						{!pi.isVisible && (
-							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
+							<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
 								<VisibilityOffIcon titleAccess="Show" />
 							</IconButton>
 						)}
