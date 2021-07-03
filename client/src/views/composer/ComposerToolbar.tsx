@@ -149,7 +149,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 					Open
 				</Typography>
 				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score}>
-					<SaveOutlinedIcon titleAccess="Open" />
+					<SaveOutlinedIcon titleAccess="Save" />
 				</IconButton>
 				<Typography onClick={handleClickSave} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>
 					Save
