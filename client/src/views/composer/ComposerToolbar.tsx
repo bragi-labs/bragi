@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { IconButton, Modal, Typography } from '@material-ui/core';
+import { IconButton, Modal } from '@material-ui/core';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
@@ -39,21 +39,21 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 				marginLeft: 0,
 			},
 		},
-		panelText: {
-			marginLeft: 2,
-			color: '#999',
-			transition: 'all 0.2s ease-in-out',
-			'&.clickable:not(.disabled)': {
-				cursor: 'pointer',
-			},
-			'&.clickable:not(.disabled):hover': {
-				color: '#fff',
-			},
-			'&.disabled': {
-				color: '#666',
-				pointerEvents: 'none',
-			},
-		},
+		// panelText: {
+		// 	marginLeft: 2,
+		// 	color: '#999',
+		// 	transition: 'all 0.2s ease-in-out',
+		// 	'&.clickable:not(.disabled)': {
+		// 		cursor: 'pointer',
+		// 	},
+		// 	'&.clickable:not(.disabled):hover': {
+		// 		color: '#fff',
+		// 	},
+		// 	'&.disabled': {
+		// 		color: '#666',
+		// 		pointerEvents: 'none',
+		// 	},
+		// },
 		actionButton: {
 			width: 24,
 			height: 24,
@@ -61,7 +61,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			cursor: 'pointer',
 			transition: 'all 0.2s ease-in-out',
 			color: '#ccc',
-			marginLeft: 12,
+			marginLeft: 8,
 			'&:first-of-type': {
 				marginLeft: 0,
 			},
@@ -136,32 +136,32 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 				<IconButton onClick={handleClickNew} className={classes.actionButton}>
 					<AddCircleOutlineOutlinedIcon titleAccess="New" />
 				</IconButton>
-				<Typography onClick={handleClickNew} variant="body1" className={`${classes.panelText} clickable`}>
-					New
-				</Typography>
+				{/*<Typography onClick={handleClickNew} variant="body1" className={`${classes.panelText} clickable`}>*/}
+				{/*	New*/}
+				{/*</Typography>*/}
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onDoneNewScoreDialog={handleDoneNewScoreDialog} />
 				</Modal>
 				<IconButton onClick={handleClickOpen} className={classes.actionButton}>
 					<FolderOpenOutlinedIcon titleAccess="Open" />
 				</IconButton>
-				<Typography onClick={handleClickOpen} variant="body1" className={`${classes.panelText} clickable`}>
-					Open
-				</Typography>
+				{/*<Typography onClick={handleClickOpen} variant="body1" className={`${classes.panelText} clickable`}>*/}
+				{/*	Open*/}
+				{/*</Typography>*/}
 				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score}>
 					<SaveOutlinedIcon titleAccess="Save" />
 				</IconButton>
-				<Typography onClick={handleClickSave} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>
-					Save
-				</Typography>
+				{/*<Typography onClick={handleClickSave} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>*/}
+				{/*	Save*/}
+				{/*</Typography>*/}
 				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
 				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 				<IconButton onClick={handleClickPrint} className={classes.actionButton} disabled={!score}>
 					<PrintIcon titleAccess="Print" />
 				</IconButton>
-				<Typography onClick={handleClickPrint} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>
-					Print
-				</Typography>
+				{/*<Typography onClick={handleClickPrint} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>*/}
+				{/*	Print*/}
+				{/*</Typography>*/}
 			</Box>
 		</Box>
 	);
