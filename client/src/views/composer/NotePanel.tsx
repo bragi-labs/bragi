@@ -67,13 +67,17 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			marginLeft: 4,
 			color: '#aaa',
 			transition: 'all 0.2s ease-in-out',
-			'&.clickable': {
-				marginLeft: 2,
+			'&.disabled': {
+				color: '#666',
+				pointerEvents: 'none',
 			},
-			'&.clickable:not(.disabled)': {
+		},
+		clickablePanelText: {
+			marginLeft: 2,
+			'&:not(.disabled)': {
 				cursor: 'pointer',
 			},
-			'&.clickable:not(.disabled):hover': {
+			'&:not(.disabled):hover': {
 				color: '#fff',
 			},
 			'&.disabled': {
@@ -358,7 +362,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 							<IconButton onClick={handleClickDelete} className={`${classes.actionButton}`} disabled={!canDelete}>
 								<DeleteForeverIcon titleAccess="Delete" />
 							</IconButton>
-							<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} clickable ${canDelete ? '' : 'disabled'}`}>
+							<Typography onClick={handleClickDelete} variant="body1" className={`${classes.panelText} ${classes.clickablePanelText} ${canDelete ? '' : 'disabled'}`}>
 								Delete
 							</Typography>
 						</Box>
