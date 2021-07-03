@@ -49,14 +49,14 @@ export const Masthead = React.memo(() => {
 			textDecoration: 'none',
 			transition: 'all 0.2s ease-in-out',
 			textShadow: '1px 1px #000',
-			color: '#999',
+			color: '#aaa',
 			'&:hover': {
 				color: '#ccc',
 			},
 		},
 		currentPath: {
 			textDecoration: 'none',
-			color: '#ddd',
+			color: '#fa3',
 			textShadow: '1px 1px #000',
 			pointerEvents: 'none',
 		},

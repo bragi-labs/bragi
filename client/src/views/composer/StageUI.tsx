@@ -49,9 +49,9 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			textAlign: 'center',
 			cursor: 'pointer',
 			transition: 'all 0.2s ease-in-out',
-			color: '#666',
+			color: '#333',
 			'&:hover': {
-				color: '#333',
+				color: '#000',
 			},
 			'&.disabled': {
 				pointerEvents: 'none',
