@@ -104,8 +104,9 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 				backgroundPosition: '0 -32px',
 			},
 		},
-		hideOctave: {
+		hideContent: {
 			width: '0 !important',
+			overflow: 'hidden',
 		},
 		octaveKey: {
 			position: 'absolute',
@@ -328,7 +329,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 			</Box>
 			<Box className={classes.keyboard}>
 				{octaves.map((oct, i) => (
-					<Box key={i} className={`${classes.octave} ${oct ? '' : classes.hideOctave}`}>
+					<Box key={i} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
 						{whiteKeys.map((whiteKey, j) => (
 							<Box key={j}>
 								<Box
