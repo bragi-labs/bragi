@@ -9,7 +9,7 @@ export class ScoreSettings implements ScoreSettingsModel {
 		musicWidth: { min: 400, max: 718, default: 718 },
 		rowGap: { min: 16, max: 80, default: 36 },
 		quarterSize: { min: 20, max: 44, default: 36 },
-		lyricsSize: { min: 8, max: 16, default: 11 },
+		lyricsSize: { min: 8, max: 16, default: 12 },
 	};
 
 	static createNew() {
