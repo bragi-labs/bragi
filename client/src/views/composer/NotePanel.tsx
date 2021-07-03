@@ -314,17 +314,17 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			<DraggablePanel title="Note" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
-					{noteDurationOptions.map((o, i) => (
+					{noteDurationOptions.map((ndo) => (
 						<Button
-							key={i}
-							data-duration-divs={o.durationDivs}
+							key={ndo.durationDivs}
+							data-duration-divs={ndo.durationDivs}
 							onClick={handleClickNoteDuration}
-							disabled={!canChangeDuration[o.durationDivs]}
-							className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[o.durationDivs] ? '' : 'disabled'} ${
-								o.durationDivs === curDuration ? 'current' : ''
+							disabled={!canChangeDuration[ndo.durationDivs]}
+							className={`${classes.actionButton} ${classes.noteDurationButton} ${canChangeDuration[ndo.durationDivs] ? '' : 'disabled'} ${
+								ndo.durationDivs === curDuration ? 'current' : ''
 							}`}
 						>
-							{o.label}
+							{ndo.label}
 						</Button>
 					))}
 				</Box>

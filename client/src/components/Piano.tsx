@@ -314,12 +314,12 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 					<Typography className={classes.fnSymbolsSwitchText}>Figurenotes</Typography>
 				</Box>
 				<Box className={classes.octaveSwitches}>
-					{octaves.map((octave, i) => (
+					{octaves.map((oct, octIndex) => (
 						<Box
-							key={i}
+							key={octIndex}
 							onClick={toggleOctave}
-							data-octave-index={i}
-							className={`${classes.octaveSwitchLed} led ${powerOn && octave ? 'led--on' : ''} ${powerOn && !octave ? 'led--off' : ''} ${
+							data-octave-index={octIndex}
+							className={`${classes.octaveSwitchLed} led ${powerOn && oct ? 'led--on' : ''} ${powerOn && !oct ? 'led--off' : ''} ${
 								powerOn ? '' : 'pointer-events-none'
 							}`}
 						/>
@@ -328,15 +328,15 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 				</Box>
 			</Box>
 			<Box className={classes.keyboard}>
-				{octaves.map((oct, i) => (
-					<Box key={i} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
-						{whiteKeys.map((whiteKey, j) => (
-							<Box key={j}>
+				{octaves.map((oct, octIndex) => (
+					<Box key={octIndex} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
+						{whiteKeys.map((wk) => (
+							<Box key={wk.noteName}>
 								<Box
 									className={`${classes.figureNoteSymbol} ${oct && fnSymbolsOn ? '' : 'display-none'}`}
 									style={{
-										...FigurenotesHelper.getSymbolStyle(`${whiteKey.noteName}${i + MusicalHelper.minOctave}`, smallPiano ? 16 : 32, 'px'),
-										left: whiteKey.left + (smallPiano ? 3 : 7),
+										...FigurenotesHelper.getSymbolStyle(`${wk.noteName}${octIndex + MusicalHelper.minOctave}`, smallPiano ? 16 : 32, 'px'),
+										left: wk.left + (smallPiano ? 3 : 7),
 									}}
 								/>
 								<Box
@@ -344,24 +344,24 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 									onMouseUp={handleMouseUp}
 									onMouseEnter={handleMouseEnter}
 									onMouseLeave={handleMouseLeave}
-									data-note-name={whiteKey.noteName}
-									data-octave-number={i + 2}
+									data-note-name={wk.noteName}
+									data-octave-number={octIndex + MusicalHelper.minOctave}
 									className={`${classes.octaveKey} ${classes.whiteKey}`}
-									style={{ left: whiteKey.left }}
+									style={{ left: wk.left }}
 								/>
 							</Box>
 						))}
-						{blackKeys.map((blackKey, j) => (
+						{blackKeys.map((bk) => (
 							<Box
-								key={j}
+								key={bk.noteName}
 								onMouseDown={handleMouseDown}
 								onMouseUp={handleMouseUp}
 								onMouseEnter={handleMouseEnter}
 								onMouseLeave={handleMouseLeave}
-								data-note-name={blackKey.noteName}
-								data-octave-number={i + MusicalHelper.minOctave}
+								data-note-name={bk.noteName}
+								data-octave-number={octIndex + MusicalHelper.minOctave}
 								className={`${classes.octaveKey} ${classes.blackKey}`}
-								style={{ left: blackKey.left }}
+								style={{ left: bk.left }}
 							/>
 						))}
 					</Box>

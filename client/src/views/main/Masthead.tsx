@@ -118,8 +118,8 @@ export const Masthead = React.memo(() => {
 				<Box className={classes.leftSection}>
 					<Box className={classes.navLinks}>
 						<List className={classes.list}>
-							{leftLinks.map((link, i) => (
-								<ListItem key={i} className={classes.listItem}>
+							{leftLinks.map((link) => (
+								<ListItem key={link.to} className={classes.listItem}>
 									<Link to={link.to} className={isCurrentPathLink(link.to) ? classes.currentPath : classes.link}>
 										<ListItemText primary={link.text} />
 									</Link>
@@ -137,7 +137,7 @@ export const Masthead = React.memo(() => {
 					{/*<Box className={classes.navLinks}>*/}
 					{/*	<List className={classes.list}>*/}
 					{/*		{rightLinks.map((link, i) => (*/}
-					{/*			<ListItem key={i} className={classes.listItem}>*/}
+					{/*			<ListItem key={link.text} className={classes.listItem}>*/}
 					{/*				<Link to={link.to} className={link.to === myLocation.pathname ? classes.currentPath : classes.link}>*/}
 					{/*					<ListItemText primary={link.text} />*/}
 					{/*				</Link>*/}

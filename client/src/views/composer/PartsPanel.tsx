@@ -114,8 +114,8 @@ export const PartsPanel = ({ partsInfo, onUpdateScore }: PartsPanelProps) => {
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
 			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
-				{partsInfo.map((pi, i) => (
-					<Box key={i} className={classes.panel}>
+				{partsInfo.map((pi) => (
+					<Box key={pi.id} className={classes.panel}>
 						{pi.isVisible && (
 							<IconButton onClick={handleClickShowOrHide} data-part-id={pi.id} className={classes.actionButton}>
 								<VisibilityIcon titleAccess="Hide" />
