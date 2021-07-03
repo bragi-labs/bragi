@@ -15,9 +15,6 @@ export class Music implements MusicModel {
 			PartInfo.createNew(PartType.LYRICS, 'Lyrics', true),
 			PartInfo.createNew(PartType.FN_CHORDS, 'Chords', false),
 			//PartInfo.createNew(PartType.RHYTHM, 'Rhythm', false),
-			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
-			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
-			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', false),
 		];
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
