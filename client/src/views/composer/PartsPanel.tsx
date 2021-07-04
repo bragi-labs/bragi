@@ -13,6 +13,7 @@ import { Music } from '../../model/music';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { uiSelection } from '../../atoms/uiSelection';
 import { PartType } from '../../model/scoreModel';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -37,11 +38,20 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			padding: 24,
 		},
 		partRow: {
-			display: 'inline-flex',
+			display: 'flex',
+			justifyContent: 'space-between',
 			alignItems: 'center',
 			height: 32,
 			backgroundColor: '#333',
-			padding: '0 12px 0 12px',
+			padding: '0 4px',
+		},
+		partRowLeftSection: {
+			display: 'flex',
+			alignItems: 'center',
+		},
+		partRowRightSection: {
+			display: 'flex',
+			alignItems: 'center',
 		},
 		partName: {
 			marginLeft: 4,
@@ -94,9 +104,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				marginRight: 0,
 			},
 		},
-		noRightMargin: {
-			marginRight: 0,
-		},
 		textButton: {
 			marginLeft: 2,
 			transition: 'all 0.2s ease-in-out',
@@ -126,18 +133,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		resetDraggedItem();
 	}, [resetDraggedItem]);
 
-	const handleClickShowOrHide = useCallback(
-		(e) => {
-			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
-			if (!pi) {
-				return;
-			}
-			pi.isVisible = !pi.isVisible;
-			onUpdateScore();
-		},
-		[music.partsInfo, onUpdateScore],
-	);
-
 	const handleClickUpOrDown = useCallback(
 		(e) => {
 			const partInfoId = e.currentTarget.dataset.partInfoId;
@@ -150,6 +145,30 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			onUpdateScore();
 		},
 		[music, onUpdateScore],
+	);
+
+	const handleClickShowOrHide = useCallback(
+		(e) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
+			if (!pi) {
+				return;
+			}
+			pi.isVisible = !pi.isVisible;
+			onUpdateScore();
+		},
+		[music.partsInfo, onUpdateScore],
+	);
+
+	const handleClickDeletePart = useCallback(
+		(e) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
+			if (!pi) {
+				return;
+			}
+			Music.deletePart(music, pi.id);
+			onUpdateScore();
+		},
+		[music.partsInfo, onUpdateScore],
 	);
 
 	const handleClickAddMelodyPart = useCallback(() => {
@@ -168,55 +187,64 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			<Box className={classes.content}>
 				{music.partsInfo.map((pi, piIndex) => (
 					<Box key={pi.id} className={classes.partRow}>
-						<IconButton
-							onClick={handleClickUpOrDown}
-							disabled={piIndex === 0}
-							data-part-info-id={pi.id}
-							data-direction="up"
-							className={`${classes.actionButton} ${classes.smallActionButton}`}
-						>
-							<ArrowDropUpIcon titleAccess="Move up" />
-						</IconButton>
-						<IconButton
-							onClick={handleClickUpOrDown}
-							disabled={piIndex === music.partsInfo.length - 1}
-							data-part-info-id={pi.id}
-							data-direction="down"
-							className={`${classes.actionButton} ${classes.smallActionButton}`}
-						>
-							<ArrowDropDownIcon titleAccess="Move down" />
-						</IconButton>
-						{pi.isVisible && (
-							<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
-								<VisibilityIcon titleAccess="Hide" />
+						<Box className={classes.partRowLeftSection}>
+							<IconButton
+								onClick={handleClickUpOrDown}
+								disabled={piIndex === 0}
+								data-part-info-id={pi.id}
+								data-direction="up"
+								className={`${classes.actionButton} ${classes.smallActionButton}`}
+							>
+								<ArrowDropUpIcon titleAccess="Move up" />
 							</IconButton>
-						)}
-						{!pi.isVisible && (
-							<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
-								<VisibilityOffIcon titleAccess="Show" />
+							<IconButton
+								onClick={handleClickUpOrDown}
+								disabled={piIndex === music.partsInfo.length - 1}
+								data-part-info-id={pi.id}
+								data-direction="down"
+								className={`${classes.actionButton} ${classes.smallActionButton}`}
+							>
+								<ArrowDropDownIcon titleAccess="Move down" />
 							</IconButton>
-						)}
-						<Typography
-							variant="body1"
-							className={`${classes.partName} ${selection.length === 1 && selection[0].partInfoId === pi.id ? 'selected' : ''} ${pi.isVisible ? '' : 'disabled'}`}
-						>
-							{pi.name}
-						</Typography>
+							{pi.isVisible && (
+								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
+									<VisibilityIcon titleAccess="Hide" />
+								</IconButton>
+							)}
+							{!pi.isVisible && (
+								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
+									<VisibilityOffIcon titleAccess="Show" />
+								</IconButton>
+							)}
+							<Typography
+								variant="body1"
+								className={`${classes.partName} ${selection.length === 1 && selection[0].partInfoId === pi.id ? 'selected' : ''} ${pi.isVisible ? '' : 'disabled'}`}
+							>
+								{pi.name}
+							</Typography>
+						</Box>
+						<Box className={classes.partRowRightSection}>
+							<IconButton onClick={handleClickDeletePart} data-part-info-id={pi.id} className={classes.actionButton} style={{ marginRight: '0' }}>
+								<DeleteForeverIcon titleAccess="Delete" />
+							</IconButton>
+						</Box>
 					</Box>
 				))}
 				<Box className={classes.partRow}>
-					<IconButton onClick={handleClickAddMelodyPart} className={`${classes.actionButton} ${classes.noRightMargin}`}>
-						<AddCircleOutlineIcon titleAccess="Add melody part" />
-					</IconButton>
-					<Typography onClick={handleClickAddMelodyPart} variant="body1" className={classes.textButton}>
-						Melody
-					</Typography>
-					<IconButton onClick={handleClickAddTextPart} className={`${classes.actionButton} ${classes.noRightMargin}`} style={{ marginLeft: '16px' }}>
-						<AddCircleOutlineIcon titleAccess="Add text part" />
-					</IconButton>
-					<Typography onClick={handleClickAddTextPart} variant="body1" className={classes.textButton}>
-						Text
-					</Typography>
+					<Box className={classes.partRowLeftSection}>
+						<IconButton onClick={handleClickAddMelodyPart} className={classes.actionButton} style={{ marginRight: '0' }}>
+							<AddCircleOutlineIcon titleAccess="Add melody part" />
+						</IconButton>
+						<Typography onClick={handleClickAddMelodyPart} variant="body1" className={classes.textButton}>
+							Melody
+						</Typography>
+						<IconButton onClick={handleClickAddTextPart} className={classes.actionButton} style={{ marginLeft: '16px', marginRight: '0' }}>
+							<AddCircleOutlineIcon titleAccess="Add text part" />
+						</IconButton>
+						<Typography onClick={handleClickAddTextPart} variant="body1" className={classes.textButton}>
+							Text
+						</Typography>
+					</Box>
 				</Box>
 			</Box>
 		</Box>

@@ -72,8 +72,16 @@ export class Measure implements MeasureModel {
 		CommonHelper.arrayMove(m.parts, partIndex, partIndex + (isUp ? -1 : 1));
 	}
 
-	static addMelodyPart(m: Measure, partInfo: PartInfo) {
+	static addPart(m: Measure, partInfo: PartInfo) {
 		const p = Part.createNew(m.id, partInfo, m.timeSignature);
 		m.parts.push(p);
+	}
+
+	static deletePart(m: Measure, partInfoId: string) {
+		const partInfoIndex = m.parts.findIndex((pi) => pi.id === partInfoId);
+		if (partInfoIndex === -1) {
+			return;
+		}
+		m.parts.splice(partInfoIndex, 1);
 	}
 }

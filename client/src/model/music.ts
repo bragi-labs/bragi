@@ -103,7 +103,18 @@ export class Music implements MusicModel {
 		const pi = PartInfo.createNew(partType, partName, isVisible);
 		u.partsInfo.push(pi);
 		u.measures.forEach((m) => {
-			Measure.addMelodyPart(m, pi);
+			Measure.addPart(m, pi);
+		});
+	}
+
+	static deletePart(u: MusicModel, partInfoId: string) {
+		const partInfoIndex = u.partsInfo.findIndex((pi) => pi.id === partInfoId);
+		if (partInfoIndex === -1) {
+			return;
+		}
+		u.partsInfo.splice(partInfoIndex, 1);
+		u.measures.forEach((m) => {
+			Measure.deletePart(m, partInfoId);
 		});
 	}
 }

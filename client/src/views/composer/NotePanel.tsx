@@ -357,12 +357,10 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 							</Typography>
 						</Box>
 					</Box>
-					<Box>
-						<Box className={`${classes.panel} ${classes.buttonOnly}`}>
-							<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
-								<DeleteForeverIcon titleAccess="Delete" />
-							</IconButton>
-						</Box>
+					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
+						<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
+							<DeleteForeverIcon titleAccess="Delete" />
+						</IconButton>
 					</Box>
 				</Box>
 			</Box>
