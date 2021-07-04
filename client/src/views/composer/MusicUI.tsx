@@ -98,12 +98,12 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				width: '100%',
 				'& .MuiInput-formControl': {
 					width: '100%',
-				},
-				'& .MuiInput-input': {
-					width: '100%',
-					padding: 2,
-					fontFamily: 'Arial, sans-serif',
-					color: '#000',
+					'& .MuiInput-input': {
+						width: '100%',
+						padding: 2,
+						fontFamily: 'Arial, sans-serif',
+						color: '#000',
+					},
 				},
 				'&.font-weight-bold .MuiInput-input': {
 					fontWeight: 700,
