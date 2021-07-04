@@ -51,7 +51,7 @@ export interface ChordModel {
 }
 export enum PartType {
 	FN_LVL_1 = 'FN_LVL_1',
-	LYRICS = 'LYRICS',
+	TEXT = 'TEXT',
 	FN_CHORDS = 'FN_CHORDS',
 	CHORD_NAMES = 'CHORD_NAMES',
 	RHYTHM = 'RHYTHM',
@@ -63,7 +63,7 @@ export interface PartModel {
 	partInfoId: string; //internal ID
 	measureId: string; //internal ID
 	partType: PartType; //e.g. FN_LVL_1
-	lyrics: string; //e.g. "Is this the real life?"
+	text: string; //e.g. "Is this the real life?"
 	notes: NoteModel[];
 	chords: ChordModel[];
 }

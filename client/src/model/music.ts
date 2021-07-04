@@ -10,7 +10,7 @@ export class Music implements MusicModel {
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
 	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
-		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true), PartInfo.createNew(PartType.LYRICS, 'Lyrics', true)];
+		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true), PartInfo.createNew(PartType.TEXT, 'Text', true)];
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
 			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, musicalScale);

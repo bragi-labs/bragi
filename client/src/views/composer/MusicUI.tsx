@@ -91,38 +91,38 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			},
 			zIndex: -1,
 		},
-		lyrics: {
+		text: {
 			display: 'flex',
 			width: '100%',
 			backgroundColor: '#eee',
 			borderBottom: '1px solid #eee',
 			'& .MuiTextField-root': {
 				width: '100%',
-				'&.lyricsSize-8 .MuiInput-input': {
+				'&.textSize-8 .MuiInput-input': {
 					fontSize: '8px',
 				},
-				'&.lyricsSize-9 .MuiInput-input': {
+				'&.textSize-9 .MuiInput-input': {
 					fontSize: '9px',
 				},
-				'&.lyricsSize-10 .MuiInput-input': {
+				'&.textSize-10 .MuiInput-input': {
 					fontSize: '10px',
 				},
-				'&.lyricsSize-11 .MuiInput-input': {
+				'&.textSize-11 .MuiInput-input': {
 					fontSize: '11px',
 				},
-				'&.lyricsSize-12 .MuiInput-input': {
+				'&.textSize-12 .MuiInput-input': {
 					fontSize: '12px',
 				},
-				'&.lyricsSize-13 .MuiInput-input': {
+				'&.textSize-13 .MuiInput-input': {
 					fontSize: '13px',
 				},
-				'&.lyricsSize-14 .MuiInput-input': {
+				'&.textSize-14 .MuiInput-input': {
 					fontSize: '14px',
 				},
-				'&.lyricsSize-15 .MuiInput-input': {
+				'&.textSize-15 .MuiInput-input': {
 					fontSize: '15px',
 				},
-				'&.lyricsSize-16 .MuiInput-input': {
+				'&.textSize-16 .MuiInput-input': {
 					fontSize: '16px',
 				},
 			},
@@ -173,7 +173,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music, setSelection],
 	);
 
-	const handleLyricsFocus = useCallback(
+	const handleTextFocus = useCallback(
 		(e) => {
 			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
 			if (p) {
@@ -184,17 +184,17 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music, setSelection],
 	);
 
-	const handleLyricsChange = useCallback(
+	const handleTextChange = useCallback(
 		(e) => {
 			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
 			if (p) {
-				p.lyrics = e.target.value;
+				p.text = e.target.value;
 			}
 		},
 		[music],
 	);
 
-	const handleLyricsBlur = useCallback(() => {
+	const handleTextBlur = useCallback(() => {
 		resetSelection();
 	}, [resetSelection]);
 
@@ -308,18 +308,18 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														{!n.fullName && <Box>{``}</Box>}
 													</Box>
 												))}
-											{p.partType === PartType.LYRICS && (
-												<Box className={classes.lyrics}>
+											{p.partType === PartType.TEXT && (
+												<Box className={classes.text}>
 													<TextField
 														data-part-info-id={p.partInfoId}
 														data-measure-id={m.id}
 														data-part-id={p.id}
-														defaultValue={p.lyrics}
-														onFocus={handleLyricsFocus}
-														onChange={handleLyricsChange}
-														onBlur={handleLyricsBlur}
+														defaultValue={p.text}
+														onFocus={handleTextFocus}
+														onChange={handleTextChange}
+														onBlur={handleTextBlur}
 														label=""
-														className={`lyricsSize-${scoreSettings.lyricsSize}`}
+														className={`textSize-${scoreSettings.lyricsSize}`}
 													/>
 												</Box>
 											)}

@@ -13,7 +13,7 @@ export class Part implements PartModel {
 		public partInfoId: string,
 		public measureId: string,
 		public partType: PartType,
-		public lyrics: string,
+		public text: string,
 		public notes: Note[],
 		public chords: Chord[],
 	) {}
@@ -42,7 +42,7 @@ export class Part implements PartModel {
 			const chord = Chord.createFromModel(c);
 			chords.push(chord);
 		});
-		return new Part(p.id, p.partInfoId, p.measureId, p.partType, p.lyrics, notes, chords);
+		return new Part(p.id, p.partInfoId, p.measureId, p.partType, p.text, notes, chords);
 	}
 
 	static findNote(p: PartModel, noteId: string): NoteModel | null {
