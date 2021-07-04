@@ -126,17 +126,6 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 		[score, onUpdateScore],
 	);
 
-	const handleChangeLyricsSize = useCallback(
-		(_e, value) => {
-			if (score.scoreSettings.lyricsSize === value) {
-				return;
-			}
-			score.scoreSettings.lyricsSize = value;
-			onUpdateScore();
-		},
-		[score, onUpdateScore],
-	);
-
 	const handleChangeMeasureNumbers = useCallback(
 		(_e, value) => {
 			if (score.scoreSettings.measureNumbers === value) {
@@ -225,26 +214,6 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 								step={1}
 								value={score.scoreSettings.quarterSize}
 								marks
-								track={false}
-								valueLabelDisplay="off"
-							/>
-						</Box>
-					</Box>
-					<Box className={classes.section}>
-						<Typography variant="body1" className={classes.label}>
-							Lyrics Font Size
-						</Typography>
-						<Typography variant="body2" className={classes.value}>
-							{score.scoreSettings.lyricsSize}
-						</Typography>
-						<Box className={classes.slider}>
-							<Slider
-								onChange={handleChangeLyricsSize}
-								min={ScoreSettings.ranges.lyricsSize.min}
-								max={ScoreSettings.ranges.lyricsSize.max}
-								step={1}
-								marks
-								value={score.scoreSettings.lyricsSize}
 								track={false}
 								valueLabelDisplay="off"
 							/>
