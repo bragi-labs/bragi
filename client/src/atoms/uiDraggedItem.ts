@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export enum DraggedItem {
+export enum DraggedItemType {
 	PIANO_PANEL = 'PIANO_PANEL',
 	NOTE_PANEL = 'NOTE_PANEL',
 	MEASURE_PANEL = 'MEASURE_PANEL',
@@ -8,7 +8,7 @@ export enum DraggedItem {
 	NA = 'NA',
 }
 
-export const uiDraggedItem = atom<DraggedItem>({
+export const uiDraggedItem = atom<DraggedItemType>({
 	key: 'uiDraggedItem',
-	default: DraggedItem.NA,
+	default: DraggedItemType.NA,
 });

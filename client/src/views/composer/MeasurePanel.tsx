@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton } from '@material-ui/core';
@@ -8,9 +8,10 @@ import { ScoreModel, MeasureModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { uiSelection } from '../../atoms/uiSelection';
 import { DraggablePanel } from '../../components/DraggablePanel';
-import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
+import { DraggedItemType } from '../../atoms/uiDraggedItem';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Music } from '../../model/music';
+import { useDraggablePanel } from '../../components/useDraggablePanel';
 
 export interface MeasurePanelProps {
 	score: ScoreModel;
@@ -69,11 +70,16 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 
 	const selection = useRecoilValue(uiSelection);
 	const resetSelection = useResetRecoilState(uiSelection);
-	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
-	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [canAdd, setCanAdd] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
+
+	const { draggedItem, position, setPosition } = useDraggablePanel();
+	const handleDragMove = useCallback(
+		(deltaX: number, deltaY: number) => {
+			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+		},
+		[setPosition],
+	);
 
 	const getSelectedMeasures = useCallback(() => {
 		if (!score || !selection) {
@@ -120,21 +126,13 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		onUpdateScore();
 	}, [score, getSelectedMeasures, resetSelection, onUpdateScore]);
 
-	const handleDragStart = useCallback(() => {
-		setDraggedItem(DraggedItem.NOTE_PANEL);
-	}, [setDraggedItem]);
-
-	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
-		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-	}, []);
-
-	const handleDragEnd = useCallback(() => {
-		resetDraggedItem();
-	}, [resetDraggedItem]);
-
 	return (
-		<Box id="MeasurePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.MEASURE_PANEL ? 100 : 20 }}>
-			<DraggablePanel title="Measure" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
+		<Box
+			id="MeasurePanel"
+			className={classes.root}
+			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.MEASURE_PANEL ? 100 : 20 }}
+		>
+			<DraggablePanel title="Measure" draggedItemType={DraggedItemType.MEASURE_PANEL} onDragMove={handleDragMove} />
 			<Box className={classes.content}>
 				<Box className={classes.buttonsRow}>
 					<Box className={`${classes.panel} ${classes.buttonOnly}`}>

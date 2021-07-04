@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
+import { DraggedItemType, uiDraggedItem } from '../atoms/uiDraggedItem';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 
 export interface DraggablePanelProps {
 	title: string;
-	onDragStart?: () => void;
+	draggedItemType: DraggedItemType;
 	onDragMove?: (deltaX: number, deltaY: number) => void;
-	onDragEnd?: () => void;
 }
 
-export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDragEnd }: DraggablePanelProps) => {
+export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }: DraggablePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			backgroundColor: '#222',
@@ -29,6 +30,8 @@ export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDr
 	const [isDragging, setIsDragging] = useState(false);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const panelRef = useRef<HTMLDivElement | null>(null);
+	const setDraggedItem = useSetRecoilState(uiDraggedItem);
+	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 
 	const handleMouseDown = useCallback(
 		(e) => {
@@ -37,13 +40,11 @@ export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDr
 			}
 			setPosition({ x: e.clientX, y: e.clientY });
 			setIsDragging(true);
-			if (onDragStart) {
-				onDragStart();
-			}
+			setDraggedItem(draggedItemType);
 			e.stopPropagation();
 			e.preventDefault();
 		},
-		[onDragStart],
+		[setDraggedItem],
 	);
 
 	const handleMouseMove = useCallback(
@@ -72,13 +73,11 @@ export const DraggablePanel = React.memo(({ title, onDragStart, onDragMove, onDr
 				return;
 			}
 			setIsDragging(false);
-			if (onDragEnd) {
-				onDragEnd();
-			}
+			resetDraggedItem();
 			e.stopPropagation();
 			e.preventDefault();
 		},
-		[isDragging, onDragEnd],
+		[isDragging, resetDraggedItem],
 	);
 
 	useEffect(() => {

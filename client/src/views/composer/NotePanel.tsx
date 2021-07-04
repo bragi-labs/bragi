@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
@@ -14,7 +14,8 @@ import { SoundHelper } from '../../services/soundHelper';
 import { Measure } from '../../model/measure';
 import { Part } from '../../model/part';
 import { DraggablePanel } from '../../components/DraggablePanel';
-import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
+import { DraggedItemType } from '../../atoms/uiDraggedItem';
+import { useDraggablePanel } from '../../components/useDraggablePanel';
 
 export interface NotePanelProps {
 	score: ScoreModel | null;
@@ -110,8 +111,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(uiSelection);
-	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
-	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [canChangeDuration, setCanChangeDuration] = useState<any>({
 		6: false,
 		12: false,
@@ -127,8 +126,15 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const [canOctaveDown, setCanOctaveDown] = useState(false);
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const [curDuration, setCurDuration] = useState(0);
+
+	const { draggedItem, position, setPosition } = useDraggablePanel();
+	const handleDragMove = useCallback(
+		(deltaX: number, deltaY: number) => {
+			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+		},
+		[setPosition],
+	);
 
 	const noteDurationOptions = useMemo(
 		() => [
@@ -301,21 +307,9 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		[getSelectedNotes, score, onUpdateScore],
 	);
 
-	const handleDragStart = useCallback(() => {
-		setDraggedItem(DraggedItem.NOTE_PANEL);
-	}, [setDraggedItem]);
-
-	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
-		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-	}, []);
-
-	const handleDragEnd = useCallback(() => {
-		resetDraggedItem();
-	}, [resetDraggedItem]);
-
 	return (
-		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_PANEL ? 100 : 30 }}>
-			<DraggablePanel title="Note" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
+		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.NOTE_PANEL ? 100 : 30 }}>
+			<DraggablePanel title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} onDragMove={handleDragMove} />
 			<Box className={classes.content}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
 					{noteDurationOptions.map((ndo) => (

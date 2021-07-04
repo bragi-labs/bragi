@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import React, { useCallback } from 'react';
+import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
@@ -8,12 +8,13 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { IconButton, Typography } from '@material-ui/core';
-import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
+import { DraggedItemType } from '../../atoms/uiDraggedItem';
 import { Music } from '../../model/music';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { uiSelection } from '../../atoms/uiSelection';
 import { PartType } from '../../model/scoreModel';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { useDraggablePanel } from '../../components/useDraggablePanel';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -117,21 +118,14 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(uiSelection);
-	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
-	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 
-	const handleDragStart = useCallback(() => {
-		setDraggedItem(DraggedItem.PARTS_PANEL);
-	}, [setDraggedItem]);
-
-	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
-		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-	}, []);
-
-	const handleDragEnd = useCallback(() => {
-		resetDraggedItem();
-	}, [resetDraggedItem]);
+	const { draggedItem, position, setPosition } = useDraggablePanel();
+	const handleDragMove = useCallback(
+		(deltaX: number, deltaY: number) => {
+			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+		},
+		[setPosition],
+	);
 
 	const handleClickUpOrDown = useCallback(
 		(e) => {
@@ -182,8 +176,8 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, [music, onUpdateScore]);
 
 	return (
-		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 10 }}>
-			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
+		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.PARTS_PANEL ? 100 : 10 }}>
+			<DraggablePanel title="Parts" draggedItemType={DraggedItemType.PARTS_PANEL} onDragMove={handleDragMove} />
 			<Box className={classes.content}>
 				{music.partsInfo.map((pi, piIndex) => (
 					<Box key={pi.id} className={classes.partRow}>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -10,7 +10,8 @@ import { SoundHelper } from '../services/soundHelper';
 import { Typography } from '@material-ui/core';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
 import { DraggablePanel } from './DraggablePanel';
-import { DraggedItem, uiDraggedItem } from '../atoms/uiDraggedItem';
+import { DraggedItemType } from '../atoms/uiDraggedItem';
+import { useDraggablePanel } from './useDraggablePanel';
 
 export interface PianoProps {
 	smallPiano: boolean;
@@ -173,14 +174,19 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	}));
 	const classes = useStyles();
 
-	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
-	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const selection = useRecoilValue(uiSelection);
+
+	const { draggedItem, position, setPosition } = useDraggablePanel();
+	const handleDragMove = useCallback(
+		(deltaX: number, deltaY: number) => {
+			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+		},
+		[setPosition],
+	);
 
 	useEffect(() => {
 		if (powerOn) {
@@ -274,7 +280,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	const handleMouseEnter = useCallback(
 		(e) => {
 			const isMouseButtonPressed = 'buttons' in e ? e.buttons === 1 : (e.which || e.button) === 1;
-			if (isMouseButtonPressed && draggedItem === DraggedItem.NA) {
+			if (isMouseButtonPressed && draggedItem === DraggedItemType.NA) {
 				startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 			}
 		},
@@ -288,25 +294,13 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 		[stopNote],
 	);
 
-	const handleDragStart = useCallback(() => {
-		setDraggedItem(DraggedItem.PIANO_PANEL);
-	}, [setDraggedItem]);
-
-	const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
-		setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-	}, []);
-
-	const handleDragEnd = useCallback(() => {
-		resetDraggedItem();
-	}, [resetDraggedItem]);
-
 	return (
 		<Box
 			id="Piano"
 			className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}
-			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PIANO_PANEL ? 100 : 40 }}
+			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.PIANO_PANEL ? 100 : 40 }}
 		>
-			{smallPiano && <DraggablePanel title="Piano" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />}
+			{smallPiano && <DraggablePanel title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} onDragMove={handleDragMove} />}
 			<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
 				<Box className={classes.powerSwitch}>
 					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
