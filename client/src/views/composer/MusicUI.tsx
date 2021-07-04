@@ -94,17 +94,20 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		textLine: {
 			display: 'flex',
 			width: '100%',
-			'& .MuiInput-formControl': {
-				width: '100%',
-			},
-			'& .MuiInput-input': {
-				width: '100%',
-				padding: 2,
-				fontFamily: 'Arial, sans-serif',
-				color: '#000',
-			},
 			'& .MuiTextField-root': {
 				width: '100%',
+				'& .MuiInput-formControl': {
+					width: '100%',
+				},
+				'& .MuiInput-input': {
+					width: '100%',
+					padding: 2,
+					fontFamily: 'Arial, sans-serif',
+					color: '#000',
+				},
+				'&.font-weight-bold .MuiInput-input': {
+					fontWeight: 700,
+				},
 				'&.textSize-8 .MuiInput-input': {
 					fontSize: '8px',
 				},
@@ -131,9 +134,6 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				},
 				'&.textSize-16 .MuiInput-input': {
 					fontSize: '16px',
-				},
-				'&.font-weight-bold .MuiInput-input': {
-					fontWeight: 700,
 				},
 			},
 		},
