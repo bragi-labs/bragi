@@ -99,8 +99,8 @@ export class Music implements MusicModel {
 		});
 	}
 
-	static addMelodyPart(u: MusicModel) {
-		const pi = PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true);
+	static addPart(u: MusicModel, partType: PartType, partName: string, isVisible: boolean) {
+		const pi = PartInfo.createNew(partType, partName, isVisible);
 		u.partsInfo.push(pi);
 		u.measures.forEach((m) => {
 			Measure.addMelodyPart(m, pi);

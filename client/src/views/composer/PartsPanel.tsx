@@ -12,6 +12,7 @@ import { DraggedItem, uiDraggedItem } from '../../atoms/uiDraggedItem';
 import { Music } from '../../model/music';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { uiSelection } from '../../atoms/uiSelection';
+import { PartType } from '../../model/scoreModel';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -96,6 +97,15 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		noRightMargin: {
 			marginRight: 0,
 		},
+		textButton: {
+			marginLeft: 2,
+			transition: 'all 0.2s ease-in-out',
+			cursor: 'pointer',
+			color: '#999',
+			'&:hover': {
+				color: '#fff',
+			},
+		},
 	}));
 	const classes = useStyles();
 
@@ -142,8 +152,13 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		[music, onUpdateScore],
 	);
 
-	const handleClickAddPart = useCallback(() => {
-		Music.addMelodyPart(music);
+	const handleClickAddMelodyPart = useCallback(() => {
+		Music.addPart(music, PartType.FN_LVL_1, 'Melody', true);
+		onUpdateScore();
+	}, [music, onUpdateScore]);
+
+	const handleClickAddTextPart = useCallback(() => {
+		Music.addPart(music, PartType.LYRICS, 'Text', true);
 		onUpdateScore();
 	}, [music, onUpdateScore]);
 
@@ -190,9 +205,18 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 					</Box>
 				))}
 				<Box className={classes.partRow}>
-					<IconButton onClick={handleClickAddPart} className={`${classes.actionButton} ${classes.noRightMargin}`}>
+					<IconButton onClick={handleClickAddMelodyPart} className={`${classes.actionButton} ${classes.noRightMargin}`}>
 						<AddCircleOutlineIcon titleAccess="Add melody part" />
 					</IconButton>
+					<Typography onClick={handleClickAddMelodyPart} variant="body1" className={classes.textButton}>
+						Melody
+					</Typography>
+					<IconButton onClick={handleClickAddTextPart} className={`${classes.actionButton} ${classes.noRightMargin}`} style={{ marginLeft: '16px' }}>
+						<AddCircleOutlineIcon titleAccess="Add text part" />
+					</IconButton>
+					<Typography onClick={handleClickAddTextPart} variant="body1" className={classes.textButton}>
+						Text
+					</Typography>
 				</Box>
 			</Box>
 		</Box>
