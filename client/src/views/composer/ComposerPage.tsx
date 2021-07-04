@@ -6,9 +6,10 @@ import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { uiSelection } from '../../atoms/uiSelection';
 import { ComposerToolbar } from './ComposerToolbar';
-import { Piano } from '../../components/Piano';
 import { StageUI } from './StageUI';
+import { Piano } from '../../components/Piano';
 import { NotePanel } from './NotePanel';
+import { MeasurePanel } from './MeasurePanel';
 import { PartsPanel } from './PartsPanel';
 
 export const ComposerPage = () => {
@@ -47,10 +48,18 @@ export const ComposerPage = () => {
 				display: 'none',
 			},
 		},
-		partsPanelAnchor: {
+		measurePanelAnchor: {
 			position: 'absolute',
 			left: 800,
 			top: 388,
+			'@media print': {
+				display: 'none',
+			},
+		},
+		partsPanelAnchor: {
+			position: 'absolute',
+			left: 800,
+			top: 532,
 			'@media print': {
 				display: 'none',
 			},
@@ -93,6 +102,9 @@ export const ComposerPage = () => {
 					</Box>
 					<Box className={classes.notePanelAnchor}>
 						<NotePanel score={score} onUpdateScore={handleScoreUpdated} />
+					</Box>
+					<Box className={classes.measurePanelAnchor}>
+						<MeasurePanel score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 					<Box className={classes.partsPanelAnchor}>
 						<PartsPanel music={score.music} onUpdateScore={handleScoreUpdated} />

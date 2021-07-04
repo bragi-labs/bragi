@@ -10,12 +10,7 @@ export class Music implements MusicModel {
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
 	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
-		const partsInfo: PartInfo[] = [
-			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true),
-			PartInfo.createNew(PartType.LYRICS, 'Lyrics', true),
-			//PartInfo.createNew(PartType.FN_CHORDS, 'Chords', false),
-			//PartInfo.createNew(PartType.RHYTHM, 'Rhythm', false),
-		];
+		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true), PartInfo.createNew(PartType.LYRICS, 'Lyrics', true)];
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
 			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, musicalScale);
@@ -116,5 +111,33 @@ export class Music implements MusicModel {
 		u.measures.forEach((m) => {
 			Measure.deletePart(m, partInfoId);
 		});
+	}
+
+	static renumberAllMeasures(u: MusicModel) {
+		let num = u.measures.length > 0 && u.measures[0].isPickup ? 0 : 1;
+		u.measures.forEach((m) => {
+			m.number = num;
+			num++;
+		});
+	}
+
+	static addMeasure(u: MusicModel, curMeasureId: string) {
+		const curMeasureIndex = u.measures.findIndex((m) => m.id === curMeasureId);
+		if (curMeasureIndex === -1) {
+			return;
+		}
+		const curMeasure = u.measures[curMeasureIndex];
+		const m = Measure.createNew(false, curMeasure.number + 1, u.partsInfo, curMeasure.timeSignature, curMeasure.tempoBpm, curMeasure.musicalScale);
+		u.measures.splice(curMeasureIndex + 1, 0, m);
+		Music.renumberAllMeasures(u);
+	}
+
+	static deleteMeasure(u: MusicModel, measureId: string) {
+		const measureIndex = u.measures.findIndex((m) => m.id === measureId);
+		if (measureIndex === -1) {
+			return;
+		}
+		u.measures.splice(measureIndex, 1);
+		Music.renumberAllMeasures(u);
 	}
 }
