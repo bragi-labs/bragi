@@ -143,9 +143,9 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickAddPart = useCallback(() => {
-		//Music.addPart(music);
+		Music.addMelodyPart(music);
 		onUpdateScore();
-	}, [/*music, */ onUpdateScore]);
+	}, [music, onUpdateScore]);
 
 	return (
 		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>

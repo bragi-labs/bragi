@@ -98,4 +98,12 @@ export class Music implements MusicModel {
 			Measure.movePart(m, partInfoId, isUp);
 		});
 	}
+
+	static addMelodyPart(u: MusicModel) {
+		const pi = PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true);
+		u.partsInfo.push(pi);
+		u.measures.forEach((m) => {
+			Measure.addMelodyPart(m, pi);
+		});
+	}
 }
