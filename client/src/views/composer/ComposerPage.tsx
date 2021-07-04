@@ -16,9 +16,6 @@ export const ComposerPage = () => {
 		root: {
 			position: 'relative',
 			height: '100%',
-			display: 'grid',
-			gridTemplate: '1fr / 1fr',
-			gap: 16,
 			userSelect: 'none',
 		},
 		toolbarContainer: {
@@ -31,8 +28,7 @@ export const ComposerPage = () => {
 		},
 		stageContainer: {
 			position: 'relative',
-			minHeight: '100%',
-			maxHeight: '100%',
+			height: '100%',
 			transform: 'translate(0, 0)',
 		},
 		pianoAnchor: {

@@ -17,8 +17,6 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'relative',
-			//width: '21cm',
-			//height: '29.7cm',
 			height: '100%',
 			textAlign: 'center',
 			//backgroundColor: '#eee',
@@ -26,7 +24,6 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			//backgroundImage: 'linear-gradient(135deg, #fff 47.06%, #ccc 47.06%, #ccc 50%, #fff 50%, #fff 97.06%, #ccc 97.06%, #ccc 100%)',
 			//backgroundSize: '24px 24px',
 			padding: '2.54cm 1.32cm 3.67cm 1.9cm',
-			//opacity: 0.9,
 			overflow: 'auto',
 			'@media print': {
 				padding: '0 !important',
@@ -35,8 +32,6 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			},
 		},
 		content: {
-			maxHeight: '27.7cm',
-			overflow: 'hidden',
 			backgroundColor: '#fff',
 			color: '#000',
 		},
