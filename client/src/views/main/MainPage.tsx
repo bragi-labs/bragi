@@ -26,6 +26,7 @@ export const MainPage = React.memo(() => {
 			animation: 'fade-in-animation 1s 1s ease-in-out forwards',
 			backgroundColor: '#222',
 			'@media print': {
+				overflow: 'visible',
 				backgroundColor: '#fff',
 			},
 		},
