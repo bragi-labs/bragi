@@ -94,6 +94,15 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		textLine: {
 			display: 'flex',
 			width: '100%',
+			'& .MuiInput-formControl': {
+				width: '100%',
+			},
+			'& .MuiInput-input': {
+				width: '100%',
+				padding: 2,
+				fontFamily: 'Arial, sans-serif',
+				color: '#000',
+			},
 			'& .MuiTextField-root': {
 				width: '100%',
 				'&.textSize-8 .MuiInput-input': {
@@ -123,15 +132,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				'&.textSize-16 .MuiInput-input': {
 					fontSize: '16px',
 				},
-			},
-			'& .MuiInput-formControl': {
-				width: '100%',
-			},
-			'& .MuiInput-input': {
-				width: '100%',
-				padding: 2,
-				fontFamily: 'Arial, sans-serif',
-				color: '#000',
+				'&.font-weight-bold .MuiInput-input': {
+					fontWeight: 700,
+				},
 			},
 		},
 	}));
@@ -206,6 +209,14 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(partInfoId: string) => {
 			const pi = getPartInfo(partInfoId);
 			return pi ? pi.bgColor : '#f6f6f6';
+		},
+		[getPartInfo],
+	);
+
+	const isPartInfoBold = useCallback(
+		(partInfoId: string) => {
+			const pi = getPartInfo(partInfoId);
+			return pi ? pi.isBold : false;
 		},
 		[getPartInfo],
 	);
@@ -331,7 +342,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														onChange={handleTextChange}
 														onBlur={handleTextBlur}
 														label=""
-														className={`textSize-${scoreSettings.lyricsSize}`}
+														className={`textSize-${scoreSettings.lyricsSize} ${isPartInfoBold(p.partInfoId) ? 'font-weight-bold' : ''}`}
 														style={{ borderBottom: `${pIndex === m.parts.length - 1 ? 0 : 1}px solid #eee` }}
 													/>
 												</Box>
