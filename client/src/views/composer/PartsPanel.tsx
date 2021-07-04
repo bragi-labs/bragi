@@ -168,7 +168,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			Music.deletePart(music, pi.id);
 			onUpdateScore();
 		},
-		[music.partsInfo, onUpdateScore],
+		[music, onUpdateScore],
 	);
 
 	const handleClickAddMelodyPart = useCallback(() => {
@@ -182,7 +182,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, [music, onUpdateScore]);
 
 	return (
-		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 5 }}>
+		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PARTS_PANEL ? 100 : 10 }}>
 			<DraggablePanel title="Parts" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				{music.partsInfo.map((pi, piIndex) => (

@@ -304,7 +304,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 		<Box
 			id="Piano"
 			className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}
-			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PIANO_PANEL ? 100 : 20 }}
+			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.PIANO_PANEL ? 100 : 40 }}
 		>
 			{smallPiano && <DraggablePanel title="Piano" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />}
 			<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>

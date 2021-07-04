@@ -314,7 +314,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	}, [resetDraggedItem]);
 
 	return (
-		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_PANEL ? 100 : 10 }}>
+		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItem.NOTE_PANEL ? 100 : 30 }}>
 			<DraggablePanel title="Note" onDragStart={handleDragStart} onDragMove={handleDragMove} onDragEnd={handleDragEnd} />
 			<Box className={classes.content}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
