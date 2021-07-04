@@ -195,7 +195,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="up"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowDropUpIcon titleAccess="Move up" />
+								<ArrowDropUpIcon titleAccess="Move part up" />
 							</IconButton>
 							<IconButton
 								onClick={handleClickUpOrDown}
@@ -204,16 +204,16 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="down"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowDropDownIcon titleAccess="Move down" />
+								<ArrowDropDownIcon titleAccess="Move part down" />
 							</IconButton>
 							{pi.isVisible && (
 								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
-									<VisibilityIcon titleAccess="Hide" />
+									<VisibilityIcon titleAccess="Hide part" />
 								</IconButton>
 							)}
 							{!pi.isVisible && (
 								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
-									<VisibilityOffIcon titleAccess="Show" />
+									<VisibilityOffIcon titleAccess="Show part" />
 								</IconButton>
 							)}
 							<Typography
@@ -225,7 +225,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 						</Box>
 						<Box className={classes.partRowRightSection}>
 							<IconButton onClick={handleClickDeletePart} data-part-info-id={pi.id} className={classes.actionButton} style={{ marginRight: '0' }}>
-								<DeleteForeverIcon titleAccess="Delete" />
+								<DeleteForeverIcon titleAccess="Delete part" />
 							</IconButton>
 						</Box>
 					</Box>

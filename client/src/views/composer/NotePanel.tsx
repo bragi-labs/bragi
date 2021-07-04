@@ -333,33 +333,31 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 					))}
 				</Box>
 				<Box className={classes.buttonsRow}>
-					<Box>
-						<Box className={classes.panel}>
-							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
-								<ArrowDownwardIcon titleAccess="Pitch Down" />
-							</IconButton>
-							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
-								<ArrowUpwardIcon titleAccess="Pitch Up" />
-							</IconButton>
-							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-								Semitone
-							</Typography>
-						</Box>
-						<Box className={classes.panel}>
-							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
-								<ArrowDownwardIcon titleAccess="Octave Down" />
-							</IconButton>
-							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
-								<ArrowUpwardIcon titleAccess="Octave Up" />
-							</IconButton>
-							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-								Octave
-							</Typography>
-						</Box>
+					<Box className={classes.panel}>
+						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
+							<ArrowDownwardIcon titleAccess="Semitone down" />
+						</IconButton>
+						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
+							<ArrowUpwardIcon titleAccess="Semitone up" />
+						</IconButton>
+						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+							Semitone
+						</Typography>
+					</Box>
+					<Box className={classes.panel}>
+						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
+							<ArrowDownwardIcon titleAccess="Octave down" />
+						</IconButton>
+						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
+							<ArrowUpwardIcon titleAccess="Octave up" />
+						</IconButton>
+						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+							Octave
+						</Typography>
 					</Box>
 					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
 						<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
-							<DeleteForeverIcon titleAccess="Delete" />
+							<DeleteForeverIcon titleAccess="Delete note" />
 						</IconButton>
 					</Box>
 				</Box>
