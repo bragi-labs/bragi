@@ -94,8 +94,6 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		textLine: {
 			display: 'flex',
 			width: '100%',
-			//backgroundColor: '#fff',
-			backgroundColor: '#f6f6f6',
 			'& .MuiTextField-root': {
 				width: '100%',
 				'&.textSize-8 .MuiInput-input': {
@@ -133,7 +131,6 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				width: '100%',
 				padding: 2,
 				fontFamily: 'Arial, sans-serif',
-				fontSize: '11px',
 				color: '#000',
 			},
 		},
@@ -197,6 +194,21 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const handleTextBlur = useCallback(() => {
 		resetSelection();
 	}, [resetSelection]);
+
+	const getPartInfo = useCallback(
+		(partInfoId: string) => {
+			return music.partsInfo.find((pi) => pi.id === partInfoId);
+		},
+		[music],
+	);
+
+	const getPartInfoBgColor = useCallback(
+		(partInfoId: string) => {
+			const pi = getPartInfo(partInfoId);
+			return pi ? pi.bgColor : '#f6f6f6';
+		},
+		[getPartInfo],
+	);
 
 	return (
 		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
@@ -309,7 +321,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 													</Box>
 												))}
 											{p.partType === PartType.TEXT && (
-												<Box className={classes.textLine}>
+												<Box className={classes.textLine} style={{ backgroundColor: `${getPartInfoBgColor(p.partInfoId)}` }}>
 													<TextField
 														data-part-info-id={p.partInfoId}
 														data-measure-id={m.id}
