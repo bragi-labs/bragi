@@ -171,7 +171,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, [music, onUpdateScore]);
 
 	const handleClickAddTextPart = useCallback(() => {
-		Music.addPart(music, PartType.TEXT, 'Text', true);
+		Music.addPart(music, PartType.LINE, 'Text', true);
 		onUpdateScore();
 	}, [music, onUpdateScore]);
 

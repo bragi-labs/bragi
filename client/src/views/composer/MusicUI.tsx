@@ -91,7 +91,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			},
 			zIndex: -1,
 		},
-		text: {
+		line: {
 			display: 'flex',
 			width: '100%',
 			backgroundColor: '#eee',
@@ -188,7 +188,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(e) => {
 			const p = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
 			if (p) {
-				p.text = e.target.value;
+				if (p.line) {
+					p.line.text = e.target.value;
+				}
 			}
 		},
 		[music],
@@ -308,13 +310,13 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														{!n.fullName && <Box>{``}</Box>}
 													</Box>
 												))}
-											{p.partType === PartType.TEXT && (
-												<Box className={classes.text}>
+											{p.partType === PartType.LINE && (
+												<Box className={classes.line}>
 													<TextField
 														data-part-info-id={p.partInfoId}
 														data-measure-id={m.id}
 														data-part-id={p.id}
-														defaultValue={p.text}
+														defaultValue={p.line ? p.line.text : ''}
 														onFocus={handleTextFocus}
 														onChange={handleTextChange}
 														onBlur={handleTextBlur}
