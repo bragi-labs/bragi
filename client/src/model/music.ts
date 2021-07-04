@@ -13,7 +13,7 @@ export class Music implements MusicModel {
 		const partsInfo: PartInfo[] = [
 			PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true),
 			PartInfo.createNew(PartType.LYRICS, 'Lyrics', true),
-			PartInfo.createNew(PartType.FN_CHORDS, 'Chords', false),
+			//PartInfo.createNew(PartType.FN_CHORDS, 'Chords', false),
 			//PartInfo.createNew(PartType.RHYTHM, 'Rhythm', false),
 		];
 		const measures: Measure[] = [];
