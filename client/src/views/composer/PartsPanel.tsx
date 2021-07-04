@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -189,7 +189,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="up"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowDropUpIcon titleAccess="Move part up" />
+								<ArrowUpwardIcon titleAccess="Move part up" />
 							</IconButton>
 							<IconButton
 								onClick={handleClickUpOrDown}
@@ -198,7 +198,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="down"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowDropDownIcon titleAccess="Move part down" />
+								<ArrowDownwardIcon titleAccess="Move part down" />
 							</IconButton>
 							{pi.isVisible && (
 								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>

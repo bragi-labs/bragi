@@ -3,8 +3,8 @@ import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
@@ -327,27 +327,29 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 					))}
 				</Box>
 				<Box className={classes.buttonsRow}>
-					<Box className={classes.panel}>
-						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
-							<ArrowDownwardIcon titleAccess="Semitone down" />
-						</IconButton>
-						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
-							<ArrowUpwardIcon titleAccess="Semitone up" />
-						</IconButton>
-						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-							Semitone
-						</Typography>
-					</Box>
-					<Box className={classes.panel}>
-						<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
-							<ArrowDownwardIcon titleAccess="Octave down" />
-						</IconButton>
-						<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
-							<ArrowUpwardIcon titleAccess="Octave up" />
-						</IconButton>
-						<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
-							Octave
-						</Typography>
+					<Box>
+						<Box className={classes.panel}>
+							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
+								<KeyboardArrowDownIcon titleAccess="Semitone down" />
+							</IconButton>
+							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
+								<KeyboardArrowUpIcon titleAccess="Semitone up" />
+							</IconButton>
+							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+								Semitone
+							</Typography>
+						</Box>
+						<Box className={classes.panel}>
+							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
+								<KeyboardArrowDownIcon titleAccess="Octave down" />
+							</IconButton>
+							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
+								<KeyboardArrowUpIcon titleAccess="Octave up" />
+							</IconButton>
+							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
+								Octave
+							</Typography>
+						</Box>
 					</Box>
 					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
 						<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
