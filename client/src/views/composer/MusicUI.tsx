@@ -29,13 +29,19 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			position: 'relative',
 			border: '1px solid #999',
 		},
+		measureNumberAnchor: {
+			position: 'absolute',
+			top: 0,
+			left: 0,
+		},
 		measureNumber: {
 			position: 'absolute',
-			left: 0,
-			top: -15,
+			top: -18,
+			right: 2,
 		},
 		measureNumberText: {
-			fontSize: '12px',
+			fontSize: '14px',
+			fontWeight: 700,
 		},
 		part: {
 			display: 'flex',
@@ -141,9 +147,10 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
 		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
-		const numberOfMeasuresPerRow = Math.trunc(scoreSettings.musicWidth / measureWidth);
+		const spaceForMeasurementNumbers = 20;
+		const numberOfMeasuresPerRow = Math.trunc((scoreSettings.musicWidth - spaceForMeasurementNumbers) / measureWidth);
 		const pickupMeasureLeftOver = measureWidth * (numberOfMeasuresPerRow - 1);
-		const leftOver = (scoreSettings.musicWidth - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftOver = (scoreSettings.musicWidth - -spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidth,
@@ -198,10 +205,12 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 					<Box key={m.id} style={{ marginRight: `${m.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
 						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${scoreSettings.rowGap}px` }}>
 							{scoreSettings.measureNumbers && m.number % sizeVars.numberOfMeasuresPerRow === 1 && (
-								<Box className={classes.measureNumber}>
-									<Typography variant="body2" className={classes.measureNumberText}>
-										{m.number}
-									</Typography>
+								<Box className={classes.measureNumberAnchor}>
+									<Box className={classes.measureNumber}>
+										<Typography variant="body2" className={classes.measureNumberText}>
+											{m.number}
+										</Typography>
+									</Box>
 								</Box>
 							)}
 							{m.parts.map((p, pIndex) => (
