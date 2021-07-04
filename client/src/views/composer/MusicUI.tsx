@@ -205,10 +205,10 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music],
 	);
 
-	const getPartInfoBgColor = useCallback(
+	const getPartInfoFontSize = useCallback(
 		(partInfoId: string) => {
 			const pi = getPartInfo(partInfoId);
-			return pi ? pi.bgColor : '#f6f6f6';
+			return pi ? pi.fontSize : 12;
 		},
 		[getPartInfo],
 	);
@@ -217,6 +217,14 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		(partInfoId: string) => {
 			const pi = getPartInfo(partInfoId);
 			return pi ? pi.isBold : false;
+		},
+		[getPartInfo],
+	);
+
+	const getPartInfoBgColor = useCallback(
+		(partInfoId: string) => {
+			const pi = getPartInfo(partInfoId);
+			return pi ? pi.bgColor : '#f6f6f6';
 		},
 		[getPartInfo],
 	);
@@ -342,7 +350,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														onChange={handleTextChange}
 														onBlur={handleTextBlur}
 														label=""
-														className={`textSize-${scoreSettings.lyricsSize} ${isPartInfoBold(p.partInfoId) ? 'font-weight-bold' : ''}`}
+														className={`textSize-${getPartInfoFontSize(p.partInfoId)} ${isPartInfoBold(p.partInfoId) ? 'font-weight-bold' : ''}`}
 														style={{ borderBottom: `${pIndex === m.parts.length - 1 ? 0 : 1}px solid #eee` }}
 													/>
 												</Box>
