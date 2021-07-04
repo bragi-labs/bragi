@@ -44,7 +44,7 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 			e.stopPropagation();
 			e.preventDefault();
 		},
-		[setDraggedItem],
+		[setDraggedItem, draggedItemType],
 	);
 
 	const handleMouseMove = useCallback(
