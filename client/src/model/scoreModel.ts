@@ -50,10 +50,9 @@ export interface ChordModel {
 	durationDivs: number; //e.g. 96
 }
 export enum PartType {
-	FN_LVL_1 = 'FN_LVL_1',
 	TEXT = 'TEXT',
+	FN_LVL_1 = 'FN_LVL_1',
 	FN_CHORDS = 'FN_CHORDS',
-	CHORD_NAMES = 'CHORD_NAMES',
 	RHYTHM = 'RHYTHM',
 	NA = 'NA',
 }
@@ -84,10 +83,10 @@ export interface PartInfoModel {
 	partType: PartType; //e.g. FN_LVL_1
 	name: string; //e.g. "Melody"
 	isVisible: boolean; //e.g. true
-	// fontSize: number; //e.g. 12
-	// isBold: boolean; //e.g. false;
-	// textColor: string; //e.g. "#000"
-	// bgColor: string; //e.g. "#eee"
+	fontSize: number; //e.g. 12
+	isBold: boolean; //e.g. false;
+	textColor: string; //e.g. "#000"
+	bgColor: string; //e.g. "#f6f6f6"
 }
 export interface MusicModel {
 	kind: EntityKind; //"MUSIC"

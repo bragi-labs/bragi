@@ -94,8 +94,8 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		textLine: {
 			display: 'flex',
 			width: '100%',
-			backgroundColor: '#eee',
-			borderBottom: '1px solid #eee',
+			//backgroundColor: '#fff',
+			backgroundColor: '#f6f6f6',
 			'& .MuiTextField-root': {
 				width: '100%',
 				'&.textSize-8 .MuiInput-input': {
@@ -320,6 +320,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 														onBlur={handleTextBlur}
 														label=""
 														className={`textSize-${scoreSettings.lyricsSize}`}
+														style={{ borderBottom: `${pIndex === m.parts.length - 1 ? 0 : 1}px solid #eee` }}
 													/>
 												</Box>
 											)}
