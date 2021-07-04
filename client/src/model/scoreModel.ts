@@ -85,7 +85,6 @@ export interface PartInfoModel {
 	isVisible: boolean; //e.g. true
 	fontSize: number; //e.g. 12
 	isBold: boolean; //e.g. false;
-	textColor: string; //e.g. "#000"
 	bgColor: string; //e.g. "#f6f6f6"
 }
 export interface MusicModel {

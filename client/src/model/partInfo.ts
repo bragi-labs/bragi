@@ -11,7 +11,6 @@ export class PartInfo implements PartInfoModel {
 		public isVisible: boolean,
 		public fontSize: number,
 		public isBold: boolean,
-		public textColor: string,
 		public bgColor: string,
 	) {}
 
@@ -19,12 +18,11 @@ export class PartInfo implements PartInfoModel {
 		const id = CommonHelper.getRandomId();
 		const fontSize = 12;
 		const isBold = false;
-		const textColor = '#000';
 		const bgColor = partType === PartType.TEXT ? '#f6f6f6' : '#fff';
-		return new PartInfo(id, partType, name, isVisible, fontSize, isBold, textColor, bgColor);
+		return new PartInfo(id, partType, name, isVisible, fontSize, isBold, bgColor);
 	}
 
 	static createFromModel(pi: PartInfoModel) {
-		return new PartInfo(pi.id, pi.partType, pi.name, pi.isVisible, pi.fontSize, pi.isBold, pi.textColor, pi.bgColor);
+		return new PartInfo(pi.id, pi.partType, pi.name, pi.isVisible, pi.fontSize, pi.isBold, pi.bgColor);
 	}
 }

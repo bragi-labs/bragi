@@ -106,7 +106,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 					},
 				},
 				'&.font-weight-bold .MuiInput-input': {
-					fontWeight: 700,
+					fontWeight: 900,
 				},
 				'&.textSize-8 .MuiInput-input': {
 					fontSize: '8px',
