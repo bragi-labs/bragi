@@ -68,6 +68,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(uiSelection);
+	const resetSelection = useResetRecoilState(uiSelection);
 	const [draggedItem, setDraggedItem] = useRecoilState(uiDraggedItem);
 	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
 	const [canAdd, setCanAdd] = useState(false);
@@ -115,8 +116,9 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			return;
 		}
 		Music.deleteMeasure(score.music, measures[0].id);
+		resetSelection();
 		onUpdateScore();
-	}, [score, getSelectedMeasures, onUpdateScore]);
+	}, [score, getSelectedMeasures, resetSelection, onUpdateScore]);
 
 	const handleDragStart = useCallback(() => {
 		setDraggedItem(DraggedItem.NOTE_PANEL);
