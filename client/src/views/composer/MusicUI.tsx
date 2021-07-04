@@ -74,10 +74,9 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			position: 'absolute',
 		},
 		noteName: {
-			fontSize: '12px',
+			position: 'absolute',
 			fontFamily: 'Arial, sans-serif',
 			color: '#fff',
-			position: 'absolute',
 		},
 		alter: {
 			position: 'absolute',
@@ -102,6 +101,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 						width: '100%',
 						padding: 2,
 						fontFamily: 'Arial, sans-serif',
+						fontSize: '12px',
 						color: '#000',
 					},
 				},
@@ -328,6 +328,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 																					? scoreSettings.quarterSize / 2 - 9
 																					: scoreSettings.quarterSize / 2 - 5.5
 																			}px`,
+																			fontSize: `${getPartInfoFontSize(p.partInfoId)}`,
 																		}}
 																	>
 																		{MusicalHelper.parseNote(n.fullName).step}
