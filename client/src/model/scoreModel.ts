@@ -6,7 +6,6 @@ export enum EntityKind {
 	PART_INFO = 'PART_INFO',
 	MEASURE = 'MEASURE',
 	PART = 'PART',
-	LINE = 'LINE',
 	NOTE = 'NOTE',
 	CHORD = 'CHORD',
 	NA = 'NA',
@@ -27,17 +26,6 @@ export interface ScoreSettingsModel {
 	lyricsSize: number; //e.g. 11
 	measureNumbers: boolean; //e.g. true
 	noteLetters: boolean; //e.g. true
-}
-export interface LineModel {
-	kind: EntityKind; //"LINE"
-	id: string; //internal ID
-	measureId: string; //internal ID
-	partId: string; //internal ID
-	text: string; //e.g. "Is this the real life?"
-	fontSize: number; //e.g. 12
-	isBold: boolean; //e.g. false;
-	textColor: string; //e.g. "#000"
-	bgColor: string; //e.g. "#eee"
 }
 export interface NoteModel {
 	kind: EntityKind; //"NOTE"
@@ -63,7 +51,7 @@ export interface ChordModel {
 }
 export enum PartType {
 	FN_LVL_1 = 'FN_LVL_1',
-	LINE = 'LINE',
+	TEXT = 'TEXT',
 	FN_CHORDS = 'FN_CHORDS',
 	CHORD_NAMES = 'CHORD_NAMES',
 	RHYTHM = 'RHYTHM',
@@ -75,7 +63,7 @@ export interface PartModel {
 	partInfoId: string; //internal ID
 	measureId: string; //internal ID
 	partType: PartType; //e.g. FN_LVL_1
-	line: LineModel | null;
+	text: string;
 	notes: NoteModel[];
 	chords: ChordModel[];
 }
@@ -96,6 +84,10 @@ export interface PartInfoModel {
 	partType: PartType; //e.g. FN_LVL_1
 	name: string; //e.g. "Melody"
 	isVisible: boolean; //e.g. true
+	// fontSize: number; //e.g. 12
+	// isBold: boolean; //e.g. false;
+	// textColor: string; //e.g. "#000"
+	// bgColor: string; //e.g. "#eee"
 }
 export interface MusicModel {
 	kind: EntityKind; //"MUSIC"

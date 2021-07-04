@@ -1,6 +1,5 @@
-import { EntityKind, LineModel, NoteModel, PartModel, PartType } from './scoreModel';
+import { EntityKind, NoteModel, PartModel, PartType } from './scoreModel';
 import { PartInfo } from './partInfo';
-import { Line } from './line';
 import { Note } from './note';
 import { Chord } from './chord';
 import { CommonHelper } from '../services/commonHelper';
@@ -14,17 +13,13 @@ export class Part implements PartModel {
 		public partInfoId: string,
 		public measureId: string,
 		public partType: PartType,
-		public line: LineModel | null,
+		public text: string,
 		public notes: Note[],
 		public chords: Chord[],
 	) {}
 
 	static createNew(measureId: string, partInfo: PartInfo, timeSignature: string) {
 		const id = CommonHelper.getRandomId();
-		let line = null;
-		if (partInfo.partType === PartType.LINE) {
-			line = new Line(CommonHelper.getRandomId(), measureId, id, '', 12, false, '#000', '#eee');
-		}
 		const notes = [];
 		if (partInfo.partType === PartType.FN_LVL_1) {
 			const { beats, beatDurationDivs } = MusicalHelper.parseTimeSignature(timeSignature);
@@ -33,14 +28,10 @@ export class Part implements PartModel {
 				notes.push(note);
 			}
 		}
-		return new Part(id, partInfo.id, measureId, partInfo.partType, line, notes, []);
+		return new Part(id, partInfo.id, measureId, partInfo.partType, '', notes, []);
 	}
 
 	static createFromModel(p: PartModel) {
-		let line = null;
-		if (p.line) {
-			line = Line.createFromModel(p.line);
-		}
 		const notes: Note[] = [];
 		p.notes.forEach((n) => {
 			const note = Note.createFromModel(n);
@@ -51,7 +42,7 @@ export class Part implements PartModel {
 			const chord = Chord.createFromModel(c);
 			chords.push(chord);
 		});
-		return new Part(p.id, p.partInfoId, p.measureId, p.partType, line, notes, chords);
+		return new Part(p.id, p.partInfoId, p.measureId, p.partType, p.text, notes, chords);
 	}
 
 	static findNote(p: PartModel, noteId: string): NoteModel | null {
