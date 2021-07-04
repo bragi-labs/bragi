@@ -30,10 +30,11 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			display: 'inline-flex',
 			alignItems: 'center',
 			height: 32,
+			border: '1px solid #666',
 			borderRadius: 16,
 			backgroundColor: '#444',
 			padding: '0 12px 0 4px',
-			opacity: 0.9,
+			//opacity: 0.9,
 			marginLeft: 16,
 			'&:first-of-type': {
 				marginLeft: 0,
@@ -61,7 +62,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			cursor: 'pointer',
 			transition: 'all 0.2s ease-in-out',
 			color: '#ccc',
-			marginLeft: 8,
+			marginLeft: 12,
 			'&:first-of-type': {
 				marginLeft: 0,
 			},

@@ -17,12 +17,14 @@ export const ComposerPage = () => {
 			position: 'relative',
 			height: '100%',
 			display: 'grid',
-			gridTemplate: '40px 1fr / 1fr',
+			gridTemplate: '1fr / 1fr',
 			gap: 16,
 			userSelect: 'none',
 		},
 		toolbarContainer: {
-			position: 'relative',
+			position: 'absolute',
+			left: 0,
+			top: -48,
 			'@media print': {
 				display: 'none',
 			},
@@ -36,7 +38,7 @@ export const ComposerPage = () => {
 		pianoAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 56,
+			top: 0,
 			'@media print': {
 				display: 'none',
 			},
@@ -44,7 +46,7 @@ export const ComposerPage = () => {
 		notePanelAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 256,
+			top: 200,
 			'@media print': {
 				display: 'none',
 			},
@@ -52,7 +54,7 @@ export const ComposerPage = () => {
 		partsPanelAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 444,
+			top: 388,
 			'@media print': {
 				display: 'none',
 			},

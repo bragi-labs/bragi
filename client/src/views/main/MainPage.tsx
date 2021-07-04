@@ -96,7 +96,7 @@ export const MainPage = React.memo(() => {
 			marginLeft: 'auto',
 			marginRight: 'auto',
 			color: theme.palette.text.primary,
-			padding: '16px 32px 32px 32px',
+			padding: 32,
 			'@media print': {
 				padding: 0,
 			},
