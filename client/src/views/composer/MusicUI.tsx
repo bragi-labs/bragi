@@ -328,7 +328,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 																					? scoreSettings.quarterSize / 2 - 9
 																					: scoreSettings.quarterSize / 2 - 5.5
 																			}px`,
-																			fontSize: `${getPartInfoFontSize(p.partInfoId)}`,
+																			fontSize: `${getPartInfoFontSize(p.partInfoId)}px`,
 																		}}
 																	>
 																		{MusicalHelper.parseNote(n.fullName).step}
