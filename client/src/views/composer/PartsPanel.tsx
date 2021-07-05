@@ -114,6 +114,19 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				color: '#fff',
 			},
 		},
+		boldButton: {
+			margin: '0 10px 0 0',
+			width: 24,
+			borderRadius: 4,
+			textAlign: 'center',
+			color: '#ccc',
+			fontWeight: 400,
+		},
+		boldButtonActive: {
+			backgroundColor: '#666',
+			color: '#ccc',
+			fontWeight: 900,
+		},
 	}));
 	const classes = useStyles();
 
@@ -139,6 +152,18 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			onUpdateScore();
 		},
 		[music, onUpdateScore],
+	);
+
+	const handleClickToggleBold = useCallback(
+		(e) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
+			if (!pi) {
+				return;
+			}
+			pi.isBold = !pi.isBold;
+			onUpdateScore();
+		},
+		[music.partsInfo, onUpdateScore],
 	);
 
 	const handleClickShowOrHide = useCallback(
@@ -200,6 +225,15 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 							>
 								<ArrowDownwardIcon titleAccess="Move part down" />
 							</IconButton>
+							<Typography
+								variant="body1"
+								title="Bold font"
+								onClick={handleClickToggleBold}
+								data-part-info-id={pi.id}
+								className={`${classes.textButton} ${classes.boldButton} ${pi.isBold ? classes.boldButtonActive : ''}`}
+							>
+								B
+							</Typography>
 							{pi.isVisible && (
 								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
 									<VisibilityIcon titleAccess="Hide part" />
