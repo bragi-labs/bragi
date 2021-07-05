@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { IconButton, Modal, Typography } from '@material-ui/core';
+import { IconButton, Modal, TextField, Typography } from '@material-ui/core';
 import TuneIcon from '@material-ui/icons/Tune';
 import { ScoreModel } from '../../model/scoreModel';
 import { MusicUI } from './MusicUI';
@@ -63,11 +63,27 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			display: 'flex',
 			justifyContent: 'center',
 			color: '#000',
+			cursor: 'pointer',
+		},
+		scoreTitleInput: {
+			top: -6,
+			'& .MuiInput-input': {
+				color: '#000',
+				fontSize: 34,
+			},
 		},
 		scoreCredits: {
 			display: 'flex',
 			justifyContent: 'center',
 			color: '#666',
+			cursor: 'pointer',
+		},
+		scoreCreditsInput: {
+			top: -4,
+			'& .MuiInput-input': {
+				color: '#000',
+				fontSize: 20,
+			},
 		},
 		arrangedBy: {
 			display: 'flex',
@@ -86,6 +102,10 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 	const stageWidth = 718;
 
 	const [tuneStageDialogVisible, setTuneStageDialogVisible] = useState(false);
+	const scoreTitleTextRef = useRef<HTMLHeadingElement | null>(null);
+	const scoreTitleInputRef = useRef<HTMLInputElement | null>(null);
+	const scoreCreditsTextRef = useRef<HTMLHeadingElement | null>(null);
+	const scoreCreditsInputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleClickTune = useCallback(() => {
 		setTuneStageDialogVisible(true);
@@ -103,6 +123,52 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 		setTuneStageDialogVisible(false);
 	}, []);
 
+	const handleClickScoreTitle = useCallback(() => {
+		const scoreTitleText = scoreTitleTextRef.current;
+		const scoreTitleInput = scoreTitleInputRef.current;
+		if (!scoreTitleText || !scoreTitleInput) {
+			return;
+		}
+		scoreTitleText.style.display = 'none';
+		scoreTitleInput.style.display = 'inline-flex';
+		(scoreTitleInput.children[0].children[0] as HTMLInputElement).focus();
+	}, [scoreTitleTextRef, scoreTitleInputRef]);
+
+	const handleBlurScoreTitle = useCallback(() => {
+		const scoreTitleText = scoreTitleTextRef.current;
+		const scoreTitleInput = scoreTitleInputRef.current;
+		if (!scoreTitleText || !scoreTitleInput) {
+			return;
+		}
+		scoreTitleText.style.display = 'flex';
+		scoreTitleInput.style.display = 'none';
+		score.scoreInfo.scoreTitle = (scoreTitleInput.children[0].children[0] as HTMLInputElement).value || `<SCORE TITLE>`;
+		onUpdateScore();
+	}, [scoreTitleTextRef, scoreTitleInputRef, score, onUpdateScore]);
+
+	const handleClickScoreCredits = useCallback(() => {
+		const scoreCreditsText = scoreCreditsTextRef.current;
+		const scoreCreditsInput = scoreCreditsInputRef.current;
+		if (!scoreCreditsText || !scoreCreditsInput) {
+			return;
+		}
+		scoreCreditsText.style.display = 'none';
+		scoreCreditsInput.style.display = 'inline-flex';
+		(scoreCreditsInput.children[0].children[0] as HTMLInputElement).focus();
+	}, [scoreCreditsTextRef, scoreCreditsInputRef]);
+
+	const handleBlurScoreCredits = useCallback(() => {
+		const scoreCreditsText = scoreCreditsTextRef.current;
+		const scoreCreditsInput = scoreCreditsInputRef.current;
+		if (!scoreCreditsText || !scoreCreditsInput) {
+			return;
+		}
+		scoreCreditsText.style.display = 'flex';
+		scoreCreditsInput.style.display = 'none';
+		score.scoreInfo.scoreCredits = (scoreCreditsInput.children[0].children[0] as HTMLInputElement).value || `<SCORE CREDITS>`;
+		onUpdateScore();
+	}, [scoreCreditsTextRef, scoreCreditsInputRef, score, onUpdateScore]);
+
 	return (
 		<>
 			{score && (
@@ -115,12 +181,28 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 							<TunePageDialog score={score} onUpdateScore={handleScoreUpdated} onDoneTuneStageDialog={handleDoneTuneStageDialog} />
 						</Modal>
 						<Box className={classes.header}>
-							<Typography variant="h4" className={classes.scoreTitle}>
+							<Typography ref={scoreTitleTextRef} onClick={handleClickScoreTitle} variant="h4" className={classes.scoreTitle}>
 								{score.scoreInfo.scoreTitle}
 							</Typography>
-							<Typography variant="h6" className={classes.scoreCredits}>
+							<TextField
+								ref={scoreTitleInputRef}
+								defaultValue={score.scoreInfo.scoreTitle}
+								onBlur={handleBlurScoreTitle}
+								className={classes.scoreTitleInput}
+								style={{ display: 'none' }}
+								label=""
+							/>
+							<Typography ref={scoreCreditsTextRef} onClick={handleClickScoreCredits} variant="h6" className={classes.scoreCredits}>
 								{score.scoreInfo.scoreCredits}
 							</Typography>
+							<TextField
+								ref={scoreCreditsInputRef}
+								defaultValue={score.scoreInfo.scoreCredits}
+								onBlur={handleBlurScoreCredits}
+								className={classes.scoreCreditsInput}
+								style={{ display: 'none' }}
+								label=""
+							/>
 						</Box>
 						<Box className={classes.musicContainer}>
 							<MusicUI music={score.music} scoreSettings={score.scoreSettings} />
