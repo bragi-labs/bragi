@@ -225,15 +225,17 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 							>
 								<ArrowDownwardIcon titleAccess="Move part down" />
 							</IconButton>
-							<Typography
-								variant="body1"
-								title="Bold font"
-								onClick={handleClickToggleBold}
-								data-part-info-id={pi.id}
-								className={`${classes.textButton} ${classes.boldButton} ${pi.isBold ? classes.boldButtonActive : ''}`}
-							>
-								B
-							</Typography>
+							{pi.partType === PartType.TEXT && (
+								<Typography
+									variant="body1"
+									title="Bold font"
+									onClick={handleClickToggleBold}
+									data-part-info-id={pi.id}
+									className={`${classes.textButton} ${classes.boldButton} ${pi.isBold ? classes.boldButtonActive : ''}`}
+								>
+									B
+								</Typography>
+							)}
 							{pi.isVisible && (
 								<IconButton onClick={handleClickShowOrHide} data-part-info-id={pi.id} className={classes.actionButton}>
 									<VisibilityIcon titleAccess="Hide part" />
