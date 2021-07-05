@@ -3,8 +3,8 @@ import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, IconButton, Typography } from '@material-ui/core';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined';
+import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
@@ -330,10 +330,10 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 					<Box>
 						<Box className={classes.panel}>
 							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchDown}>
-								<KeyboardArrowDownIcon titleAccess="Semitone down" />
+								<ArrowDropDownOutlinedIcon titleAccess="Semitone down" />
 							</IconButton>
 							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="semitone" className={`${classes.actionButton}`} disabled={!canPitchUp}>
-								<KeyboardArrowUpIcon titleAccess="Semitone up" />
+								<ArrowDropUpOutlinedIcon titleAccess="Semitone up" />
 							</IconButton>
 							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
 								Semitone
@@ -341,10 +341,10 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 						</Box>
 						<Box className={classes.panel}>
 							<IconButton onClick={handleChangePitch} data-direction="down" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveDown}>
-								<KeyboardArrowDownIcon titleAccess="Octave down" />
+								<ArrowDropDownOutlinedIcon titleAccess="Octave down" />
 							</IconButton>
 							<IconButton onClick={handleChangePitch} data-direction="up" data-amount="octave" className={`${classes.actionButton}`} disabled={!canOctaveUp}>
-								<KeyboardArrowUpIcon titleAccess="Octave up" />
+								<ArrowDropUpOutlinedIcon titleAccess="Octave up" />
 							</IconButton>
 							<Typography variant="body1" className={`${classes.panelText} ${canPitchUp || canPitchDown ? '' : 'disabled'}`}>
 								Octave

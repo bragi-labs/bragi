@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined';
+import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -278,7 +278,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="up"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowUpwardIcon titleAccess="Move part up" />
+								<ArrowDropUpOutlinedIcon titleAccess="Move part up" />
 							</IconButton>
 							<IconButton
 								onClick={handleClickUpOrDown}
@@ -287,7 +287,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 								data-direction="down"
 								className={`${classes.actionButton} ${classes.smallActionButton}`}
 							>
-								<ArrowDownwardIcon titleAccess="Move part down" />
+								<ArrowDropDownOutlinedIcon titleAccess="Move part down" />
 							</IconButton>
 							{pi.partType === PartType.FN_LVL_1 && (
 								<Typography
