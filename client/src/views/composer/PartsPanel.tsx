@@ -15,6 +15,27 @@ import { uiSelection } from '../../atoms/uiSelection';
 import { PartType } from '../../model/scoreModel';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { useDraggablePanel } from '../../components/useDraggablePanel';
+import {
+	red,
+	pink,
+	purple,
+	deepPurple,
+	indigo,
+	blue,
+	lightBlue,
+	cyan,
+	teal,
+	green,
+	lightGreen,
+	lime,
+	yellow,
+	amber,
+	orange,
+	deepOrange,
+	brown,
+	grey,
+	blueGrey,
+} from '@material-ui/core/colors';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -120,7 +141,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			borderRadius: 4,
 			textAlign: 'center',
 			color: '#ccc',
-			//border: '1px solid #ccc',
 		},
 		noteNameButtonActive: {
 			backgroundColor: '#666',
@@ -139,7 +159,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		slider: {
 			position: 'relative',
 			top: 2,
-			width: 200,
+			width: 160,
 			marginLeft: 12,
 			'& .MuiSlider-rail': {
 				color: '#ccc',
@@ -165,6 +185,13 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 					color: '#aaa',
 				},
 			},
+		},
+		bgColor: {
+			marginLeft: 12,
+			width: 16,
+			height: 16,
+			borderRadius: 2,
+			cursor: 'pointer',
 		},
 	}));
 	const classes = useStyles();
@@ -239,6 +266,48 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			onUpdateScore();
 		},
 		[music.partsInfo, onUpdateScore],
+	);
+
+	const handleClickBgColor = useCallback(
+		(e) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
+			if (!pi) {
+				return;
+			}
+			const bgColors = [
+				'#fff',
+				'#fcfcfc',
+				'#f9f9f9',
+				'#f6f6f6',
+				'#f3f3f3',
+				'#f0f0f0',
+				'#eee',
+				'#ddd',
+				'#ccc',
+				red[50],
+				pink[50],
+				purple[50],
+				deepPurple[50],
+				indigo[50],
+				blue[50],
+				lightBlue[50],
+				cyan[50],
+				teal[50],
+				green[50],
+				lightGreen[50],
+				lime[50],
+				yellow[50],
+				amber[50],
+				orange[50],
+				deepOrange[50],
+				brown[50],
+				grey[50],
+				blueGrey[50],
+			];
+			pi.bgColor = bgColors[Math.trunc(Math.random() * bgColors.length)];
+			onUpdateScore();
+		},
+		[music, onUpdateScore],
 	);
 
 	const handleClickDeletePart = useCallback(
@@ -340,6 +409,9 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 										valueLabelDisplay="off"
 									/>
 								</Box>
+							)}
+							{pi.partType === PartType.TEXT && (
+								<Box onClick={handleClickBgColor} data-part-info-id={pi.id} className={classes.bgColor} style={{ backgroundColor: pi.bgColor }} />
 							)}
 						</Box>
 						<Box className={classes.partRowRightSection}>
