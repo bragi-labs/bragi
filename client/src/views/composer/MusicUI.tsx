@@ -231,9 +231,6 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const getPartInfoFontSize = useCallback(
 		(partInfoId: string) => {
 			const pi = getPartInfo(partInfoId);
-			if (pi) {
-				console.log(`part info font size is ${pi.fontSize}`);
-			}
 			return pi ? pi.fontSize : 0;
 		},
 		[getPartInfo],

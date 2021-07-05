@@ -235,7 +235,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi || pi.fontSize === value) {
 				return;
 			}
-			console.log(`font size changed from ${pi.fontSize} to ${value}`);
 			pi.fontSize = value;
 			onUpdateScore();
 		},
