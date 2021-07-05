@@ -139,7 +139,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		slider: {
 			position: 'relative',
 			top: 2,
-			width: 100,
+			width: 200,
 			marginLeft: 12,
 			'& .MuiSlider-rail': {
 				color: '#ccc',
@@ -332,8 +332,8 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 									<Slider
 										data-part-info-id={pi.id}
 										onChange={handleChangeFontSize}
-										min={6}
-										max={18}
+										min={8}
+										max={24}
 										step={1}
 										value={pi.fontSize}
 										marks={false}

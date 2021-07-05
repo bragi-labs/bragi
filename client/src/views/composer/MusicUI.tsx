@@ -134,6 +134,30 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 				'&.textSize-16 .MuiInput-input': {
 					fontSize: '16px',
 				},
+				'&.textSize-17 .MuiInput-input': {
+					fontSize: '17px',
+				},
+				'&.textSize-18 .MuiInput-input': {
+					fontSize: '18px',
+				},
+				'&.textSize-19 .MuiInput-input': {
+					fontSize: '19px',
+				},
+				'&.textSize-20 .MuiInput-input': {
+					fontSize: '20px',
+				},
+				'&.textSize-21 .MuiInput-input': {
+					fontSize: '21px',
+				},
+				'&.textSize-22 .MuiInput-input': {
+					fontSize: '22px',
+				},
+				'&.textSize-23 .MuiInput-input': {
+					fontSize: '23px',
+				},
+				'&.textSize-24 .MuiInput-input': {
+					fontSize: '24px',
+				},
 			},
 		},
 	}));
