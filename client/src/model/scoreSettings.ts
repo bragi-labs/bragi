@@ -3,7 +3,7 @@ import { EntityKind, ScoreSettingsModel } from './scoreModel';
 export class ScoreSettings implements ScoreSettingsModel {
 	kind: EntityKind = EntityKind.SCORE_SETTINGS;
 
-	constructor(public musicWidth: number, public rowGap: number, public quarterSize: number, public measureNumbers: boolean, public noteLetters: boolean) {}
+	constructor(public musicWidth: number, public rowGap: number, public quarterSize: number, public measureNumbers: boolean) {}
 
 	static ranges = {
 		musicWidth: { min: 400, max: 718, default: 718 },
@@ -12,7 +12,7 @@ export class ScoreSettings implements ScoreSettingsModel {
 	};
 
 	static createNew() {
-		return new ScoreSettings(ScoreSettings.ranges.musicWidth.default, ScoreSettings.ranges.rowGap.default, ScoreSettings.ranges.quarterSize.default, true, true);
+		return new ScoreSettings(ScoreSettings.ranges.musicWidth.default, ScoreSettings.ranges.rowGap.default, ScoreSettings.ranges.quarterSize.default, true);
 	}
 
 	static createFromModel(ss: ScoreSettingsModel) {
@@ -21,7 +21,6 @@ export class ScoreSettings implements ScoreSettingsModel {
 			ss.rowGap || ScoreSettings.ranges.rowGap.default,
 			ss.quarterSize || ScoreSettings.ranges.quarterSize.default,
 			ss.measureNumbers === undefined ? true : ss.measureNumbers,
-			ss.noteLetters === undefined ? true : ss.noteLetters,
 		);
 	}
 }

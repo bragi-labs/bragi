@@ -208,7 +208,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const getPartInfoFontSize = useCallback(
 		(partInfoId: string) => {
 			const pi = getPartInfo(partInfoId);
-			return pi ? pi.fontSize : 12;
+			return pi ? pi.fontSize : 0;
 		},
 		[getPartInfo],
 	);
@@ -318,7 +318,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 																		style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }}
 																	/>
 																)}
-																{scoreSettings.noteLetters && (
+																{getPartInfoFontSize(p.partInfoId) > 0 && (
 																	<Box
 																		className={classes.noteName}
 																		style={{

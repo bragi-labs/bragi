@@ -114,18 +114,27 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				color: '#fff',
 			},
 		},
+		noteNameButton: {
+			margin: '0 10px 0 0',
+			width: 24,
+			borderRadius: 4,
+			textAlign: 'center',
+			color: '#ccc',
+			//border: '1px solid #ccc',
+		},
+		noteNameButtonActive: {
+			backgroundColor: '#666',
+		},
 		boldButton: {
 			margin: '0 10px 0 0',
 			width: 24,
 			borderRadius: 4,
 			textAlign: 'center',
 			color: '#ccc',
-			fontWeight: 400,
+			fontWeight: 900,
 		},
 		boldButtonActive: {
 			backgroundColor: '#666',
-			color: '#ccc',
-			fontWeight: 900,
 		},
 	}));
 	const classes = useStyles();
@@ -152,6 +161,18 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			onUpdateScore();
 		},
 		[music, onUpdateScore],
+	);
+
+	const handleClickToggleNoteName = useCallback(
+		(e) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
+			if (!pi) {
+				return;
+			}
+			pi.fontSize = pi.fontSize === 0 ? 12 : 0;
+			onUpdateScore();
+		},
+		[music.partsInfo, onUpdateScore],
 	);
 
 	const handleClickToggleBold = useCallback(
@@ -225,10 +246,21 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 							>
 								<ArrowDownwardIcon titleAccess="Move part down" />
 							</IconButton>
+							{pi.partType === PartType.FN_LVL_1 && (
+								<Typography
+									variant="body1"
+									title={pi.fontSize > 0 ? 'Hide note name' : 'Show note name'}
+									onClick={handleClickToggleNoteName}
+									data-part-info-id={pi.id}
+									className={`${classes.textButton} ${classes.noteNameButton} ${pi.fontSize > 0 ? classes.noteNameButtonActive : ''}`}
+								>
+									N
+								</Typography>
+							)}
 							{pi.partType === PartType.TEXT && (
 								<Typography
 									variant="body1"
-									title="Bold font"
+									title={pi.isBold ? 'Use regular font' : 'Use bold font'}
 									onClick={handleClickToggleBold}
 									data-part-info-id={pi.id}
 									className={`${classes.textButton} ${classes.boldButton} ${pi.isBold ? classes.boldButtonActive : ''}`}

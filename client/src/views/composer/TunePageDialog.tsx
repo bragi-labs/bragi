@@ -137,17 +137,6 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 		[score, onUpdateScore],
 	);
 
-	const handleChangeNoteLetters = useCallback(
-		(_e, value) => {
-			if (score.scoreSettings.noteLetters === value) {
-				return;
-			}
-			score.scoreSettings.noteLetters = value;
-			onUpdateScore();
-		},
-		[score, onUpdateScore],
-	);
-
 	const handleClickClose = useCallback(() => {
 		onDoneTuneStageDialog();
 	}, [onDoneTuneStageDialog]);
@@ -223,11 +212,6 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 						<FormControlLabel
 							control={<Checkbox checked={score.scoreSettings.measureNumbers} onChange={handleChangeMeasureNumbers} name="measureNumbers" color="default" />}
 							label="Measure Numbers"
-							className={classes.checkbox}
-						/>
-						<FormControlLabel
-							control={<Checkbox checked={score.scoreSettings.noteLetters} onChange={handleChangeNoteLetters} name="noteLetters" color="default" />}
-							label="Note Letters"
 							className={classes.checkbox}
 						/>
 					</Box>
