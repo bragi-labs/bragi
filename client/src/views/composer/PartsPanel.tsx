@@ -7,7 +7,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { IconButton, Typography } from '@material-ui/core';
+import { IconButton, Slider, Typography } from '@material-ui/core';
 import { DraggedItemType } from '../../atoms/uiDraggedItem';
 import { Music } from '../../model/music';
 import { DraggablePanel } from '../../components/DraggablePanel';
@@ -136,6 +136,36 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		boldButtonActive: {
 			backgroundColor: '#666',
 		},
+		slider: {
+			position: 'relative',
+			top: 2,
+			width: 100,
+			marginLeft: 12,
+			'& .MuiSlider-rail': {
+				color: '#ccc',
+			},
+			'& .MuiSlider-root': {
+				color: '#fff',
+			},
+			'& .MuiSlider-thumb': {
+				boxShadow: 'none',
+			},
+			'& .MuiSlider-markLabel': {
+				color: '#aaa',
+			},
+			'& .MuiSlider-markLabelActive': {
+				color: '#fff',
+			},
+			'& .MuiSlider-root.Mui-disabled': {
+				opacity: 0.5,
+				'& .MuiSlider-thumb': {
+					color: '#aaa',
+				},
+				'& .MuiSlider-markLabelActive': {
+					color: '#aaa',
+				},
+			},
+		},
 	}));
 	const classes = useStyles();
 
@@ -194,6 +224,19 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				return;
 			}
 			pi.isVisible = !pi.isVisible;
+			onUpdateScore();
+		},
+		[music.partsInfo, onUpdateScore],
+	);
+
+	const handleChangeFontSize = useCallback(
+		(e, value) => {
+			const pi = music.partsInfo.find((pi) => pi.id === e.target.dataset.partInfoId);
+			if (!pi || pi.fontSize === value) {
+				return;
+			}
+			console.log(`font size changed from ${pi.fontSize} to ${value}`);
+			pi.fontSize = value;
 			onUpdateScore();
 		},
 		[music.partsInfo, onUpdateScore],
@@ -284,6 +327,21 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 							>
 								{pi.name}
 							</Typography>
+							{pi.partType === PartType.TEXT && (
+								<Box className={classes.slider}>
+									<Slider
+										data-part-info-id={pi.id}
+										onChange={handleChangeFontSize}
+										min={6}
+										max={18}
+										step={1}
+										value={pi.fontSize}
+										marks={false}
+										track={false}
+										valueLabelDisplay="off"
+									/>
+								</Box>
+							)}
 						</Box>
 						<Box className={classes.partRowRightSection}>
 							<IconButton onClick={handleClickDeletePart} data-part-info-id={pi.id} className={classes.actionButton} style={{ marginRight: '0' }}>
