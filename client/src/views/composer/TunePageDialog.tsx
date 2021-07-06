@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Button, Checkbox, FormControlLabel, Slider, Typography } from '@material-ui/core';
-import { Score } from '../../model/score';
 import { ScoreSettings } from '../../model/scoreSettings';
+import { Score } from '../../model/score';
 
 interface TunePageDialogProps {
 	score: Score;

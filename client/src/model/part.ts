@@ -1,9 +1,9 @@
 import { EntityKind, NoteModel, PartModel, PartType } from './scoreModel';
+import { CommonHelper } from '../services/commonHelper';
+import { MusicalHelper } from '../services/musicalHelper';
 import { PartInfo } from './partInfo';
 import { Note } from './note';
 import { Chord } from './chord';
-import { CommonHelper } from '../services/commonHelper';
-import { MusicalHelper } from '../services/musicalHelper';
 
 export class Part implements PartModel {
 	kind: EntityKind = EntityKind.PART;

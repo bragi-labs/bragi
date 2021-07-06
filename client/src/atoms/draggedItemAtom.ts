@@ -8,7 +8,7 @@ export enum DraggedItemType {
 	NA = 'NA',
 }
 
-export const uiDraggedItem = atom<DraggedItemType>({
-	key: 'uiDraggedItem',
+export const draggedItemAtom = atom<DraggedItemType>({
+	key: 'draggedItem',
 	default: DraggedItemType.NA,
 });

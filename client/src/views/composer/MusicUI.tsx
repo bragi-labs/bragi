@@ -1,16 +1,16 @@
 import React, { useCallback, useMemo } from 'react';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import Box from '@material-ui/core/Box';
 import { TextField, Typography } from '@material-ui/core';
-import { MusicModel, PartType } from '../../model/scoreModel';
-import { Music } from '../../model/music';
-import { ScoreSettings } from '../../model/scoreSettings';
-import { uiSelection } from '../../atoms/uiSelection';
-import { FigurenotesHelper } from '../../services/figurenotesHelper';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
+import { FigurenotesHelper } from '../../services/figurenotesHelper';
+import { MusicModel, PartType } from '../../model/scoreModel';
+import { ScoreSettings } from '../../model/scoreSettings';
+import { Music } from '../../model/music';
+import { selectionAtom } from '../../atoms/selectionAtom';
 
 export interface MusicUIProps {
 	music: MusicModel;
@@ -163,8 +163,8 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const [selection, setSelection] = useRecoilState(uiSelection);
-	const resetSelection = useResetRecoilState(uiSelection);
+	const [selection, setSelection] = useRecoilState(selectionAtom);
+	const resetSelection = useResetRecoilState(selectionAtom);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];

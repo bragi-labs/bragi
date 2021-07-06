@@ -7,7 +7,7 @@ export interface SelectionItem {
 	noteId: string;
 }
 
-export const uiSelection = atom<SelectionItem[]>({
-	key: 'uiSelection',
+export const selectionAtom = atom<SelectionItem[]>({
+	key: 'selection',
 	default: [],
 });

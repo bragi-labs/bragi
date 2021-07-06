@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
-import { DraggedItemType, uiDraggedItem } from '../atoms/uiDraggedItem';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { DraggedItemType, draggedItemAtom } from '../atoms/draggedItemAtom';
 
 export interface DraggablePanelProps {
 	title: string;
@@ -30,8 +30,8 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 	const [isDragging, setIsDragging] = useState(false);
 	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const panelRef = useRef<HTMLDivElement | null>(null);
-	const setDraggedItem = useSetRecoilState(uiDraggedItem);
-	const resetDraggedItem = useResetRecoilState(uiDraggedItem);
+	const setDraggedItem = useSetRecoilState(draggedItemAtom);
+	const resetDraggedItem = useResetRecoilState(draggedItemAtom);
 
 	const handleMouseDown = useCallback(
 		(e) => {

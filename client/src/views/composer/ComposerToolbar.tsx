@@ -6,11 +6,11 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
+import { AppDataHelper } from '../../services/appDataHelper';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
 import { SaveScore } from './SaveScore';
-import { AppDataHelper } from '../../services/appDataHelper';
 
 export interface ComposerToolbarProps {
 	score: ScoreModel | null;

@@ -11,7 +11,9 @@ export interface StageHeaderUIProps {
 
 export const StageHeaderUI = ({ scoreInfo, onUpdateScore }: StageHeaderUIProps) => {
 	const useStyles = makeStyles(() => ({
-		root: {},
+		root: {
+			marginBottom: 32,
+		},
 		scoreTitle: {
 			display: 'flex',
 			justifyContent: 'center',

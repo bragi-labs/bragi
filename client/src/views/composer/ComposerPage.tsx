@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
-import { uiSelection } from '../../atoms/uiSelection';
+import { selectionAtom } from '../../atoms/selectionAtom';
 import { ComposerToolbar } from './ComposerToolbar';
 import { StageUI } from './StageUI';
 import { Piano } from '../../components/Piano';
@@ -68,7 +68,7 @@ export const ComposerPage = () => {
 	const classes = useStyles();
 
 	const [score, setScore] = useState<ScoreModel | null>(null);
-	const resetSelection = useResetRecoilState(uiSelection);
+	const resetSelection = useResetRecoilState(selectionAtom);
 
 	const handleScoreChanged = useCallback(
 		(changedScore: Score) => {

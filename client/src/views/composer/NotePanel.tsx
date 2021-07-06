@@ -6,16 +6,16 @@ import { Button, IconButton, Typography } from '@material-ui/core';
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined';
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { NoteModel, ScoreModel } from '../../model/scoreModel';
-import { Score } from '../../model/score';
-import { uiSelection } from '../../atoms/uiSelection';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
+import { NoteModel, ScoreModel } from '../../model/scoreModel';
+import { Score } from '../../model/score';
 import { Measure } from '../../model/measure';
 import { Part } from '../../model/part';
-import { DraggablePanel } from '../../components/DraggablePanel';
-import { DraggedItemType } from '../../atoms/uiDraggedItem';
+import { selectionAtom } from '../../atoms/selectionAtom';
+import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { useDraggablePanel } from '../../components/useDraggablePanel';
+import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface NotePanelProps {
 	score: ScoreModel | null;
@@ -97,7 +97,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	}));
 	const classes = useStyles();
 
-	const selection = useRecoilValue(uiSelection);
+	const selection = useRecoilValue(selectionAtom);
 	const [canChangeDuration, setCanChangeDuration] = useState<any>({
 		6: false,
 		12: false,

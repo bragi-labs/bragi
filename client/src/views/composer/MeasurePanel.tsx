@@ -3,15 +3,15 @@ import { useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { ScoreModel, MeasureModel } from '../../model/scoreModel';
-import { Score } from '../../model/score';
-import { uiSelection } from '../../atoms/uiSelection';
-import { DraggablePanel } from '../../components/DraggablePanel';
-import { DraggedItemType } from '../../atoms/uiDraggedItem';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import { Music } from '../../model/music';
+import { Score } from '../../model/score';
+import { selectionAtom } from '../../atoms/selectionAtom';
+import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { useDraggablePanel } from '../../components/useDraggablePanel';
+import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface MeasurePanelProps {
 	score: ScoreModel;
@@ -68,8 +68,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	}));
 	const classes = useStyles();
 
-	const selection = useRecoilValue(uiSelection);
-	const resetSelection = useResetRecoilState(uiSelection);
+	const selection = useRecoilValue(selectionAtom);
+	const resetSelection = useResetRecoilState(selectionAtom);
 	const [canAdd, setCanAdd] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 

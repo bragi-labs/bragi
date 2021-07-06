@@ -2,8 +2,8 @@ import React from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
-import { ScoreInfoModel } from '../../model/scoreModel';
 import { AppDataHelper } from '../../services/appDataHelper';
+import { ScoreInfoModel } from '../../model/scoreModel';
 
 export interface StageFooterUIProps {
 	scoreInfo: ScoreInfoModel;

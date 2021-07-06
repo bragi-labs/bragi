@@ -3,15 +3,15 @@ import { useRecoilValue } from 'recoil';
 import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Score } from '../model/score';
-import { uiSelection } from '../atoms/uiSelection';
+import { Typography } from '@material-ui/core';
 import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
-import { Typography } from '@material-ui/core';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
-import { DraggablePanel } from './DraggablePanel';
-import { DraggedItemType } from '../atoms/uiDraggedItem';
+import { Score } from '../model/score';
+import { selectionAtom } from '../atoms/selectionAtom';
+import { DraggedItemType } from '../atoms/draggedItemAtom';
 import { useDraggablePanel } from './useDraggablePanel';
+import { DraggablePanel } from './DraggablePanel';
 
 export interface PianoProps {
 	smallPiano: boolean;
@@ -178,7 +178,7 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
-	const selection = useRecoilValue(uiSelection);
+	const selection = useRecoilValue(selectionAtom);
 
 	const { draggedItem, position, setPosition } = useDraggablePanel();
 	const handleDragMove = useCallback(

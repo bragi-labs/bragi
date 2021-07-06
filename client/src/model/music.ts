@@ -1,8 +1,8 @@
 import { EntityKind, MeasureModel, MusicModel, NoteModel, PartModel, PartType } from './scoreModel';
-import { Measure } from './measure';
-import { PartInfo } from './partInfo';
 import { CommonHelper } from '../services/commonHelper';
 import { MusicalHelper } from '../services/musicalHelper';
+import { PartInfo } from './partInfo';
+import { Measure } from './measure';
 
 export class Music implements MusicModel {
 	kind: EntityKind = EntityKind.MUSIC;

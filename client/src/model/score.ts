@@ -1,8 +1,8 @@
+import { CommonHelper } from '../services/commonHelper';
 import { ScoreModel, MeasureModel, PartModel, NoteModel, EntityKind } from './scoreModel';
 import { ScoreInfo } from './scoreInfo';
 import { ScoreSettings } from './scoreSettings';
 import { Music } from './music';
-import { CommonHelper } from '../services/commonHelper';
 
 export class Score implements ScoreModel {
 	kind: EntityKind = EntityKind.SCORE;

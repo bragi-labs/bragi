@@ -2,19 +2,19 @@ import React, { useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
+import { IconButton, Slider, Typography } from '@material-ui/core';
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined';
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { IconButton, Slider, Typography } from '@material-ui/core';
-import { DraggedItemType } from '../../atoms/uiDraggedItem';
-import { Music } from '../../model/music';
-import { DraggablePanel } from '../../components/DraggablePanel';
-import { uiSelection } from '../../atoms/uiSelection';
-import { PartType } from '../../model/scoreModel';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { useDraggablePanel } from '../../components/useDraggablePanel';
+import { DraggablePanel } from '../../components/DraggablePanel';
+import { PartType } from '../../model/scoreModel';
+import { Music } from '../../model/music';
+import { selectionAtom } from '../../atoms/selectionAtom';
 import {
 	red,
 	pink,
@@ -196,7 +196,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}));
 	const classes = useStyles();
 
-	const selection = useRecoilValue(uiSelection);
+	const selection = useRecoilValue(selectionAtom);
 
 	const { draggedItem, position, setPosition } = useDraggablePanel();
 	const handleDragMove = useCallback(
