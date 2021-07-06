@@ -10,14 +10,14 @@ import { PartInfoModel, PartModel, ScoreSettingsModel } from '../../model/scoreM
 import { Part } from '../../model/part';
 import { selectionAtom } from '../../atoms/selectionAtom';
 
-export interface PartMelodyUIProps {
+export interface MelodyPartUIProps {
 	partInfo: PartInfoModel | null;
 	part: PartModel;
 	isFirstPart: boolean;
 	scoreSettings: ScoreSettingsModel;
 }
 
-export const PartMelodyUI = ({ partInfo, part, isFirstPart, scoreSettings }: PartMelodyUIProps) => {
+export const MelodyPartUI = ({ partInfo, part, isFirstPart, scoreSettings }: MelodyPartUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -85,7 +85,7 @@ export const PartMelodyUI = ({ partInfo, part, isFirstPart, scoreSettings }: Par
 	);
 
 	return (
-		<Box id="PartMelodyUI" className={`${classes.root} ${isFirstPart ? '' : classes.partSpaceAbove}`}>
+		<Box id="MelodyPartUI" className={`${classes.root} ${isFirstPart ? '' : classes.partSpaceAbove}`}>
 			{part.notes.map((n) => (
 				<Box
 					key={n.id}

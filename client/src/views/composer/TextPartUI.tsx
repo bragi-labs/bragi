@@ -6,13 +6,13 @@ import { TextField } from '@material-ui/core';
 import { PartInfoModel, PartModel } from '../../model/scoreModel';
 import { selectionAtom } from '../../atoms/selectionAtom';
 
-export interface PartTextUIProps {
+export interface TextPartUIProps {
 	partInfo: PartInfoModel | null;
 	part: PartModel;
 	isLastPart: boolean;
 }
 
-export const PartTextUI = ({ partInfo, part, isLastPart }: PartTextUIProps) => {
+export const TextPartUI = ({ partInfo, part, isLastPart }: TextPartUIProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -108,7 +108,7 @@ export const PartTextUI = ({ partInfo, part, isLastPart }: PartTextUIProps) => {
 	}, [resetSelection]);
 
 	return (
-		<Box id="PartTextUI" className={classes.root} style={{ backgroundColor: `${partInfo ? partInfo.bgColor : '#fff'}` }}>
+		<Box id="TextPartUI" className={classes.root} style={{ backgroundColor: `${partInfo ? partInfo.bgColor : '#fff'}` }}>
 			<TextField
 				defaultValue={part.text}
 				onFocus={handleTextFocus}

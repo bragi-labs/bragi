@@ -6,8 +6,8 @@ import { MusicalHelper } from '../../services/musicalHelper';
 import { MusicModel, PartType } from '../../model/scoreModel';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { Music } from '../../model/music';
-import { PartTextUI } from './PartTextUI';
-import { PartMelodyUI } from './PartMelody';
+import { MelodyPartUI } from './MelodyPartUI';
+import { TextPartUI } from './TextPartUI';
 
 export interface MusicUIProps {
 	music: MusicModel;
@@ -131,10 +131,10 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 							{m.parts.map((p, pIndex) => (
 								<Box key={p.id}>
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.FN_LVL_1 && (
-										<PartMelodyUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
+										<MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
 									)}
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.TEXT && (
-										<PartTextUI partInfo={getPartInfo(p.partInfoId)} part={p} isLastPart={pIndex === m.parts.length - 1} />
+										<TextPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isLastPart={pIndex === m.parts.length - 1} />
 									)}
 								</Box>
 							))}
