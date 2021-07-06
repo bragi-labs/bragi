@@ -75,10 +75,7 @@ export const ComposerPage = () => {
 	const handleScoreChanged = useCallback(
 		(changedScore: Score) => {
 			resetSelection();
-			setScore(null);
-			setTimeout(() => {
-				setScore(changedScore);
-			}, 0);
+			setScore(changedScore);
 		},
 		[resetSelection],
 	);
@@ -112,7 +109,7 @@ export const ComposerPage = () => {
 	);
 
 	return (
-		<Box id="ComposerPage" className={classes.root} key={score ? `${score.id}-${score.timestamp}` : ''}>
+		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
 				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} />
 			</Box>
