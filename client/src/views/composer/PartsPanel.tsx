@@ -32,9 +32,9 @@ import {
 	amber,
 	orange,
 	deepOrange,
-	brown,
-	grey,
-	blueGrey,
+	// brown,
+	// grey,
+	// blueGrey,
 } from '@material-ui/core/colors';
 
 export interface PartsPanelProps {
@@ -275,15 +275,8 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				return;
 			}
 			const bgColors = [
-				'#fff',
-				'#fcfcfc',
-				'#f9f9f9',
 				'#f6f6f6',
-				'#f3f3f3',
-				'#f0f0f0',
-				'#eee',
-				'#ddd',
-				'#ccc',
+				'#fff',
 				red[50],
 				pink[50],
 				purple[50],
@@ -300,11 +293,15 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 				amber[50],
 				orange[50],
 				deepOrange[50],
-				brown[50],
-				grey[50],
-				blueGrey[50],
+				//brown[50],
+				//blueGrey[50],
 			];
-			pi.bgColor = bgColors[Math.trunc(Math.random() * bgColors.length)];
+			const curIndex = bgColors.findIndex((c) => c === pi.bgColor);
+			if (curIndex === -1) {
+				pi.bgColor = bgColors[Math.trunc(Math.random() * bgColors.length)];
+			} else {
+				pi.bgColor = bgColors[(curIndex + 1) % bgColors.length];
+			}
 			onUpdateScore();
 		},
 		[music, onUpdateScore],
