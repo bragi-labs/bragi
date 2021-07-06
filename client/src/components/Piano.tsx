@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -7,19 +6,16 @@ import { Typography } from '@material-ui/core';
 import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
-import { Score } from '../model/score';
-import { selectionAtom } from '../atoms/selectionAtom';
 import { DraggedItemType } from '../atoms/draggedItemAtom';
 import { useDraggablePanel } from './useDraggablePanel';
 import { DraggablePanel } from './DraggablePanel';
 
 export interface PianoProps {
 	smallPiano: boolean;
-	score?: Score;
-	onUpdateScore?: () => void;
+	onPianoNote?: (noteFullName: string) => void;
 }
 
-export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProps) => {
+export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -178,7 +174,6 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
-	const selection = useRecoilValue(selectionAtom);
 
 	const { draggedItem, position, setPosition } = useDraggablePanel();
 	const handleDragMove = useCallback(
@@ -234,26 +229,11 @@ export const Piano = React.memo(({ smallPiano, score, onUpdateScore }: PianoProp
 		(noteName: string, octaveNumber: number) => {
 			const noteFullName = noteName + octaveNumber;
 			SoundHelper.startNote(noteFullName, synth);
-			if (!score || selection.length !== 1) {
-				return;
-			}
-			const note = Score.findNote(score, selection[0].noteId);
-			if (!note) {
-				return;
-			}
-			note.isRest = false;
-			note.fullName = noteFullName;
-			if (MusicalHelper.parseNote(noteFullName).alter === '#') {
-				const measure = Score.findMeasure(score, note.measureId);
-				if (measure && !MusicalHelper.isScaleUsesSharps(measure.musicalScale)) {
-					note.fullName = MusicalHelper.toggleSharpAndFlat(note.fullName);
-				}
-			}
-			if (onUpdateScore) {
-				onUpdateScore();
+			if (onPianoNote) {
+				onPianoNote(noteFullName);
 			}
 		},
-		[score, selection, synth, onUpdateScore],
+		[synth, onPianoNote],
 	);
 
 	const stopNote = useCallback(

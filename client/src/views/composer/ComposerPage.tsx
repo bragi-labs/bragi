@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useResetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { ScoreModel } from '../../model/scoreModel';
@@ -11,6 +11,7 @@ import { Piano } from '../../components/Piano';
 import { NotePanel } from './NotePanel';
 import { MeasurePanel } from './MeasurePanel';
 import { PartsPanel } from './PartsPanel';
+import { MusicalHelper } from '../../services/musicalHelper';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -68,6 +69,7 @@ export const ComposerPage = () => {
 	const classes = useStyles();
 
 	const [score, setScore] = useState<ScoreModel | null>(null);
+	const selection = useRecoilValue(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
 
 	const handleScoreChanged = useCallback(
@@ -87,6 +89,28 @@ export const ComposerPage = () => {
 		});
 	}, []);
 
+	const handlePianoNote = useCallback(
+		(noteFullName: string) => {
+			if (!score || selection.length !== 1) {
+				return;
+			}
+			const note = Score.findNote(score, selection[0].noteId);
+			if (!note) {
+				return;
+			}
+			note.isRest = false;
+			note.fullName = noteFullName;
+			if (MusicalHelper.parseNote(noteFullName).alter === '#') {
+				const measure = Score.findMeasure(score, note.measureId);
+				if (measure && !MusicalHelper.isScaleUsesSharps(measure.musicalScale)) {
+					note.fullName = MusicalHelper.toggleSharpAndFlat(note.fullName);
+				}
+			}
+			handleScoreUpdated();
+		},
+		[score, selection, handleScoreUpdated],
+	);
+
 	return (
 		<Box id="ComposerPage" className={classes.root} key={score ? `${score.id}-${score.timestamp}` : ''}>
 			<Box className={classes.toolbarContainer}>
@@ -98,7 +122,7 @@ export const ComposerPage = () => {
 						<StageUI score={score} onUpdateScore={handleScoreUpdated} />
 					</Box>
 					<Box className={classes.pianoAnchor}>
-						<Piano smallPiano={true} score={score} onUpdateScore={handleScoreUpdated} />
+						<Piano smallPiano={true} onPianoNote={handlePianoNote} />
 					</Box>
 					<Box className={classes.notePanelAnchor}>
 						<NotePanel score={score} onUpdateScore={handleScoreUpdated} />
