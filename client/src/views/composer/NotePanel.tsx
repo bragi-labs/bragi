@@ -70,19 +70,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 				pointerEvents: 'none',
 			},
 		},
-		clickablePanelText: {
-			marginLeft: 2,
-			'&:not(.disabled)': {
-				cursor: 'pointer',
-			},
-			'&:not(.disabled):hover': {
-				color: '#fff',
-			},
-			'&.disabled': {
-				color: '#666',
-				pointerEvents: 'none',
-			},
-		},
 		actionButton: {
 			width: 24,
 			height: 24,
