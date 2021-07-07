@@ -9,7 +9,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
-import { Score } from '../../model/score';
+import { Music } from '../../model/music';
 import { Measure } from '../../model/measure';
 import { Part } from '../../model/part';
 import { selectionAtom } from '../../atoms/selectionAtom';
@@ -149,9 +149,9 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		}
 		let m;
 		let n;
-		let noteDetails;
+		let d;
 		if (selection.length === 1 && selection[0].noteId) {
-			n = Score.findNote(score, selection[0].noteId);
+			n = Music.findNote(score.music, selection[0].noteId);
 			if (n) {
 				setCurDuration(n.durationDivs);
 			}
@@ -159,59 +159,37 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		let noteDurationsOK: any = {};
 		noteDurationOptions.forEach((o) => {
 			noteDurationsOK[o.durationDivs] = selection.every((item) => {
-				m = item.measureId && Score.findMeasure(score, item.measureId);
+				m = item.measureId && Music.findMeasure(score.music, item.measureId);
 				if (!m) return false;
 				return Measure.canChangeNoteDuration(m, item.partId, item.noteId, o.durationDivs);
 			});
 		});
 		setCanChangeDuration(noteDurationsOK);
-		setCanPitchDown(
-			selection.every((item) => {
-				n = item.noteId && Score.findNote(score, item.noteId);
-				if (!n || n.isRest) {
-					return false;
-				}
-				noteDetails = MusicalHelper.parseNote(n.fullName);
-				return !(noteDetails.step === 'C' && !noteDetails.alter && noteDetails.octave === MusicalHelper.minOctave);
-			}),
-		);
-		setCanPitchUp(
-			selection.every((item) => {
-				n = item.noteId && Score.findNote(score, item.noteId);
-				if (!n || n.isRest) {
-					return false;
-				}
-				noteDetails = MusicalHelper.parseNote(n.fullName);
-				return !(noteDetails.step === 'B' && !noteDetails.alter && noteDetails.octave === MusicalHelper.maxOctave);
-			}),
-		);
-		setCanOctaveDown(
-			selection.every((item) => {
-				n = item.noteId && Score.findNote(score, item.noteId);
-				if (!n || n.isRest) {
-					return false;
-				}
-				noteDetails = MusicalHelper.parseNote(n.fullName);
-				return noteDetails.octave !== MusicalHelper.minOctave;
-			}),
-		);
-		setCanOctaveUp(
-			selection.every((item) => {
-				n = item.noteId && Score.findNote(score, item.noteId);
-				if (!n || n.isRest) {
-					return false;
-				}
-				noteDetails = MusicalHelper.parseNote(n.fullName);
-				return noteDetails.octave !== MusicalHelper.maxOctave;
-			}),
-		);
-		setCanDelete(
-			selection.every((item) => {
-				n = item.noteId && Score.findNote(score, item.noteId);
-				return n && !n.isRest;
-			}),
-		);
-	}, [selection, score, noteDurationOptions]);
+		setCanPitchDown(true);
+		setCanPitchUp(true);
+		setCanOctaveDown(true);
+		setCanOctaveUp(true);
+		setCanDelete(true);
+		selection.forEach((item) => {
+			n = item.noteId && Music.findNote(score.music, item.noteId);
+			d = n ? MusicalHelper.parseNote(n.fullName) : null;
+			if (!n || n.isRest || !d || (d.step === 'C' && !d.alter && d.octave === MusicalHelper.minOctave)) {
+				setCanPitchDown(false);
+			}
+			if (!n || n.isRest || !d || (d.step === 'B' && !d.alter && d.octave === MusicalHelper.maxOctave)) {
+				setCanPitchUp(false);
+			}
+			if (!n || n.isRest || !d || d.octave === MusicalHelper.minOctave) {
+				setCanOctaveDown(false);
+			}
+			if (!n || n.isRest || !d || d.octave === MusicalHelper.maxOctave) {
+				setCanOctaveUp(false);
+			}
+			if (!n || n.isRest) {
+				setCanDelete(false);
+			}
+		});
+	}, [score, selection, noteDurationOptions]);
 
 	const getSelectedNotes = useCallback(
 		(includeRests: boolean) => {
@@ -220,7 +198,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			}
 			const notes: NoteModel[] = [];
 			selection.forEach((item) => {
-				const n = Score.findNote(score, item.noteId);
+				const n = Music.findNote(score.music, item.noteId);
 				if (n && (!n.isRest || includeRests)) {
 					notes.push(n);
 				}
@@ -244,15 +222,15 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 
 	const handleChangePitch = useCallback(
 		(e) => {
+			if (!score) {
+				return;
+			}
 			const notes: NoteModel[] = getSelectedNotes(true);
 			if (!notes.length) {
 				return;
 			}
 			notes.forEach((n) => {
-				if (!score) {
-					return;
-				}
-				const measure = Score.findMeasure(score, n.measureId);
+				const measure = Music.findMeasure(score.music, n.measureId);
 				if (!measure) {
 					return;
 				}
@@ -266,20 +244,20 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			});
 			onUpdateScore();
 		},
-		[getSelectedNotes, score, onUpdateScore],
+		[score, getSelectedNotes, onUpdateScore],
 	);
 
 	const handleClickNoteDuration = useCallback(
 		(e) => {
+			if (!score) {
+				return;
+			}
 			const notes: NoteModel[] = getSelectedNotes(true);
 			if (!notes.length) {
 				return;
 			}
 			notes.forEach((n) => {
-				if (!score) {
-					return;
-				}
-				const m = Score.findMeasure(score, n.measureId);
+				const m = Music.findMeasure(score.music, n.measureId);
 				if (!m) {
 					return;
 				}
@@ -291,7 +269,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 				onUpdateScore();
 			});
 		},
-		[getSelectedNotes, score, onUpdateScore],
+		[score, getSelectedNotes, onUpdateScore],
 	);
 
 	return (
