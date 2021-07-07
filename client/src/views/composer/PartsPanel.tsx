@@ -258,7 +258,8 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 
 	const handleChangeFontSize = useCallback(
 		(e, value) => {
-			const pi = music.partsInfo.find((pi) => pi.id === e.target.dataset.partInfoId);
+			const partInfoId = e.target.dataset.partInfoId || e.target.parentElement.dataset.partInfoId;
+			const pi = music.partsInfo.find((pi) => pi.id === partInfoId);
 			if (!pi || pi.fontSize === value) {
 				return;
 			}
