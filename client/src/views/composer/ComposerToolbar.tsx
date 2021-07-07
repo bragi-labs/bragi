@@ -136,7 +136,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 	const handleClickExample = useCallback(() => {
 		const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
 		onChangeScore(openedScore);
-	}, []);
+	}, [onChangeScore]);
 
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
