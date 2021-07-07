@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 import { IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { ScoreModel, MeasureModel } from '../../model/scoreModel';
+import { MeasureModel, PartType, ScoreModel } from '../../model/scoreModel';
 import { Music } from '../../model/music';
 import { Score } from '../../model/score';
 import { selectionAtom } from '../../atoms/selectionAtom';
@@ -98,12 +98,14 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	useEffect(() => {
 		setCanAdd(false);
 		setCanDelete(false);
-		if (score && selection && selection.length === 1 && selection[0].measureId) {
-			setCanAdd(true);
+		if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
 			const m = Score.findMeasure(score, selection[0].measureId);
-			if (m && !m.isPickup) {
-				setCanDelete(true);
+			if (!m || m.isPickup) {
+				return;
 			}
+			const p = Score.findPart(score, selection[0].partId);
+			setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
+			setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 		}
 	}, [selection, score]);
 
