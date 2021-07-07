@@ -6,11 +6,13 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { AppDataHelper } from '../../services/appDataHelper';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
 import { SaveScore } from './SaveScore';
+import { ExampleScore } from '../../services/exampleScore';
 
 export interface ComposerToolbarProps {
 	score: ScoreModel | null;
@@ -131,6 +133,11 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		window.print();
 	}, []);
 
+	const handleClickExample = useCallback(() => {
+		const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
+		onChangeScore(openedScore);
+	}, []);
+
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
 			<Box className={classes.panel}>
@@ -163,6 +170,9 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 				{/*<Typography onClick={handleClickPrint} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>*/}
 				{/*	Print*/}
 				{/*</Typography>*/}
+				<IconButton onClick={handleClickExample} className={classes.actionButton} disabled={!!score}>
+					<MenuBookIcon titleAccess="Example" />
+				</IconButton>
 			</Box>
 		</Box>
 	);
