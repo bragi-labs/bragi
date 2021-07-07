@@ -51,6 +51,9 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 				marginLeft: 0,
 			},
 		},
+		panelButtonOnly: {
+			padding: '0 4px',
+		},
 		panelDuration: {
 			paddingRight: 4,
 			'& .MuiButton-root': {
@@ -90,9 +93,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			'&.current': {
 				color: '#fa3',
 			},
-		},
-		buttonOnly: {
-			padding: '0 4px',
 		},
 	}));
 	const classes = useStyles();
@@ -316,7 +316,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 							</Typography>
 						</Box>
 					</Box>
-					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
+					<Box className={`${classes.panel} ${classes.panelButtonOnly}`}>
 						<IconButton onClick={handleClickDelete} className={classes.actionButton} disabled={!canDelete}>
 							<DeleteForeverIcon titleAccess="Delete note" />
 						</IconButton>
