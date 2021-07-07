@@ -159,7 +159,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		slider: {
 			position: 'relative',
 			top: 2,
-			width: 160,
+			width: 136,
 			marginLeft: 12,
 			'& .MuiSlider-rail': {
 				color: '#ccc',
