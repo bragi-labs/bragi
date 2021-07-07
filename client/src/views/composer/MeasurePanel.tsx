@@ -4,6 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { MeasureModel, PartType, ScoreModel } from '../../model/scoreModel';
 import { Music } from '../../model/music';
@@ -41,7 +42,10 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			height: 32,
 			borderRadius: 16,
 			backgroundColor: '#333',
-			padding: '0 12px 0 4px',
+			padding: '0 6px 0 4px',
+		},
+		panelButtonOnly: {
+			padding: '0 4px',
 		},
 		buttonsRow: {
 			display: 'flex',
@@ -62,15 +66,13 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				color: '#666',
 			},
 		},
-		buttonOnly: {
-			padding: '0 4px',
-		},
 	}));
 	const classes = useStyles();
 
 	const selection = useRecoilValue(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
 	const [canAdd, setCanAdd] = useState(false);
+	const [canDuplicate, setCanDuplicate] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
 	const { draggedItem, position, setPosition } = useDraggablePanel();
@@ -97,6 +99,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 
 	useEffect(() => {
 		setCanAdd(false);
+		setCanDuplicate(false);
 		setCanDelete(false);
 		if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
 			const m = Score.findMeasure(score, selection[0].measureId);
@@ -105,6 +108,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			}
 			const p = Score.findPart(score, selection[0].partId);
 			setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
+			setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 			setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 		}
 	}, [selection, score]);
@@ -115,6 +119,15 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			return;
 		}
 		Music.addMeasure(score.music, measures[0].id);
+		onUpdateScore();
+	}, [score, getSelectedMeasures, onUpdateScore]);
+
+	const handleClickDuplicate = useCallback(() => {
+		const measures: MeasureModel[] = getSelectedMeasures();
+		if (!score || measures.length !== 1) {
+			return;
+		}
+		Music.duplicateMeasure(score.music, measures[0].id);
 		onUpdateScore();
 	}, [score, getSelectedMeasures, onUpdateScore]);
 
@@ -137,12 +150,15 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			<DraggablePanel title="Measure" draggedItemType={DraggedItemType.MEASURE_PANEL} onDragMove={handleDragMove} />
 			<Box className={classes.content}>
 				<Box className={classes.buttonsRow}>
-					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
+					<Box className={classes.panel}>
 						<IconButton onClick={handleClickAdd} disabled={!canAdd} className={classes.actionButton}>
 							<AddCircleOutlineIcon titleAccess="Add measure" />
 						</IconButton>
+						<IconButton onClick={handleClickDuplicate} disabled={!canDuplicate} className={classes.actionButton} style={{ marginLeft: '12px' }}>
+							<AddToPhotosIcon titleAccess="Duplicate measure" />
+						</IconButton>
 					</Box>
-					<Box className={`${classes.panel} ${classes.buttonOnly}`}>
+					<Box className={`${classes.panel} ${classes.panelButtonOnly}`}>
 						<IconButton onClick={handleClickDelete} disabled={!canDelete} className={classes.actionButton}>
 							<DeleteForeverIcon titleAccess="Delete measure" />
 						</IconButton>

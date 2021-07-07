@@ -105,4 +105,15 @@ export class Part implements PartModel {
 			}
 		}
 	}
+
+	static resetIds(p: PartModel, measureId: string) {
+		p.id = CommonHelper.getRandomId();
+		p.measureId = measureId;
+		p.notes.forEach((n) => {
+			Note.resetIds(n, measureId, p.id);
+		});
+		p.chords.forEach((c) => {
+			Chord.resetIds(c, measureId, p.id);
+		});
+	}
 }

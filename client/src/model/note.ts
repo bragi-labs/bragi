@@ -1,4 +1,5 @@
 import { EntityKind, NoteModel } from './scoreModel';
+import { CommonHelper } from '../services/commonHelper';
 
 export class Note implements NoteModel {
 	kind: EntityKind = EntityKind.NOTE;
@@ -17,5 +18,11 @@ export class Note implements NoteModel {
 
 	static createFromModel(n: NoteModel) {
 		return new Note(n.id, n.measureId, n.partId, n.fullName, n.isRest, n.startDiv, n.durationDivs, n.isTiedToNext, n.isTiedToPrev);
+	}
+
+	static resetIds(n: NoteModel, measureId: string, partId: string) {
+		n.id = CommonHelper.getRandomId();
+		n.measureId = measureId;
+		n.partId = partId;
 	}
 }

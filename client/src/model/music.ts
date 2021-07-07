@@ -132,6 +132,18 @@ export class Music implements MusicModel {
 		Music.renumberAllMeasures(u);
 	}
 
+	static duplicateMeasure(u: MusicModel, curMeasureId: string) {
+		const curMeasureIndex = u.measures.findIndex((m) => m.id === curMeasureId);
+		if (curMeasureIndex === -1) {
+			return;
+		}
+		const curMeasure = u.measures[curMeasureIndex];
+		const m = Measure.createFromModel(curMeasure);
+		Measure.resetIds(m);
+		u.measures.splice(curMeasureIndex + 1, 0, m);
+		Music.renumberAllMeasures(u);
+	}
+
 	static deleteMeasure(u: MusicModel, measureId: string) {
 		const measureIndex = u.measures.findIndex((m) => m.id === measureId);
 		if (measureIndex === -1) {

@@ -64,7 +64,7 @@ export class Measure implements MeasureModel {
 		return Part.canChangeNoteDuration(p, noteId, newDurationDivs, m.durationDivs);
 	}
 
-	static movePart(m: Measure, partInfoId: string, isUp: boolean) {
+	static movePart(m: MeasureModel, partInfoId: string, isUp: boolean) {
 		const partIndex = m.parts.findIndex((p) => p.partInfoId === partInfoId);
 		if (partIndex === -1) {
 			return;
@@ -72,16 +72,23 @@ export class Measure implements MeasureModel {
 		CommonHelper.arrayMove(m.parts, partIndex, partIndex + (isUp ? -1 : 1));
 	}
 
-	static addPart(m: Measure, partInfo: PartInfo) {
+	static addPart(m: MeasureModel, partInfo: PartInfo) {
 		const p = Part.createNew(m.id, partInfo, m.timeSignature);
 		m.parts.push(p);
 	}
 
-	static deletePart(m: Measure, partInfoId: string) {
+	static deletePart(m: MeasureModel, partInfoId: string) {
 		const partInfoIndex = m.parts.findIndex((pi) => pi.id === partInfoId);
 		if (partInfoIndex === -1) {
 			return;
 		}
 		m.parts.splice(partInfoIndex, 1);
+	}
+
+	static resetIds(m: MeasureModel) {
+		m.id = CommonHelper.getRandomId();
+		m.parts.forEach((p) => {
+			Part.resetIds(p, m.id);
+		});
 	}
 }
