@@ -100,7 +100,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		setCanDelete(false);
 		if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
 			const m = Score.findMeasure(score, selection[0].measureId);
-			if (!m || m.isPickup) {
+			if (!m) {
 				return;
 			}
 			const p = Score.findPart(score, selection[0].partId);
