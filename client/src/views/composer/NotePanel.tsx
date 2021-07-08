@@ -36,7 +36,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			userSelect: 'none',
 		},
 		rootCollapsed: {
-			width: 200,
+			width: 160,
 			paddingBottom: 0,
 		},
 		expandCollapseButton: {

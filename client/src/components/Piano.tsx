@@ -34,7 +34,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			},
 		},
 		rootCollapsed: {
-			width: 200,
+			width: 160,
 			paddingBottom: '0 !important',
 		},
 		expandCollapseButton: {
