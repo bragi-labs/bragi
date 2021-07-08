@@ -21,9 +21,9 @@ export const ComposerPage = () => {
 			userSelect: 'none',
 		},
 		toolbarContainer: {
-			position: 'absolute',
-			left: 0,
-			top: -48,
+			position: 'fixed',
+			top: 84,
+			left: 32,
 			'@media print': {
 				display: 'none',
 			},
