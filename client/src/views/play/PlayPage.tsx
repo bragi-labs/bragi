@@ -10,9 +10,7 @@ export const PlayPage = React.memo(() => {
 			height: '100%',
 			userSelect: 'none',
 		},
-		pianoAnchor: {
-			marginTop: 16,
-		},
+		pianoAnchor: {},
 	}));
 	const classes = useStyles();
 

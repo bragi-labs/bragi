@@ -32,6 +32,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			},
 			//opacity: 0.9,
 		},
+		content: {},
 		controls: {
 			display: 'flex',
 			alignItems: 'center',
@@ -274,72 +275,74 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	return (
 		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}>
 			{smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={40} />}
-			<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
-				<Box className={classes.powerSwitch}>
-					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
-					<Typography className={classes.powerSwitchText}>Power</Typography>
-				</Box>
-				<Box className={`${classes.fnSymbolsSwitch} ${smallPiano ? 'small-piano' : ''}`}>
-					<Box
-						onClick={toggleFnSymbols}
-						className={`led ${powerOn && fnSymbolsOn ? 'led--on' : ''} ${powerOn && !fnSymbolsOn ? 'led--off' : ''} ${powerOn ? '' : 'pointer-events-none'}`}
-					/>
-					<Typography className={classes.fnSymbolsSwitchText}>Figurenotes</Typography>
-				</Box>
-				<Box className={`${classes.octaveSwitches} ${smallPiano ? 'small-piano' : ''}`}>
-					{octaves.map((oct, octIndex) => (
+			<Box className={classes.content}>
+				<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
+					<Box className={classes.powerSwitch}>
+						<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
+						<Typography className={classes.powerSwitchText}>Power</Typography>
+					</Box>
+					<Box className={`${classes.fnSymbolsSwitch} ${smallPiano ? 'small-piano' : ''}`}>
 						<Box
-							key={octIndex}
-							onClick={toggleOctave}
-							data-octave-index={octIndex}
-							className={`${classes.octaveSwitchLed} led ${powerOn && oct ? 'led--on' : ''} ${powerOn && !oct ? 'led--off' : ''} ${
-								powerOn ? '' : 'pointer-events-none'
-							}`}
+							onClick={toggleFnSymbols}
+							className={`led ${powerOn && fnSymbolsOn ? 'led--on' : ''} ${powerOn && !fnSymbolsOn ? 'led--off' : ''} ${powerOn ? '' : 'pointer-events-none'}`}
 						/>
-					))}
-					<Typography className={classes.octaveSwitchesText}>Octaves</Typography>
+						<Typography className={classes.fnSymbolsSwitchText}>Figurenotes</Typography>
+					</Box>
+					<Box className={`${classes.octaveSwitches} ${smallPiano ? 'small-piano' : ''}`}>
+						{octaves.map((oct, octIndex) => (
+							<Box
+								key={octIndex}
+								onClick={toggleOctave}
+								data-octave-index={octIndex}
+								className={`${classes.octaveSwitchLed} led ${powerOn && oct ? 'led--on' : ''} ${powerOn && !oct ? 'led--off' : ''} ${
+									powerOn ? '' : 'pointer-events-none'
+								}`}
+							/>
+						))}
+						<Typography className={classes.octaveSwitchesText}>Octaves</Typography>
+					</Box>
 				</Box>
-			</Box>
-			<Box className={classes.keyboard}>
-				{octaves.map((oct, octIndex) => (
-					<Box key={octIndex} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
-						{whiteKeys.map((wk) => (
-							<Box key={wk.noteName}>
+				<Box className={classes.keyboard}>
+					{octaves.map((oct, octIndex) => (
+						<Box key={octIndex} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
+							{whiteKeys.map((wk) => (
+								<Box key={wk.noteName}>
+									<Box
+										className={`${classes.figureNoteSymbol} ${oct && fnSymbolsOn ? '' : 'display-none'}`}
+										style={{
+											...FigurenotesHelper.getSymbolStyle(`${wk.noteName}${octIndex + MusicalHelper.minOctave}`, smallPiano ? 16 : 32, 'px'),
+											left: wk.left + (smallPiano ? 3 : 7),
+										}}
+									/>
+									<Box
+										onMouseDown={handleMouseDown}
+										onMouseUp={handleMouseUp}
+										onMouseEnter={handleMouseEnter}
+										onMouseLeave={handleMouseLeave}
+										data-note-name={wk.noteName}
+										data-octave-number={octIndex + MusicalHelper.minOctave}
+										className={`${classes.octaveKey} ${classes.whiteKey}`}
+										style={{ left: wk.left }}
+									/>
+								</Box>
+							))}
+							{blackKeys.map((bk) => (
 								<Box
-									className={`${classes.figureNoteSymbol} ${oct && fnSymbolsOn ? '' : 'display-none'}`}
-									style={{
-										...FigurenotesHelper.getSymbolStyle(`${wk.noteName}${octIndex + MusicalHelper.minOctave}`, smallPiano ? 16 : 32, 'px'),
-										left: wk.left + (smallPiano ? 3 : 7),
-									}}
-								/>
-								<Box
+									key={bk.noteName}
 									onMouseDown={handleMouseDown}
 									onMouseUp={handleMouseUp}
 									onMouseEnter={handleMouseEnter}
 									onMouseLeave={handleMouseLeave}
-									data-note-name={wk.noteName}
+									data-note-name={bk.noteName}
 									data-octave-number={octIndex + MusicalHelper.minOctave}
-									className={`${classes.octaveKey} ${classes.whiteKey}`}
-									style={{ left: wk.left }}
+									className={`${classes.octaveKey} ${classes.blackKey}`}
+									style={{ left: bk.left }}
 								/>
-							</Box>
-						))}
-						{blackKeys.map((bk) => (
-							<Box
-								key={bk.noteName}
-								onMouseDown={handleMouseDown}
-								onMouseUp={handleMouseUp}
-								onMouseEnter={handleMouseEnter}
-								onMouseLeave={handleMouseLeave}
-								data-note-name={bk.noteName}
-								data-octave-number={octIndex + MusicalHelper.minOctave}
-								className={`${classes.octaveKey} ${classes.blackKey}`}
-								style={{ left: bk.left }}
-							/>
-						))}
-					</Box>
-				))}
-				<Box className={`${classes.keyboardCover} ${powerOn ? classes.keyboardCoverOff : ''}`} />
+							))}
+						</Box>
+					))}
+					<Box className={`${classes.keyboardCover} ${powerOn ? classes.keyboardCoverOff : ''}`} />
+				</Box>
 			</Box>
 		</div>
 	);
