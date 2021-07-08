@@ -20,6 +20,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			position: 'relative',
 			height: '100%',
 			textAlign: 'center',
+			borderRadius: 4,
 			//backgroundColor: '#eee',
 			backgroundColor: '#fff',
 			//backgroundImage: 'linear-gradient(135deg, #fff 47.06%, #ccc 47.06%, #ccc 50%, #fff 50%, #fff 97.06%, #ccc 97.06%, #ccc 100%)',
