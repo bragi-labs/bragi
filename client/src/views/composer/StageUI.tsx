@@ -66,19 +66,22 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 
 	const [tuneStageDialogVisible, setTuneStageDialogVisible] = useState(false);
 
-	const handleClickTune = useCallback(() => {
+	const handleClickTune = useCallback(function handleClickTune() {
 		setTuneStageDialogVisible(true);
 	}, []);
 
-	const handleScoreUpdated = useCallback(() => {
-		onUpdateScore();
-	}, [onUpdateScore]);
+	const handleScoreUpdated = useCallback(
+		function handleScoreUpdated() {
+			onUpdateScore();
+		},
+		[onUpdateScore],
+	);
 
-	const handleCloseTuneStageDialog = useCallback(() => {
+	const handleCloseTuneStageDialog = useCallback(function handleCloseTuneStageDialog() {
 		setTuneStageDialogVisible(false);
 	}, []);
 
-	const handleDoneTuneStageDialog = useCallback(() => {
+	const handleDoneTuneStageDialog = useCallback(function handleDoneTuneStageDialog() {
 		setTuneStageDialogVisible(false);
 	}, []);
 

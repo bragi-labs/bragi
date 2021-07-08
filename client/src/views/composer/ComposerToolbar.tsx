@@ -83,16 +83,16 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 	const openInputRef = useRef<any>();
 	const [goSaveScore, setGoSaveScore] = useState(false);
 
-	const handleClickNew = useCallback(() => {
+	const handleClickNew = useCallback(function handleClickNew() {
 		setNewScoreDialogVisible(true);
 	}, []);
 
-	const handleCloseNewScoreDialog = useCallback(() => {
+	const handleCloseNewScoreDialog = useCallback(function handleCloseNewScoreDialog() {
 		setNewScoreDialogVisible(false);
 	}, []);
 
 	const handleDoneNewScoreDialog = useCallback(
-		(newScore: Score | null) => {
+		function handleDoneNewScoreDialog(newScore: Score | null) {
 			setNewScoreDialogVisible(false);
 			if (newScore) {
 				onChangeScore(newScore);
@@ -101,42 +101,51 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		[onChangeScore],
 	);
 
-	const handleClickOpen = useCallback(() => {
-		const openInput: HTMLInputElement = openInputRef.current;
-		openInput.click();
-	}, [openInputRef]);
+	const handleClickOpen = useCallback(
+		function handleClickOpen() {
+			const openInput: HTMLInputElement = openInputRef.current;
+			openInput.click();
+		},
+		[openInputRef],
+	);
 
-	const handleChangeOpenFile = useCallback(() => {
-		const openInput: HTMLInputElement = openInputRef.current;
-		if (!openInput.files || openInput.files.length !== 1) {
-			return;
-		}
-		const fileReader = new FileReader();
-		fileReader.onload = () => {
-			if (fileReader.result) {
-				const openedScore = Score.createFromModel(JSON.parse(fileReader.result.toString()));
-				onChangeScore(openedScore);
+	const handleChangeOpenFile = useCallback(
+		function handleChangeOpenFile() {
+			const openInput: HTMLInputElement = openInputRef.current;
+			if (!openInput.files || openInput.files.length !== 1) {
+				return;
 			}
-		};
-		fileReader.readAsText(openInput.files[0]);
-	}, [openInputRef, onChangeScore]);
+			const fileReader = new FileReader();
+			fileReader.onload = () => {
+				if (fileReader.result) {
+					const openedScore = Score.createFromModel(JSON.parse(fileReader.result.toString()));
+					onChangeScore(openedScore);
+				}
+			};
+			fileReader.readAsText(openInput.files[0]);
+		},
+		[openInputRef, onChangeScore],
+	);
 
-	const handleClickSave = useCallback(() => {
+	const handleClickSave = useCallback(function handleClickSave() {
 		setGoSaveScore(true);
 	}, []);
 
-	const handleSaveScoreDone = useCallback(() => {
+	const handleSaveScoreDone = useCallback(function handleSaveScoreDone() {
 		setGoSaveScore(false);
 	}, []);
 
-	const handleClickPrint = useCallback(() => {
+	const handleClickPrint = useCallback(function handleClickPrint() {
 		window.print();
 	}, []);
 
-	const handleClickExample = useCallback(() => {
-		const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
-		onChangeScore(openedScore);
-	}, [onChangeScore]);
+	const handleClickExample = useCallback(
+		function handleClickExample() {
+			const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
+			onChangeScore(openedScore);
+		},
+		[onChangeScore],
+	);
 
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>

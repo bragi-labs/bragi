@@ -94,7 +94,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 	const classes = useStyles();
 
 	const handleChangeMusicWidth = useCallback(
-		(_e, value) => {
+		function handleChangeMusicWidth(_e, value) {
 			if (score.scoreSettings.musicWidth === value) {
 				return;
 			}
@@ -105,7 +105,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 	);
 
 	const handleChangeRowGap = useCallback(
-		(_e, value) => {
+		function handleChangeRowGap(_e, value) {
 			if (score.scoreSettings.rowGap === value) {
 				return;
 			}
@@ -116,7 +116,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 	);
 
 	const handleChangeQuarterSize = useCallback(
-		(_e, value) => {
+		function handleChangeQuarterSize(_e, value) {
 			if (score.scoreSettings.quarterSize === value) {
 				return;
 			}
@@ -127,7 +127,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 	);
 
 	const handleChangeMeasureNumbers = useCallback(
-		(_e, value) => {
+		function handleChangeMeasureNumbers(_e, value) {
 			if (score.scoreSettings.measureNumbers === value) {
 				return;
 			}
@@ -137,9 +137,12 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 		[score, onUpdateScore],
 	);
 
-	const handleClickClose = useCallback(() => {
-		onDoneTuneStageDialog();
-	}, [onDoneTuneStageDialog]);
+	const handleClickClose = useCallback(
+		function handleClickClose() {
+			onDoneTuneStageDialog();
+		},
+		[onDoneTuneStageDialog],
+	);
 
 	return (
 		<Box id="TunePageDialog" className={classes.root}>

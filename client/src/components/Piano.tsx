@@ -227,16 +227,16 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 		};
 	});
 
-	const togglePower = useCallback(() => {
+	const togglePower = useCallback(function togglePower() {
 		setPowerOn((status) => !status);
 	}, []);
 
-	const toggleFnSymbols = useCallback(() => {
+	const toggleFnSymbols = useCallback(function toggleFnSymbols() {
 		setFnSymbolsOn((status) => !status);
 	}, []);
 
 	const toggleOctave = useCallback(
-		(e) => {
+		function toggleOctave(e) {
 			if (!powerOn) {
 				return;
 			}
@@ -249,7 +249,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	const startNote = useCallback(
-		(noteName: string, octaveNumber: number) => {
+		function startNote(noteName: string, octaveNumber: number) {
 			const noteFullName = noteName + octaveNumber;
 			SoundHelper.startNote(noteFullName, synth);
 			if (onPianoNote) {
@@ -260,28 +260,28 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	const stopNote = useCallback(
-		(noteName: string, octaveNumber: number) => {
+		function stopNote(noteName: string, octaveNumber: number) {
 			SoundHelper.stopNote(noteName + octaveNumber, synth);
 		},
 		[synth],
 	);
 
 	const handleMouseDown = useCallback(
-		(e) => {
+		function handleMouseDown(e) {
 			startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[startNote],
 	);
 
 	const handleMouseUp = useCallback(
-		(e) => {
+		function handleMouseUp(e) {
 			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[stopNote],
 	);
 
 	const handleMouseEnter = useCallback(
-		(e) => {
+		function handleMouseEnter(e) {
 			const isMouseButtonPressed = 'buttons' in e ? e.buttons === 1 : (e.which || e.button) === 1;
 			if (isMouseButtonPressed && draggedItem === DraggedItemType.NA) {
 				startNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
@@ -291,7 +291,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	const handleMouseLeave = useCallback(
-		(e) => {
+		function handleMouseLeave(e) {
 			stopNote(e.currentTarget.dataset['noteName'], e.currentTarget.dataset['octaveNumber']);
 		},
 		[stopNote],

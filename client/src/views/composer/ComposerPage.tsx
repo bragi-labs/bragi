@@ -73,21 +73,21 @@ export const ComposerPage = () => {
 	const resetSelection = useResetRecoilState(selectionAtom);
 
 	const handleScoreChanged = useCallback(
-		(changedScore: Score) => {
+		function handleScoreChanged(changedScore: Score) {
 			resetSelection();
 			setScore(changedScore);
 		},
 		[resetSelection],
 	);
 
-	const handleScoreUpdated = useCallback(() => {
+	const handleScoreUpdated = useCallback(function handleScoreUpdated() {
 		setScore((s) => {
 			return { ...s } as ScoreModel;
 		});
 	}, []);
 
 	const handlePianoNote = useCallback(
-		(noteFullName: string) => {
+		function handlePianoNote(noteFullName: string) {
 			if (!score || selection.length !== 1) {
 				return;
 			}

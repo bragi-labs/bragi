@@ -207,7 +207,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, []);
 
 	const handleClickUpOrDown = useCallback(
-		(e) => {
+		function handleClickUpOrDown(e) {
 			const partInfoId = e.currentTarget.dataset.partInfoId;
 			const pi = music.partsInfo.find((pi) => pi.id === partInfoId);
 			if (!pi) {
@@ -221,7 +221,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickToggleNoteName = useCallback(
-		(e) => {
+		function handleClickToggleNoteName(e) {
 			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
@@ -233,7 +233,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickToggleBold = useCallback(
-		(e) => {
+		function handleClickToggleBold(e) {
 			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
@@ -245,7 +245,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickShowOrHide = useCallback(
-		(e) => {
+		function handleClickShowOrHide(e) {
 			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
@@ -257,7 +257,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleChangeFontSize = useCallback(
-		(e, value) => {
+		function handleChangeFontSize(e, value) {
 			const partInfoId = e.target.dataset.partInfoId || e.target.parentElement.dataset.partInfoId;
 			const pi = music.partsInfo.find((pi) => pi.id === partInfoId);
 			if (!pi || pi.fontSize === value) {
@@ -270,7 +270,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickBgColor = useCallback(
-		(e) => {
+		function handleClickBgColor(e) {
 			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
@@ -309,7 +309,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	);
 
 	const handleClickDeletePart = useCallback(
-		(e) => {
+		function handleClickDeletePart(e) {
 			const pi = music.partsInfo.find((pi) => pi.id === e.currentTarget.dataset.partInfoId);
 			if (!pi) {
 				return;
@@ -320,15 +320,21 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 		[music, onUpdateScore],
 	);
 
-	const handleClickAddMelodyPart = useCallback(() => {
-		Music.addPart(music, PartType.FN_LVL_1, 'Melody', true);
-		onUpdateScore();
-	}, [music, onUpdateScore]);
+	const handleClickAddMelodyPart = useCallback(
+		function handleClickAddMelodyPart() {
+			Music.addPart(music, PartType.FN_LVL_1, 'Melody', true);
+			onUpdateScore();
+		},
+		[music, onUpdateScore],
+	);
 
-	const handleClickAddTextPart = useCallback(() => {
-		Music.addPart(music, PartType.TEXT, 'Text', true);
-		onUpdateScore();
-	}, [music, onUpdateScore]);
+	const handleClickAddTextPart = useCallback(
+		function handleClickAddTextPart() {
+			Music.addPart(music, PartType.TEXT, 'Text', true);
+			onUpdateScore();
+		},
+		[music, onUpdateScore],
+	);
 
 	return (
 		<div id="PartsPanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>

@@ -34,7 +34,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 	const resetDraggedItem = useResetRecoilState(draggedItemAtom);
 
 	const handleMouseDown = useCallback(
-		(e) => {
+		function handleMouseDown(e) {
 			if (e.button !== 0) {
 				return;
 			}
@@ -51,7 +51,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 	);
 
 	const handleMouseMove = useCallback(
-		(e) => {
+		function handleMouseMove(e) {
 			if (!isDragging) {
 				return;
 			}
@@ -67,7 +67,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 	);
 
 	const handleMouseUp = useCallback(
-		(e) => {
+		function handleMouseUp(e) {
 			if (!isDragging) {
 				return;
 			}

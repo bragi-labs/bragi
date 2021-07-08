@@ -72,7 +72,7 @@ export const MelodyPartUI = ({ partInfo, part, isFirstPart, scoreSettings }: Mel
 	const [selection, setSelection] = useRecoilState(selectionAtom);
 
 	const handleClickNote = useCallback(
-		(e) => {
+		function handleClickNote(e) {
 			const note = Part.findNote(part, e.currentTarget.dataset.noteId);
 			if (note) {
 				setSelection([{ partInfoId: part.partInfoId, measureId: note.measureId, partId: note.partId, noteId: note.id }]);

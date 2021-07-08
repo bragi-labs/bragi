@@ -212,7 +212,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	}, [score, selection, noteDurationOptions]);
 
 	const getSelectedNotes = useCallback(
-		(includeRests: boolean) => {
+		function getSelectedNotes(includeRests: boolean) {
 			if (!score || !selection) {
 				return [];
 			}
@@ -228,20 +228,23 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		[score, selection],
 	);
 
-	const handleClickDelete = useCallback(() => {
-		const notes: NoteModel[] = getSelectedNotes(false);
-		if (!notes.length) {
-			return;
-		}
-		notes.forEach((n) => {
-			n.fullName = '';
-			n.isRest = true;
-		});
-		onUpdateScore();
-	}, [getSelectedNotes, onUpdateScore]);
+	const handleClickDelete = useCallback(
+		function handleClickDelete() {
+			const notes: NoteModel[] = getSelectedNotes(false);
+			if (!notes.length) {
+				return;
+			}
+			notes.forEach((n) => {
+				n.fullName = '';
+				n.isRest = true;
+			});
+			onUpdateScore();
+		},
+		[getSelectedNotes, onUpdateScore],
+	);
 
 	const handleChangePitch = useCallback(
-		(e) => {
+		function handleChangePitch(e) {
 			if (!score) {
 				return;
 			}
@@ -268,7 +271,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	);
 
 	const handleClickNoteDuration = useCallback(
-		(e) => {
+		function handleClickNoteDuration(e) {
 			if (!score) {
 				return;
 			}

@@ -107,7 +107,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	}, [music.measures, scoreSettings.musicWidth, scoreSettings.quarterSize]);
 
 	const getPartInfo = useCallback(
-		(partInfoId: string) => {
+		function getPartInfo(partInfoId: string) {
 			return music.partsInfo.find((pi) => pi.id === partInfoId) || null;
 		},
 		[music],

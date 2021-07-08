@@ -90,22 +90,28 @@ export const TextPartUI = ({ partInfo, part, isLastPart }: TextPartUIProps) => {
 	const setSelection = useSetRecoilState(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
 
-	const handleTextFocus = useCallback(() => {
-		if (partInfo) {
-			setSelection([{ partInfoId: partInfo.id, measureId: part.measureId, partId: part.id, noteId: '' }]);
-		}
-	}, [setSelection, partInfo, part.measureId, part.id]);
+	const handleTextFocus = useCallback(
+		function handleTextFocus() {
+			if (partInfo) {
+				setSelection([{ partInfoId: partInfo.id, measureId: part.measureId, partId: part.id, noteId: '' }]);
+			}
+		},
+		[setSelection, partInfo, part.measureId, part.id],
+	);
 
 	const handleTextChange = useCallback(
-		(e) => {
+		function handleTextChange(e) {
 			part.text = e.target.value;
 		},
 		[part],
 	);
 
-	const handleTextBlur = useCallback(() => {
-		resetSelection();
-	}, [resetSelection]);
+	const handleTextBlur = useCallback(
+		function handleTextBlur() {
+			resetSelection();
+		},
+		[resetSelection],
+	);
 
 	return (
 		<Box id="TextPartUI" className={classes.root} style={{ backgroundColor: `${partInfo ? partInfo.bgColor : '#fff'}` }}>

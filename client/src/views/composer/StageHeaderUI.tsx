@@ -48,57 +48,69 @@ export const StageHeaderUI = ({ scoreInfo, onUpdateScore }: StageHeaderUIProps) 
 	const scoreCreditsTextRef = useRef<HTMLHeadingElement | null>(null);
 	const scoreCreditsInputRef = useRef<HTMLInputElement | null>(null);
 
-	const handleClickScoreTitle = useCallback(() => {
-		const scoreTitleText = scoreTitleTextRef.current;
-		const scoreTitleInput = scoreTitleInputRef.current;
-		if (!scoreTitleText || !scoreTitleInput) {
-			return;
-		}
-		scoreTitleText.style.display = 'none';
-		scoreTitleInput.style.display = 'inline-flex';
-		(scoreTitleInput.children[0].children[0] as HTMLInputElement).focus();
-	}, [scoreTitleTextRef, scoreTitleInputRef]);
+	const handleClickScoreTitle = useCallback(
+		function handleClickScoreTitle() {
+			const scoreTitleText = scoreTitleTextRef.current;
+			const scoreTitleInput = scoreTitleInputRef.current;
+			if (!scoreTitleText || !scoreTitleInput) {
+				return;
+			}
+			scoreTitleText.style.display = 'none';
+			scoreTitleInput.style.display = 'inline-flex';
+			(scoreTitleInput.children[0].children[0] as HTMLInputElement).focus();
+		},
+		[scoreTitleTextRef, scoreTitleInputRef],
+	);
 
-	const handleBlurScoreTitle = useCallback(() => {
-		if (!scoreInfo) {
-			return;
-		}
-		const scoreTitleText = scoreTitleTextRef.current;
-		const scoreTitleInput = scoreTitleInputRef.current;
-		if (!scoreTitleText || !scoreTitleInput) {
-			return;
-		}
-		scoreTitleText.style.display = 'flex';
-		scoreTitleInput.style.display = 'none';
-		scoreInfo.scoreTitle = (scoreTitleInput.children[0].children[0] as HTMLInputElement).value || `<SCORE TITLE>`;
-		onUpdateScore();
-	}, [scoreTitleTextRef, scoreTitleInputRef, scoreInfo, onUpdateScore]);
+	const handleBlurScoreTitle = useCallback(
+		function handleBlurScoreTitle() {
+			if (!scoreInfo) {
+				return;
+			}
+			const scoreTitleText = scoreTitleTextRef.current;
+			const scoreTitleInput = scoreTitleInputRef.current;
+			if (!scoreTitleText || !scoreTitleInput) {
+				return;
+			}
+			scoreTitleText.style.display = 'flex';
+			scoreTitleInput.style.display = 'none';
+			scoreInfo.scoreTitle = (scoreTitleInput.children[0].children[0] as HTMLInputElement).value || `<SCORE TITLE>`;
+			onUpdateScore();
+		},
+		[scoreTitleTextRef, scoreTitleInputRef, scoreInfo, onUpdateScore],
+	);
 
-	const handleClickScoreCredits = useCallback(() => {
-		const scoreCreditsText = scoreCreditsTextRef.current;
-		const scoreCreditsInput = scoreCreditsInputRef.current;
-		if (!scoreCreditsText || !scoreCreditsInput) {
-			return;
-		}
-		scoreCreditsText.style.display = 'none';
-		scoreCreditsInput.style.display = 'inline-flex';
-		(scoreCreditsInput.children[0].children[0] as HTMLInputElement).focus();
-	}, [scoreCreditsTextRef, scoreCreditsInputRef]);
+	const handleClickScoreCredits = useCallback(
+		function handleClickScoreCredits() {
+			const scoreCreditsText = scoreCreditsTextRef.current;
+			const scoreCreditsInput = scoreCreditsInputRef.current;
+			if (!scoreCreditsText || !scoreCreditsInput) {
+				return;
+			}
+			scoreCreditsText.style.display = 'none';
+			scoreCreditsInput.style.display = 'inline-flex';
+			(scoreCreditsInput.children[0].children[0] as HTMLInputElement).focus();
+		},
+		[scoreCreditsTextRef, scoreCreditsInputRef],
+	);
 
-	const handleBlurScoreCredits = useCallback(() => {
-		if (!scoreInfo) {
-			return;
-		}
-		const scoreCreditsText = scoreCreditsTextRef.current;
-		const scoreCreditsInput = scoreCreditsInputRef.current;
-		if (!scoreCreditsText || !scoreCreditsInput) {
-			return;
-		}
-		scoreCreditsText.style.display = 'flex';
-		scoreCreditsInput.style.display = 'none';
-		scoreInfo.scoreCredits = (scoreCreditsInput.children[0].children[0] as HTMLInputElement).value || `<SCORE CREDITS>`;
-		onUpdateScore();
-	}, [scoreCreditsTextRef, scoreCreditsInputRef, scoreInfo, onUpdateScore]);
+	const handleBlurScoreCredits = useCallback(
+		function handleBlurScoreCredits() {
+			if (!scoreInfo) {
+				return;
+			}
+			const scoreCreditsText = scoreCreditsTextRef.current;
+			const scoreCreditsInput = scoreCreditsInputRef.current;
+			if (!scoreCreditsText || !scoreCreditsInput) {
+				return;
+			}
+			scoreCreditsText.style.display = 'flex';
+			scoreCreditsInput.style.display = 'none';
+			scoreInfo.scoreCredits = (scoreCreditsInput.children[0].children[0] as HTMLInputElement).value || `<SCORE CREDITS>`;
+			onUpdateScore();
+		},
+		[scoreCreditsTextRef, scoreCreditsInputRef, scoreInfo, onUpdateScore],
+	);
 
 	return (
 		<>

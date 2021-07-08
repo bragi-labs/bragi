@@ -104,23 +104,29 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 		setNumberOfMeasures(e.target.value);
 	};
 
-	const handleClickCancel = useCallback(() => {
-		onDoneNewScoreDialog(null);
-	}, [onDoneNewScoreDialog]);
+	const handleClickCancel = useCallback(
+		function handleClickCancel() {
+			onDoneNewScoreDialog(null);
+		},
+		[onDoneNewScoreDialog],
+	);
 
-	const handleClickOK = useCallback(() => {
-		const newScore = Score.createNew(
-			scoreTitle,
-			scoreCredits,
-			arrangerName,
-			timeSignature,
-			Number(tempoBpm) || 120,
-			(musicalScale || 'C').toUpperCase(),
-			pickupMeasure === 'yes',
-			Number(numberOfMeasures) || 16,
-		);
-		onDoneNewScoreDialog(newScore);
-	}, [scoreTitle, scoreCredits, arrangerName, timeSignature, tempoBpm, musicalScale, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog]);
+	const handleClickOK = useCallback(
+		function handleClickOK() {
+			const newScore = Score.createNew(
+				scoreTitle,
+				scoreCredits,
+				arrangerName,
+				timeSignature,
+				Number(tempoBpm) || 120,
+				(musicalScale || 'C').toUpperCase(),
+				pickupMeasure === 'yes',
+				Number(numberOfMeasures) || 16,
+			);
+			onDoneNewScoreDialog(newScore);
+		},
+		[scoreTitle, scoreCredits, arrangerName, timeSignature, tempoBpm, musicalScale, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog],
+	);
 
 	return (
 		<Box id="NewScoreDialog" className={classes.root}>

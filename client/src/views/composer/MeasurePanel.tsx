@@ -101,19 +101,22 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		setIsExpanded(false);
 	}, []);
 
-	const getSelectedMeasures = useCallback(() => {
-		if (!score || !selection) {
-			return [];
-		}
-		const measures: MeasureModel[] = [];
-		selection.forEach((item) => {
-			const m = Score.findMeasure(score, item.measureId);
-			if (m) {
-				measures.push(m);
+	const getSelectedMeasures = useCallback(
+		function getSelectedMeasures() {
+			if (!score || !selection) {
+				return [];
 			}
-		});
-		return measures;
-	}, [score, selection]);
+			const measures: MeasureModel[] = [];
+			selection.forEach((item) => {
+				const m = Score.findMeasure(score, item.measureId);
+				if (m) {
+					measures.push(m);
+				}
+			});
+			return measures;
+		},
+		[score, selection],
+	);
 
 	useEffect(() => {
 		setCanAdd(false);
@@ -131,33 +134,42 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		}
 	}, [selection, score]);
 
-	const handleClickAdd = useCallback(() => {
-		const measures: MeasureModel[] = getSelectedMeasures();
-		if (!score || measures.length !== 1) {
-			return;
-		}
-		Music.addMeasure(score.music, measures[0].id);
-		onUpdateScore();
-	}, [score, getSelectedMeasures, onUpdateScore]);
+	const handleClickAdd = useCallback(
+		function handleClickAdd() {
+			const measures: MeasureModel[] = getSelectedMeasures();
+			if (!score || measures.length !== 1) {
+				return;
+			}
+			Music.addMeasure(score.music, measures[0].id);
+			onUpdateScore();
+		},
+		[score, getSelectedMeasures, onUpdateScore],
+	);
 
-	const handleClickDuplicate = useCallback(() => {
-		const measures: MeasureModel[] = getSelectedMeasures();
-		if (!score || measures.length !== 1) {
-			return;
-		}
-		Music.duplicateMeasure(score.music, measures[0].id);
-		onUpdateScore();
-	}, [score, getSelectedMeasures, onUpdateScore]);
+	const handleClickDuplicate = useCallback(
+		function handleClickDuplicate() {
+			const measures: MeasureModel[] = getSelectedMeasures();
+			if (!score || measures.length !== 1) {
+				return;
+			}
+			Music.duplicateMeasure(score.music, measures[0].id);
+			onUpdateScore();
+		},
+		[score, getSelectedMeasures, onUpdateScore],
+	);
 
-	const handleClickDelete = useCallback(() => {
-		const measures: MeasureModel[] = getSelectedMeasures();
-		if (!score || measures.length !== 1) {
-			return;
-		}
-		Music.deleteMeasure(score.music, measures[0].id);
-		resetSelection();
-		onUpdateScore();
-	}, [score, getSelectedMeasures, resetSelection, onUpdateScore]);
+	const handleClickDelete = useCallback(
+		function handleClickDelete() {
+			const measures: MeasureModel[] = getSelectedMeasures();
+			if (!score || measures.length !== 1) {
+				return;
+			}
+			Music.deleteMeasure(score.music, measures[0].id);
+			resetSelection();
+			onUpdateScore();
+		},
+		[score, getSelectedMeasures, resetSelection, onUpdateScore],
+	);
 
 	return (
 		<div id="MeasurePanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
