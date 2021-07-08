@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -11,7 +11,6 @@ import { Music } from '../../model/music';
 import { Score } from '../../model/score';
 import { selectionAtom } from '../../atoms/selectionAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
-import { useDraggablePanel } from '../../components/useDraggablePanel';
 import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface MeasurePanelProps {
@@ -75,13 +74,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const [canDuplicate, setCanDuplicate] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 
-	const { draggedItem, position, setPosition } = useDraggablePanel();
-	const handleDragMove = useCallback(
-		(deltaX: number, deltaY: number) => {
-			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-		},
-		[setPosition],
-	);
+	const draggablePanelContentRef = useRef(null);
 
 	const getSelectedMeasures = useCallback(() => {
 		if (!score || !selection) {
@@ -142,12 +135,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	}, [score, getSelectedMeasures, resetSelection, onUpdateScore]);
 
 	return (
-		<Box
-			id="MeasurePanel"
-			className={classes.root}
-			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.MEASURE_PANEL ? 100 : 20 }}
-		>
-			<DraggablePanel title="Measure" draggedItemType={DraggedItemType.MEASURE_PANEL} onDragMove={handleDragMove} />
+		<div id="MeasurePanel" ref={draggablePanelContentRef} className={classes.root}>
+			<DraggablePanel title="Measure" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.MEASURE_PANEL} initialZIndex={20} />
 			<Box className={classes.content}>
 				<Box className={classes.buttonsRow}>
 					<Box className={classes.panel}>
@@ -165,6 +154,6 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 					</Box>
 				</Box>
 			</Box>
-		</Box>
+		</div>
 	);
 };

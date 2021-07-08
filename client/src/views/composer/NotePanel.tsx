@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -14,7 +14,6 @@ import { Measure } from '../../model/measure';
 import { Part } from '../../model/part';
 import { selectionAtom } from '../../atoms/selectionAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
-import { useDraggablePanel } from '../../components/useDraggablePanel';
 import { DraggablePanel } from '../../components/DraggablePanel';
 
 export interface NotePanelProps {
@@ -26,6 +25,8 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
+			left: 0,
+			top: 0,
 			width: 501,
 			backgroundColor: '#222',
 			borderRadius: 4,
@@ -115,13 +116,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const [canDelete, setCanDelete] = useState(false);
 	const [curDuration, setCurDuration] = useState(0);
 
-	const { draggedItem, position, setPosition } = useDraggablePanel();
-	const handleDragMove = useCallback(
-		(deltaX: number, deltaY: number) => {
-			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-		},
-		[setPosition],
-	);
+	const draggablePanelContentRef = useRef(null);
 
 	const noteDurationOptions = useMemo(
 		() => [
@@ -273,8 +268,8 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	);
 
 	return (
-		<Box id="NotePanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.NOTE_PANEL ? 100 : 30 }}>
-			<DraggablePanel title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} onDragMove={handleDragMove} />
+		<div id="NotePanel" ref={draggablePanelContentRef} className={classes.root}>
+			<DraggablePanel contentRef={draggablePanelContentRef} title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} initialZIndex={30} />
 			<Box className={classes.content}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
 					{noteDurationOptions.map((ndo) => (
@@ -323,6 +318,6 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 					</Box>
 				</Box>
 			</Box>
-		</Box>
+		</div>
 	);
 };

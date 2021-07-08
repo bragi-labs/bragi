@@ -1,21 +1,20 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, MutableRefObject } from 'react';
 import { useResetRecoilState, useSetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
 import { DraggedItemType, draggedItemAtom } from '../atoms/draggedItemAtom';
 
 export interface DraggablePanelProps {
+	contentRef: MutableRefObject<HTMLDivElement | null>;
 	title: string;
 	draggedItemType: DraggedItemType;
-	onDragMove?: (deltaX: number, deltaY: number) => void;
+	initialZIndex: number;
 }
 
-export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }: DraggablePanelProps) => {
+export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, initialZIndex }: DraggablePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			backgroundColor: '#222',
-			//backgroundImage: 'linear-gradient(135deg, #fa3 25%, #333 25%, #333 50%, #fa3 50%, #fa3 75%, #333 75%, #333 100%)',
-			//backgroundSize: '56px 56px',
 			padding: '2px 8px 6px 8px',
 			userSelect: 'none',
 			cursor: 'move',
@@ -27,8 +26,9 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 	}));
 	const classes = useStyles();
 
+	const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+	const [contentPosition, setContentPosition] = useState({ x: 0, y: 0 });
 	const [isDragging, setIsDragging] = useState(false);
-	const [position, setPosition] = useState({ x: 0, y: 0 });
 	const panelRef = useRef<HTMLDivElement | null>(null);
 	const setDraggedItem = useSetRecoilState(draggedItemAtom);
 	const resetDraggedItem = useResetRecoilState(draggedItemAtom);
@@ -38,13 +38,16 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 			if (e.button !== 0) {
 				return;
 			}
-			setPosition({ x: e.clientX, y: e.clientY });
+			setMousePosition({ x: e.clientX, y: e.clientY });
 			setIsDragging(true);
 			setDraggedItem(draggedItemType);
 			e.stopPropagation();
 			e.preventDefault();
+			if (contentRef.current) {
+				contentRef.current.style.zIndex = '100';
+			}
 		},
-		[setDraggedItem, draggedItemType],
+		[setDraggedItem, draggedItemType, contentRef],
 	);
 
 	const handleMouseMove = useCallback(
@@ -52,19 +55,15 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 			if (!isDragging) {
 				return;
 			}
-			//const roundedX = Math.trunc(e.clientX / 4) * 4;
-			//const roundedY = Math.trunc(e.clientY / 4) * 4;
-			const deltaX = e.clientX - position.x;
-			const deltaY = e.clientY - position.y;
+			const deltaX = e.clientX - mousePosition.x;
+			const deltaY = e.clientY - mousePosition.y;
 			if (deltaX === 0 && deltaY === 0) {
 				return;
 			}
-			setPosition({ x: e.clientX, y: e.clientY });
-			if (onDragMove) {
-				onDragMove(deltaX, deltaY);
-			}
+			setMousePosition({ x: e.clientX, y: e.clientY });
+			setContentPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
 		},
-		[isDragging, position, onDragMove],
+		[isDragging, mousePosition],
 	);
 
 	const handleMouseUp = useCallback(
@@ -76,9 +75,19 @@ export const DraggablePanel = React.memo(({ title, draggedItemType, onDragMove }
 			resetDraggedItem();
 			e.stopPropagation();
 			e.preventDefault();
+			if (contentRef.current) {
+				contentRef.current.style.zIndex = initialZIndex.toString();
+			}
 		},
-		[isDragging, resetDraggedItem],
+		[isDragging, resetDraggedItem, contentRef, initialZIndex],
 	);
+
+	useEffect(() => {
+		if (contentRef.current) {
+			contentRef.current.style.left = `${contentPosition.x}px`;
+			contentRef.current.style.top = `${contentPosition.y}px`;
+		}
+	}, [contentRef, contentPosition]);
 
 	useEffect(() => {
 		const panel = panelRef.current;

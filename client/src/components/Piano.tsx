@@ -1,4 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -6,8 +7,7 @@ import { Typography } from '@material-ui/core';
 import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
-import { DraggedItemType } from '../atoms/draggedItemAtom';
-import { useDraggablePanel } from './useDraggablePanel';
+import { draggedItemAtom, DraggedItemType } from '../atoms/draggedItemAtom';
 import { DraggablePanel } from './DraggablePanel';
 
 export interface PianoProps {
@@ -19,6 +19,8 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
+			left: 0,
+			top: 0,
 			backgroundColor: '#222',
 			userSelect: 'none',
 			borderRadius: 8,
@@ -175,13 +177,8 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
 
-	const { draggedItem, position, setPosition } = useDraggablePanel();
-	const handleDragMove = useCallback(
-		(deltaX: number, deltaY: number) => {
-			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-		},
-		[setPosition],
-	);
+	const draggedItem = useRecoilValue(draggedItemAtom);
+	const draggablePanelContentRef = useRef(null);
 
 	useEffect(() => {
 		if (powerOn) {
@@ -275,12 +272,8 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	return (
-		<Box
-			id="Piano"
-			className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}
-			style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.PIANO_PANEL ? 100 : 40 }}
-		>
-			{smallPiano && <DraggablePanel title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} onDragMove={handleDragMove} />}
+		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}>
+			{smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={40} />}
 			<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
 				<Box className={classes.powerSwitch}>
 					<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />
@@ -348,6 +341,6 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 				))}
 				<Box className={`${classes.keyboardCover} ${powerOn ? classes.keyboardCoverOff : ''}`} />
 			</Box>
-		</Box>
+		</div>
 	);
 });

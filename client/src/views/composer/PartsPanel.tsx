@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -10,7 +10,6 @@ import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
-import { useDraggablePanel } from '../../components/useDraggablePanel';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { PartType } from '../../model/scoreModel';
 import { Music } from '../../model/music';
@@ -198,13 +197,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 
 	const selection = useRecoilValue(selectionAtom);
 
-	const { draggedItem, position, setPosition } = useDraggablePanel();
-	const handleDragMove = useCallback(
-		(deltaX: number, deltaY: number) => {
-			setPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
-		},
-		[setPosition],
-	);
+	const draggablePanelContentRef = useRef(null);
 
 	const handleClickUpOrDown = useCallback(
 		(e) => {
@@ -331,8 +324,8 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, [music, onUpdateScore]);
 
 	return (
-		<Box id="PartsPanel" className={classes.root} style={{ left: `${position.x}px`, top: `${position.y}px`, zIndex: draggedItem === DraggedItemType.PARTS_PANEL ? 100 : 10 }}>
-			<DraggablePanel title="Parts" draggedItemType={DraggedItemType.PARTS_PANEL} onDragMove={handleDragMove} />
+		<div id="PartsPanel" ref={draggablePanelContentRef} className={classes.root}>
+			<DraggablePanel title="Parts" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.PARTS_PANEL} initialZIndex={10} />
 			<Box className={classes.content}>
 				{music.partsInfo.map((pi, piIndex) => (
 					<Box key={pi.id} className={classes.partRow}>
@@ -436,6 +429,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 					</Box>
 				</Box>
 			</Box>
-		</Box>
+		</div>
 	);
 };
