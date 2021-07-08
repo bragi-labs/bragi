@@ -62,8 +62,12 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 			}
 			setMousePosition({ x: e.clientX, y: e.clientY });
 			setContentPosition((p) => ({ x: p.x + deltaX, y: p.y + deltaY }));
+			if (contentRef.current) {
+				contentRef.current.style.left = `${contentPosition.x + deltaX}px`;
+				contentRef.current.style.top = `${contentPosition.y + deltaY}px`;
+			}
 		},
-		[isDragging, mousePosition],
+		[isDragging, mousePosition, contentPosition, contentRef],
 	);
 
 	const handleMouseUp = useCallback(
@@ -82,27 +86,23 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 		[isDragging, resetDraggedItem, contentRef, initialZIndex],
 	);
 
-	useEffect(() => {
-		if (contentRef.current) {
-			contentRef.current.style.left = `${contentPosition.x}px`;
-			contentRef.current.style.top = `${contentPosition.y}px`;
-		}
-	}, [contentRef, contentPosition]);
-
-	useEffect(() => {
-		const panel = panelRef.current;
-		if (!panel) {
-			return;
-		}
-		panel.addEventListener('mousedown', handleMouseDown);
-		document.addEventListener('mousemove', handleMouseMove);
-		document.addEventListener('mouseup', handleMouseUp);
-		return () => {
-			panel.removeEventListener('mousedown', handleMouseDown);
-			document.removeEventListener('mousemove', handleMouseMove);
-			document.removeEventListener('mouseup', handleMouseUp);
-		};
-	}, [handleMouseDown, handleMouseMove, handleMouseUp]);
+	useEffect(
+		function setUpDragMouseEvents() {
+			const panel = panelRef.current;
+			if (!panel) {
+				return;
+			}
+			panel.addEventListener('mousedown', handleMouseDown);
+			document.addEventListener('mousemove', handleMouseMove);
+			document.addEventListener('mouseup', handleMouseUp);
+			return () => {
+				panel.removeEventListener('mousedown', handleMouseDown);
+				document.removeEventListener('mousemove', handleMouseMove);
+				document.removeEventListener('mouseup', handleMouseUp);
+			};
+		},
+		[handleMouseDown, handleMouseMove, handleMouseUp],
+	);
 
 	return (
 		<div id="DraggablePanel" ref={panelRef} className={classes.root}>

@@ -206,13 +206,16 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 		setIsExpanded(false);
 	}, []);
 
-	useEffect(() => {
-		if (powerOn) {
-			setSynth(new Tone.PolySynth().toDestination());
-		} else {
-			setSynth(null);
-		}
-	}, [powerOn]);
+	useEffect(
+		function setPianoSynth() {
+			if (powerOn) {
+				setSynth(new Tone.PolySynth().toDestination());
+			} else {
+				setSynth(null);
+			}
+		},
+		[powerOn],
+	);
 
 	const whiteKeys = MusicalHelper.getWhiteIndices().map((i, index) => {
 		return {

@@ -157,59 +157,62 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		[],
 	);
 
-	useEffect(() => {
-		setCurDuration(0);
-		setCanPitchDown(false);
-		setCanPitchUp(false);
-		setCanOctaveDown(false);
-		setCanOctaveUp(false);
-		setCanDelete(false);
-		if (!score || !selection || selection.length === 0) {
-			return;
-		}
-		let m;
-		let n;
-		let d;
-		if (selection.length === 1 && selection[0].noteId) {
-			n = Music.findNote(score.music, selection[0].noteId);
-			if (n) {
-				setCurDuration(n.durationDivs);
+	useEffect(
+		function enableNotePanelActions() {
+			setCurDuration(0);
+			setCanPitchDown(false);
+			setCanPitchUp(false);
+			setCanOctaveDown(false);
+			setCanOctaveUp(false);
+			setCanDelete(false);
+			if (!score || !selection || selection.length === 0) {
+				return;
 			}
-		}
-		let noteDurationsOK: any = {};
-		noteDurationOptions.forEach((o) => {
-			noteDurationsOK[o.durationDivs] = selection.every((item) => {
-				m = item.measureId && Music.findMeasure(score.music, item.measureId);
-				if (!m) return false;
-				return Measure.canChangeNoteDuration(m, item.partId, item.noteId, o.durationDivs);
+			let m;
+			let n;
+			let d;
+			if (selection.length === 1 && selection[0].noteId) {
+				n = Music.findNote(score.music, selection[0].noteId);
+				if (n) {
+					setCurDuration(n.durationDivs);
+				}
+			}
+			let noteDurationsOK: any = {};
+			noteDurationOptions.forEach((o) => {
+				noteDurationsOK[o.durationDivs] = selection.every((item) => {
+					m = item.measureId && Music.findMeasure(score.music, item.measureId);
+					if (!m) return false;
+					return Measure.canChangeNoteDuration(m, item.partId, item.noteId, o.durationDivs);
+				});
 			});
-		});
-		setCanChangeDuration(noteDurationsOK);
-		setCanPitchDown(true);
-		setCanPitchUp(true);
-		setCanOctaveDown(true);
-		setCanOctaveUp(true);
-		setCanDelete(true);
-		selection.forEach((item) => {
-			n = item.noteId && Music.findNote(score.music, item.noteId);
-			d = n ? MusicalHelper.parseNote(n.fullName) : null;
-			if (!n || n.isRest || !d || (d.step === 'C' && !d.alter && d.octave === MusicalHelper.minOctave)) {
-				setCanPitchDown(false);
-			}
-			if (!n || n.isRest || !d || (d.step === 'B' && !d.alter && d.octave === MusicalHelper.maxOctave)) {
-				setCanPitchUp(false);
-			}
-			if (!n || n.isRest || !d || d.octave === MusicalHelper.minOctave) {
-				setCanOctaveDown(false);
-			}
-			if (!n || n.isRest || !d || d.octave === MusicalHelper.maxOctave) {
-				setCanOctaveUp(false);
-			}
-			if (!n || n.isRest) {
-				setCanDelete(false);
-			}
-		});
-	}, [score, selection, noteDurationOptions]);
+			setCanChangeDuration(noteDurationsOK);
+			setCanPitchDown(true);
+			setCanPitchUp(true);
+			setCanOctaveDown(true);
+			setCanOctaveUp(true);
+			setCanDelete(true);
+			selection.forEach((item) => {
+				n = item.noteId && Music.findNote(score.music, item.noteId);
+				d = n ? MusicalHelper.parseNote(n.fullName) : null;
+				if (!n || n.isRest || !d || (d.step === 'C' && !d.alter && d.octave === MusicalHelper.minOctave)) {
+					setCanPitchDown(false);
+				}
+				if (!n || n.isRest || !d || (d.step === 'B' && !d.alter && d.octave === MusicalHelper.maxOctave)) {
+					setCanPitchUp(false);
+				}
+				if (!n || n.isRest || !d || d.octave === MusicalHelper.minOctave) {
+					setCanOctaveDown(false);
+				}
+				if (!n || n.isRest || !d || d.octave === MusicalHelper.maxOctave) {
+					setCanOctaveUp(false);
+				}
+				if (!n || n.isRest) {
+					setCanDelete(false);
+				}
+			});
+		},
+		[score, selection, noteDurationOptions],
+	);
 
 	const getSelectedNotes = useCallback(
 		function getSelectedNotes(includeRests: boolean) {

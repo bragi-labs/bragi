@@ -39,16 +39,19 @@ export const VideoLoop = React.memo(({ videoName, playbackSpeed = 1, blurPixels 
 
 	const videoRef = useRef<HTMLVideoElement>(null);
 
-	useEffect(() => {
-		if (videoRef && videoRef.current) {
-			if (playbackSpeed < 1) {
-				videoRef.current.playbackRate = playbackSpeed;
+	useEffect(
+		function initVideoLoop() {
+			if (videoRef && videoRef.current) {
+				if (playbackSpeed < 1) {
+					videoRef.current.playbackRate = playbackSpeed;
+				}
+				if (blurPixels > 0) {
+					videoRef.current.style.filter = `blur(${blurPixels}px`;
+				}
 			}
-			if (blurPixels > 0) {
-				videoRef.current.style.filter = `blur(${blurPixels}px`;
-			}
-		}
-	}, [playbackSpeed, blurPixels]);
+		},
+		[playbackSpeed, blurPixels],
+	);
 
 	return (
 		<Box id="VideoLoop" className={`${classes.root} ${grayscale ? classes.grayscale : ''}`} style={{ top: top, minHeight: height }}>

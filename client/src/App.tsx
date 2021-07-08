@@ -11,7 +11,7 @@ import { MainPage } from './views/main/MainPage';
 function App(): ReactElement {
 	const [theme] = useState(createMyTheme());
 
-	useEffect(() => {
+	useEffect(function setDocumentTitle() {
 		document.title = AppDataHelper.appName;
 	}, []);
 

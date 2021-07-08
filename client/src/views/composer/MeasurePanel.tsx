@@ -118,21 +118,24 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		[score, selection],
 	);
 
-	useEffect(() => {
-		setCanAdd(false);
-		setCanDuplicate(false);
-		setCanDelete(false);
-		if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
-			const m = Score.findMeasure(score, selection[0].measureId);
-			if (!m) {
-				return;
+	useEffect(
+		function enableMeasurePanelActions() {
+			setCanAdd(false);
+			setCanDuplicate(false);
+			setCanDelete(false);
+			if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
+				const m = Score.findMeasure(score, selection[0].measureId);
+				if (!m) {
+					return;
+				}
+				const p = Score.findPart(score, selection[0].partId);
+				setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
+				setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
+				setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 			}
-			const p = Score.findPart(score, selection[0].partId);
-			setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
-			setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
-			setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
-		}
-	}, [selection, score]);
+		},
+		[selection, score],
+	);
 
 	const handleClickAdd = useCallback(
 		function handleClickAdd() {

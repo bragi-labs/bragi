@@ -20,15 +20,18 @@ export const SaveScore = React.memo(({ score, goSaveScore, onSaveScoreDone }: Sa
 
 	const downloadLinkRef = useRef<any>();
 
-	useEffect(() => {
-		if (goSaveScore) {
-			const downloadLink: HTMLAnchorElement = downloadLinkRef.current;
-			downloadLink.setAttribute('href', window.URL.createObjectURL(new Blob([JSON.stringify(score)], { type: 'application/json;charset=utf-8' })));
-			downloadLink.setAttribute('download', `${score?.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
-			downloadLink.click();
-			onSaveScoreDone();
-		}
-	}, [downloadLinkRef, score, goSaveScore, onSaveScoreDone]);
+	useEffect(
+		function doSaveScore() {
+			if (goSaveScore) {
+				const downloadLink: HTMLAnchorElement = downloadLinkRef.current;
+				downloadLink.setAttribute('href', window.URL.createObjectURL(new Blob([JSON.stringify(score)], { type: 'application/json;charset=utf-8' })));
+				downloadLink.setAttribute('download', `${score?.scoreInfo.scoreTitle || 'My Score'}.${AppDataHelper.scoreFileExt}`);
+				downloadLink.click();
+				onSaveScoreDone();
+			}
+		},
+		[downloadLinkRef, score, goSaveScore, onSaveScoreDone],
+	);
 
 	return (
 		<Box id="SaveScore" className={classes.root}>
