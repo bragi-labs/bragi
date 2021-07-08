@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -9,6 +9,8 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { PartType } from '../../model/scoreModel';
@@ -51,12 +53,28 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			padding: 4,
 			userSelect: 'none',
 		},
+		rootCollapsed: {
+			width: 200,
+			paddingBottom: 0,
+		},
+		expandCollapseButton: {
+			position: 'absolute',
+			top: 3,
+			right: 6,
+			cursor: 'pointer',
+			color: '#ccc',
+		},
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
 			gap: '1px 0',
 			backgroundColor: '#444',
 			padding: 24,
+		},
+		contentCollapsed: {
+			height: 0,
+			padding: 0,
+			overflow: 'hidden',
 		},
 		partRow: {
 			display: 'flex',
@@ -80,24 +98,6 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			transition: 'all 0.2s ease-in-out',
 			'&.selected': {
 				color: '#fa3',
-			},
-			'&.disabled': {
-				color: '#666',
-				pointerEvents: 'none',
-			},
-		},
-		buttonText: {
-			color: '#aaa',
-			transition: 'all 0.2s ease-in-out',
-			'&.selected': {
-				color: '#fa3',
-			},
-			marginLeft: 2,
-			'&:not(.disabled)': {
-				cursor: 'pointer',
-			},
-			'&:not(.disabled):hover': {
-				color: '#fff',
 			},
 			'&.disabled': {
 				color: '#666',
@@ -196,8 +196,15 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(selectionAtom);
-
 	const draggablePanelContentRef = useRef(null);
+
+	const [isExpanded, setIsExpanded] = useState(true);
+	const handleClickExpand = useCallback(function handleClickExpand() {
+		setIsExpanded(true);
+	}, []);
+	const handleClickCollapse = useCallback(function handleClickCollapse() {
+		setIsExpanded(false);
+	}, []);
 
 	const handleClickUpOrDown = useCallback(
 		(e) => {
@@ -324,9 +331,11 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	}, [music, onUpdateScore]);
 
 	return (
-		<div id="PartsPanel" ref={draggablePanelContentRef} className={classes.root}>
+		<div id="PartsPanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
 			<DraggablePanel title="Parts" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.PARTS_PANEL} initialZIndex={10} />
-			<Box className={classes.content}>
+			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
+			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
+			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				{music.partsInfo.map((pi, piIndex) => (
 					<Box key={pi.id} className={classes.partRow}>
 						<Box className={classes.partRowLeftSection}>

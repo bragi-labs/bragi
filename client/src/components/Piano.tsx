@@ -4,6 +4,8 @@ import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { MusicalHelper } from '../services/musicalHelper';
 import { SoundHelper } from '../services/soundHelper';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
@@ -30,9 +32,24 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 				borderRadius: 4,
 				padding: 4,
 			},
-			//opacity: 0.9,
+		},
+		rootCollapsed: {
+			width: 200,
+			paddingBottom: '0 !important',
+		},
+		expandCollapseButton: {
+			position: 'absolute',
+			top: 3,
+			right: 6,
+			cursor: 'pointer',
+			color: '#ccc',
 		},
 		content: {},
+		contentCollapsed: {
+			height: 0,
+			padding: 0,
+			overflow: 'hidden',
+		},
 		controls: {
 			display: 'flex',
 			alignItems: 'center',
@@ -181,6 +198,14 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const draggedItem = useRecoilValue(draggedItemAtom);
 	const draggablePanelContentRef = useRef(null);
 
+	const [isExpanded, setIsExpanded] = useState(true);
+	const handleClickExpand = useCallback(function handleClickExpand() {
+		setIsExpanded(true);
+	}, []);
+	const handleClickCollapse = useCallback(function handleClickCollapse() {
+		setIsExpanded(false);
+	}, []);
+
 	useEffect(() => {
 		if (powerOn) {
 			setSynth(new Tone.PolySynth().toDestination());
@@ -273,9 +298,11 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	);
 
 	return (
-		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${smallPiano ? 'small-piano' : ''}`}>
+		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed} ${smallPiano ? 'small-piano' : ''}`}>
 			{smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={40} />}
-			<Box className={classes.content}>
+			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
+			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
+			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
 					<Box className={classes.powerSwitch}>
 						<Box onClick={togglePower} className={`led ${powerOn ? 'led--on' : 'led--off'}`} />

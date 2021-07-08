@@ -6,6 +6,8 @@ import { IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { MeasureModel, PartType, ScoreModel } from '../../model/scoreModel';
 import { Music } from '../../model/music';
 import { Score } from '../../model/score';
@@ -28,12 +30,28 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			padding: 4,
 			userSelect: 'none',
 		},
+		rootCollapsed: {
+			width: 200,
+			paddingBottom: 0,
+		},
+		expandCollapseButton: {
+			position: 'absolute',
+			top: 3,
+			right: 6,
+			cursor: 'pointer',
+			color: '#ccc',
+		},
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto / 1fr',
 			gap: '12px 0',
 			backgroundColor: '#444',
 			padding: 24,
+		},
+		contentCollapsed: {
+			height: 0,
+			padding: 0,
+			overflow: 'hidden',
 		},
 		panel: {
 			display: 'inline-flex',
@@ -73,8 +91,15 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const [canAdd, setCanAdd] = useState(false);
 	const [canDuplicate, setCanDuplicate] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
-
 	const draggablePanelContentRef = useRef(null);
+
+	const [isExpanded, setIsExpanded] = useState(true);
+	const handleClickExpand = useCallback(function handleClickExpand() {
+		setIsExpanded(true);
+	}, []);
+	const handleClickCollapse = useCallback(function handleClickCollapse() {
+		setIsExpanded(false);
+	}, []);
 
 	const getSelectedMeasures = useCallback(() => {
 		if (!score || !selection) {
@@ -135,9 +160,11 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	}, [score, getSelectedMeasures, resetSelection, onUpdateScore]);
 
 	return (
-		<div id="MeasurePanel" ref={draggablePanelContentRef} className={classes.root}>
+		<div id="MeasurePanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
 			<DraggablePanel title="Measure" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.MEASURE_PANEL} initialZIndex={20} />
-			<Box className={classes.content}>
+			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
+			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
+			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				<Box className={classes.buttonsRow}>
 					<Box className={classes.panel}>
 						<IconButton onClick={handleClickAdd} disabled={!canAdd} className={classes.actionButton}>

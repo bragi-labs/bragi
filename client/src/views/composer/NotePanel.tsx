@@ -6,6 +6,8 @@ import { Button, IconButton, Typography } from '@material-ui/core';
 import ArrowDropUpOutlinedIcon from '@material-ui/icons/ArrowDropUpOutlined';
 import ArrowDropDownOutlinedIcon from '@material-ui/icons/ArrowDropDownOutlined';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { SoundHelper } from '../../services/soundHelper';
 import { NoteModel, ScoreModel } from '../../model/scoreModel';
@@ -33,12 +35,28 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			padding: 4,
 			userSelect: 'none',
 		},
+		rootCollapsed: {
+			width: 200,
+			paddingBottom: 0,
+		},
+		expandCollapseButton: {
+			position: 'absolute',
+			top: 3,
+			right: 6,
+			cursor: 'pointer',
+			color: '#ccc',
+		},
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
 			gap: '12px 0',
 			backgroundColor: '#444',
 			padding: 24,
+		},
+		contentCollapsed: {
+			height: 0,
+			padding: 0,
+			overflow: 'hidden',
 		},
 		panel: {
 			display: 'inline-flex',
@@ -115,8 +133,15 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	const [canOctaveUp, setCanOctaveUp] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 	const [curDuration, setCurDuration] = useState(0);
-
 	const draggablePanelContentRef = useRef(null);
+
+	const [isExpanded, setIsExpanded] = useState(true);
+	const handleClickExpand = useCallback(function handleClickExpand() {
+		setIsExpanded(true);
+	}, []);
+	const handleClickCollapse = useCallback(function handleClickCollapse() {
+		setIsExpanded(false);
+	}, []);
 
 	const noteDurationOptions = useMemo(
 		() => [
@@ -268,9 +293,11 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 	);
 
 	return (
-		<div id="NotePanel" ref={draggablePanelContentRef} className={classes.root}>
+		<div id="NotePanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
 			<DraggablePanel contentRef={draggablePanelContentRef} title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} initialZIndex={30} />
-			<Box className={classes.content}>
+			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
+			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
+			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				<Box className={`${classes.panel} ${classes.panelDuration}`}>
 					{noteDurationOptions.map((ndo) => (
 						<Button
