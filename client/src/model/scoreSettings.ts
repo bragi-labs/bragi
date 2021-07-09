@@ -7,7 +7,7 @@ export class ScoreSettings implements ScoreSettingsModel {
 
 	static ranges = {
 		musicWidth: { min: 400, max: 718, default: 718 },
-		rowGap: { min: 16, max: 80, default: 36 },
+		rowGap: { min: 16, max: 160, default: 36 },
 		quarterSize: { min: 20, max: 44, default: 36 },
 	};
 
