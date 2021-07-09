@@ -16,11 +16,13 @@ export interface MusicUIProps {
 
 export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const useStyles = makeStyles(() => ({
-		root: {},
-		measures: {
+		root: {
+			position: 'relative',
+		},
+		row: {
 			position: 'relative',
 			display: 'flex',
-			flexWrap: 'wrap',
+			pageBreakInside: 'avoid',
 		},
 		measure: {
 			position: 'relative',
@@ -40,53 +42,6 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			fontSize: '14px',
 			fontWeight: 700,
 		},
-		part: {
-			display: 'flex',
-		},
-		partSpaceAbove: {
-			marginTop: 11,
-		},
-		note: {
-			position: 'relative',
-			fontSize: 10,
-			border: '1px solid #eee',
-			'&.selected': {
-				backgroundColor: '#ddf',
-				border: '1px solid #3f51b5',
-			},
-			'@media print': {
-				backgroundColor: 'transparent !important',
-				border: '1px solid #ddd !important',
-			},
-		},
-		fnSymbolContainer: {
-			position: 'absolute',
-			left: 0,
-			top: 0,
-		},
-		fnSymbol: {
-			position: 'absolute',
-		},
-		longNoteTail: {
-			position: 'absolute',
-		},
-		noteName: {
-			position: 'absolute',
-			fontFamily: 'Arial, sans-serif',
-			color: '#fff',
-		},
-		alter: {
-			position: 'absolute',
-			top: -16,
-			transformOrigin: 'center',
-			'&.sharp': {
-				transform: 'rotate(-45deg)',
-			},
-			'&.flat': {
-				transform: 'rotate(-135deg)',
-			},
-			zIndex: -1,
-		},
 	}));
 	const classes = useStyles();
 
@@ -96,13 +51,11 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
 		const spaceForMeasurementNumbers = 20;
 		const numberOfMeasuresPerRow = Math.trunc((scoreSettings.musicWidth - spaceForMeasurementNumbers) / measureWidth);
-		const pickupMeasureLeftOver = measureWidth * (numberOfMeasuresPerRow - 1);
-		const leftOver = (scoreSettings.musicWidth - -spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftGutter = (scoreSettings.musicWidth - -spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidth,
-			pickupMeasureLeftOver,
-			leftOver,
+			leftGutter,
 		};
 	}, [music.measures, scoreSettings.musicWidth, scoreSettings.quarterSize]);
 
@@ -113,35 +66,51 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music],
 	);
 
+	function getRows() {
+		if (music.measures.length === 0) {
+			return [];
+		}
+		const rows: number[][] = [];
+		let row: number[] = [];
+		music.measures.forEach((m, i) => {
+			row.push(i);
+			if (m.isPickup || m.number % sizeVars.numberOfMeasuresPerRow === 0) {
+				rows.push(row);
+				row = [];
+			}
+		});
+		return rows;
+	}
+
 	return (
 		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
-			<Box className={classes.measures} style={{ marginLeft: `${sizeVars.leftOver}px` }}>
-				{music.measures.map((m) => (
-					<Box key={m.id} style={{ marginRight: `${m.isPickup ? sizeVars.pickupMeasureLeftOver : 0}px` }}>
-						<Box className={classes.measure} style={{ width: `${sizeVars.measureWidth}px`, marginBottom: `${scoreSettings.rowGap}px` }}>
-							{scoreSettings.measureNumbers && m.number % sizeVars.numberOfMeasuresPerRow === 1 && (
+			{getRows().map((row, rIndex) => (
+				<Box key={rIndex} className={classes.row} style={{ marginLeft: `${sizeVars.leftGutter}px` }}>
+					{row.map((mIndex) => (
+						<Box key={`${rIndex}-${mIndex}`} className={classes.measure} style={{ marginTop: `${rIndex === 0 ? 0 : scoreSettings.rowGap}px` }}>
+							{scoreSettings.measureNumbers && music.measures[mIndex].number % sizeVars.numberOfMeasuresPerRow === 1 && (
 								<Box className={classes.measureNumberAnchor}>
 									<Box className={classes.measureNumber}>
 										<Typography variant="body2" className={classes.measureNumberText}>
-											{m.number}
+											{music.measures[mIndex].number}
 										</Typography>
 									</Box>
 								</Box>
 							)}
-							{m.parts.map((p, pIndex) => (
-								<Box key={p.id}>
+							{music.measures[mIndex].parts.map((p, pIndex) => (
+								<Box key={`${rIndex}-${mIndex}-${p.id}`} style={{ width: `${sizeVars.measureWidth}px` }}>
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.FN_LVL_1 && (
 										<MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
 									)}
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.TEXT && (
-										<TextPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isLastPart={pIndex === m.parts.length - 1} />
+										<TextPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isLastPart={pIndex === music.measures[mIndex].parts.length - 1} />
 									)}
 								</Box>
 							))}
 						</Box>
-					</Box>
-				))}
-			</Box>
+					))}
+				</Box>
+			))}
 		</Box>
 	);
 };

@@ -98,7 +98,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 						</Modal>
 						<StageHeaderUI scoreInfo={score.scoreInfo} onUpdateScore={handleScoreUpdated} />
 						<MusicUI music={score.music} scoreSettings={score.scoreSettings} />
-						<StageFooterUI scoreInfo={score.scoreInfo} />
+						<StageFooterUI scoreInfo={score.scoreInfo} scoreSettings={score.scoreSettings} />
 					</Box>
 				</Box>
 			)}
