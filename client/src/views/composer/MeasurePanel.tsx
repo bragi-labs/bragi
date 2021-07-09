@@ -24,7 +24,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
-			width: 501,
+			width: 493,
 			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
@@ -46,7 +46,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			gridTemplate: 'auto / 1fr',
 			gap: '12px 0',
 			backgroundColor: '#444',
-			padding: 24,
+			padding: 8,
 		},
 		contentCollapsed: {
 			height: 0,

@@ -26,9 +26,8 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			backgroundColor: '#222',
 			userSelect: 'none',
 			borderRadius: 8,
-			padding: 24,
+			padding: 20,
 			'&.small-piano': {
-				backgroundColor: '#222',
 				borderRadius: 4,
 				padding: 4,
 			},
@@ -54,13 +53,15 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			display: 'flex',
 			alignItems: 'center',
 			height: 24,
+			padding: '0 6px',
 			borderTopLeftRadius: 4,
 			borderTopRightRadius: 4,
 			backgroundColor: '#444',
-			padding: '0 6px',
-			margin: '8px 8px 4px 8px',
+			margin: '8px 8px 6px 8px',
 			'&.small-piano': {
-				margin: '0 8px 4px 8px',
+				borderTopLeftRadius: 0,
+				borderTopRightRadius: 0,
+				margin: '0 4px 4px 4px',
 			},
 		},
 		powerSwitch: {
@@ -106,6 +107,9 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			position: 'relative',
 			display: 'flex',
 			padding: '0 8px 8px 8px',
+			'&.small-piano': {
+				padding: '0 4px 4px 4px',
+			},
 		},
 		octave: {
 			position: 'relative',
@@ -302,9 +306,9 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 
 	return (
 		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed} ${smallPiano ? 'small-piano' : ''}`}>
-			{smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={40} />}
-			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
-			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
+			{smallPiano && smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={40} />}
+			{!isExpanded && smallPiano && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
+			{isExpanded && smallPiano && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				<Box className={`${classes.controls} ${smallPiano ? 'small-piano' : ''}`}>
 					<Box className={classes.powerSwitch}>
@@ -332,7 +336,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 						<Typography className={classes.octaveSwitchesText}>Octaves</Typography>
 					</Box>
 				</Box>
-				<Box className={classes.keyboard}>
+				<Box className={`${classes.keyboard} ${smallPiano ? 'small-piano' : ''}`}>
 					{octaves.map((oct, octIndex) => (
 						<Box key={octIndex} className={`${classes.octave} ${oct ? '' : classes.hideContent}`}>
 							{whiteKeys.map((wk) => (

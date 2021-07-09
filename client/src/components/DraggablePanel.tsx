@@ -15,7 +15,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 	const useStyles = makeStyles(() => ({
 		root: {
 			backgroundColor: '#222',
-			padding: '0 8px 4px 8px',
+			padding: '0 4px 4px 4px',
 			userSelect: 'none',
 			cursor: 'move',
 		},

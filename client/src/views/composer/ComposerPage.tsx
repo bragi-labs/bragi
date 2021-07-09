@@ -44,7 +44,7 @@ export const ComposerPage = () => {
 		notePanelAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 196,
+			top: 181,
 			'@media print': {
 				display: 'none',
 			},
@@ -52,7 +52,7 @@ export const ComposerPage = () => {
 		measurePanelAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 380,
+			top: 319,
 			'@media print': {
 				display: 'none',
 			},
@@ -60,7 +60,7 @@ export const ComposerPage = () => {
 		partsPanelAnchor: {
 			position: 'absolute',
 			left: 800,
-			top: 520,
+			top: 416,
 			'@media print': {
 				display: 'none',
 			},

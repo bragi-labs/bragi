@@ -47,7 +47,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
-			width: 501,
+			width: 493,
 			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
@@ -69,7 +69,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			gridTemplate: 'auto auto / 1fr',
 			gap: '1px 0',
 			backgroundColor: '#444',
-			padding: 24,
+			padding: 8,
 		},
 		contentCollapsed: {
 			height: 0,
@@ -80,7 +80,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-			height: 32,
+			height: 28,
 			backgroundColor: '#333',
 			padding: '0 4px',
 		},

@@ -29,7 +29,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			position: 'absolute',
 			left: 0,
 			top: 0,
-			width: 501,
+			width: 493,
 			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
@@ -49,9 +49,9 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 		content: {
 			display: 'grid',
 			gridTemplate: 'auto auto / 1fr',
-			gap: '12px 0',
+			gap: '8px 0',
 			backgroundColor: '#444',
-			padding: 24,
+			padding: 8,
 		},
 		contentCollapsed: {
 			height: 0,
