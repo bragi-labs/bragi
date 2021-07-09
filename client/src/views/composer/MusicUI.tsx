@@ -48,10 +48,10 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
-		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType + 2;
+		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType;
 		const spaceForMeasurementNumbers = 20;
 		const numberOfMeasuresPerRow = Math.trunc((scoreSettings.musicWidth - spaceForMeasurementNumbers) / measureWidth);
-		const leftGutter = (scoreSettings.musicWidth - -spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftGutter = (scoreSettings.musicWidth - spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
 			measureWidth,
