@@ -23,7 +23,7 @@ export const MelodyPartUI = ({ partInfo, part, isFirstPart, scoreSettings }: Mel
 			display: 'flex',
 		},
 		partSpaceAbove: {
-			marginTop: 11,
+			marginTop: 10,
 		},
 		note: {
 			position: 'relative',
