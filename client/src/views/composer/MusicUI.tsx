@@ -48,13 +48,14 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
-		const measureWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType;
+		const partWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType;
+		const measureWidth = partWidth + 2;
 		const spaceForMeasurementNumbers = 20;
 		const numberOfMeasuresPerRow = Math.trunc((scoreSettings.musicWidth - spaceForMeasurementNumbers) / measureWidth);
-		const leftGutter = (scoreSettings.musicWidth - spaceForMeasurementNumbers - measureWidth * numberOfMeasuresPerRow) / 2;
+		const leftGutter = (scoreSettings.musicWidth - measureWidth * numberOfMeasuresPerRow) / 2;
 		return {
 			numberOfMeasuresPerRow,
-			measureWidth,
+			partWidth,
 			leftGutter,
 		};
 	}, [music.measures, scoreSettings.musicWidth, scoreSettings.quarterSize]);
@@ -98,7 +99,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 								</Box>
 							)}
 							{music.measures[mIndex].parts.map((p, pIndex) => (
-								<Box key={`${rIndex}-${mIndex}-${p.id}`} style={{ width: `${sizeVars.measureWidth}px` }}>
+								<Box key={`${rIndex}-${mIndex}-${p.id}`} style={{ width: `${sizeVars.partWidth}px` }}>
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.FN_LVL_1 && (
 										<MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
 									)}
