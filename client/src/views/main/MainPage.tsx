@@ -38,9 +38,9 @@ export const MainPage = React.memo(() => {
 			height: 100,
 			backgroundColor: '#666',
 			//backgroundImage: 'linear-gradient(135deg, #c90 25%, #a60 25%, #a60 50%, #c90 50%, #c90 75%, #a60 75%, #a60 100%)',
-			backgroundImage: 'linear-gradient(135deg, #999 25%, #666 25%, #666 50%, #999 50%, #999 75%, #666 75%, #666 100%)',
-			backgroundSize: '8px 8px',
-			opacity: 0.3,
+			//backgroundImage: 'linear-gradient(135deg, #999 25%, #666 25%, #666 50%, #999 50%, #999 75%, #666 75%, #666 100%)',
+			//backgroundSize: '8px 8px',
+			opacity: 0.25,
 			borderBottom: '1px solid #000',
 			'@media print': {
 				display: 'none',
