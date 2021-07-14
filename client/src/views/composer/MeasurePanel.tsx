@@ -24,7 +24,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
-			width: 493,
+			width: 239,
 			backgroundColor: '#222',
 			borderRadius: 4,
 			padding: 4,
@@ -176,7 +176,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 
 	return (
 		<div id="MeasurePanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
-			<DraggablePanel title="Measure" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.MEASURE_PANEL} initialZIndex={20} />
+			<DraggablePanel title="Measure" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.MEASURE_PANEL} initialZIndex={30} />
 			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
 			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>

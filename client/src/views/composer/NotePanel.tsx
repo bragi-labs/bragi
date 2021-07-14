@@ -300,7 +300,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 
 	return (
 		<div id="NotePanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
-			<DraggablePanel contentRef={draggablePanelContentRef} title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} initialZIndex={30} />
+			<DraggablePanel contentRef={draggablePanelContentRef} title="Note" draggedItemType={DraggedItemType.NOTE_PANEL} initialZIndex={40} />
 			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
 			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
