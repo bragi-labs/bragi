@@ -58,7 +58,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			partWidth,
 			leftGutter,
 		};
-	}, [music.measures, scoreSettings.musicWidth, scoreSettings.quarterSize]);
+	}, [music, scoreSettings.musicWidth, scoreSettings.quarterSize]);
 
 	const getPartInfo = useCallback(
 		function getPartInfo(partInfoId: string) {
