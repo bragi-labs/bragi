@@ -83,6 +83,9 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 				fontSize: 14,
 				padding: 0,
 			},
+			'& .MuiInput-underline:after': {
+				borderBottomColor: '#fff',
+			},
 		},
 		panelText: {
 			marginLeft: 8,
