@@ -12,6 +12,7 @@ import { NotePanel } from './NotePanel';
 import { MeasurePanel } from './MeasurePanel';
 import { PartsPanel } from './PartsPanel';
 import { MusicalHelper } from '../../services/musicalHelper';
+import { PlayerPanel } from './PlayerPanel';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -52,6 +53,14 @@ export const ComposerPage = () => {
 		measurePanelAnchor: {
 			position: 'absolute',
 			left: 800,
+			top: 319,
+			'@media print': {
+				display: 'none',
+			},
+		},
+		playerPanelAnchor: {
+			position: 'absolute',
+			left: 1054,
 			top: 319,
 			'@media print': {
 				display: 'none',
@@ -126,6 +135,9 @@ export const ComposerPage = () => {
 					</Box>
 					<Box className={classes.measurePanelAnchor}>
 						<MeasurePanel score={score} onUpdateScore={handleScoreUpdated} />
+					</Box>
+					<Box className={classes.playerPanelAnchor}>
+						<PlayerPanel score={score} />
 					</Box>
 					<Box className={classes.partsPanelAnchor}>
 						<PartsPanel music={score.music} onUpdateScore={handleScoreUpdated} />
