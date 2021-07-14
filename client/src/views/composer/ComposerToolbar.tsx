@@ -8,6 +8,7 @@ import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { AppDataHelper } from '../../services/appDataHelper';
+import { SoundHelper } from '../../services/soundHelper';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { NewScoreDialog } from './NewScoreDialog';
@@ -88,6 +89,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 	}, []);
 
 	const handleCloseNewScoreDialog = useCallback(function handleCloseNewScoreDialog() {
+		SoundHelper.start();
 		setNewScoreDialogVisible(false);
 	}, []);
 
@@ -103,6 +105,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 
 	const handleClickOpen = useCallback(
 		function handleClickOpen() {
+			SoundHelper.start();
 			const openInput: HTMLInputElement = openInputRef.current;
 			openInput.click();
 		},
@@ -141,6 +144,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 
 	const handleClickExample = useCallback(
 		function handleClickExample() {
+			SoundHelper.start();
 			const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
 			onChangeScore(openedScore);
 		},

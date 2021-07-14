@@ -1,27 +1,22 @@
 import * as Tone from 'tone';
-import { Synth } from 'tone';
+import { PolySynth, Synth } from 'tone';
 
 export class SoundHelper {
-	static synth = new Tone.PolySynth().toDestination();
+	static synth: PolySynth = new Tone.PolySynth().toDestination();
+
+	static getSynth(synth?: Synth) {
+		return synth || SoundHelper.synth || new Tone.PolySynth().toDestination();
+	}
+	static start() {
+		Tone.start().then(() => {});
+	}
 	static playShortNote(noteFullName: string, synth?: Synth) {
-		if (synth) {
-			synth.triggerAttackRelease(noteFullName, 0.1);
-		} else {
-			SoundHelper.synth.triggerAttackRelease(noteFullName, 0.1);
-		}
+		SoundHelper.getSynth(synth).triggerAttackRelease(noteFullName, 0.1);
 	}
-	static startNote(noteFullName: string, synth: Synth) {
-		if (synth) {
-			synth.triggerAttack(noteFullName);
-		} else {
-			SoundHelper.synth.triggerAttack(noteFullName);
-		}
+	static startNote(noteFullName: string, synth?: Synth) {
+		SoundHelper.getSynth(synth).triggerAttack(noteFullName);
 	}
-	static stopNote(noteFullName: string, synth: Synth) {
-		if (synth) {
-			synth.triggerRelease(noteFullName);
-		} else {
-			SoundHelper.synth.triggerRelease(noteFullName);
-		}
+	static stopNote(noteFullName: string, synth?: Synth) {
+		SoundHelper.getSynth(synth).triggerRelease(noteFullName);
 	}
 }
