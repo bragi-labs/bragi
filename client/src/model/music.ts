@@ -152,4 +152,8 @@ export class Music implements MusicModel {
 		u.measures.splice(measureIndex, 1);
 		Music.renumberAllMeasures(u);
 	}
+
+	static getExampleMeasure(u: MusicModel) {
+		return u.measures[0].isPickup && u.measures.length > 1 ? u.measures[1] : u.measures[0];
+	}
 }

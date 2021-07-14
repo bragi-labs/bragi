@@ -46,7 +46,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	const classes = useStyles();
 
 	const sizeVars = useMemo(() => {
-		const exampleMeasure = music.measures[0].isPickup ? music.measures[1] : music.measures[0];
+		const exampleMeasure = Music.getExampleMeasure(music);
 		const timeData = MusicalHelper.parseTimeSignature(exampleMeasure.timeSignature);
 		const partWidth = (4 * scoreSettings.quarterSize * timeData.beats) / timeData.beatType;
 		const measureWidth = partWidth + 2;
