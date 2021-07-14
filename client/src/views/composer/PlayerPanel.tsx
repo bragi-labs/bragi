@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton, TextField, Typography } from '@material-ui/core';
@@ -8,7 +7,6 @@ import StopIcon from '@material-ui/icons/Stop';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { ScoreModel } from '../../model/scoreModel';
-import { selectionAtom } from '../../atoms/selectionAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { Music } from '../../model/music';
@@ -98,7 +96,6 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 	}));
 	const classes = useStyles();
 
-	const selection = useRecoilValue(selectionAtom);
 	const [isPlaying, setIsPLaying] = useState(false);
 	const [canPlay, setCanPlay] = useState(false);
 	const [canStop, setCanStop] = useState(false);
@@ -132,15 +129,20 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 
 	useEffect(
 		function enableMeasurePanelActions() {
-			setCanPlay(false);
-			//setCanPlay(!!score);
-			setCanStop(score && isPlaying);
 			if (score && score.music && score.music.measures) {
 				const exampleMeasure = Music.getExampleMeasure(score.music);
 				setTempoBpm(exampleMeasure.tempoBpm);
 			}
 		},
-		[score, selection, isPlaying],
+		[score],
+	);
+
+	useEffect(
+		function enableMeasurePanelActions() {
+			setCanPlay(!isPlaying);
+			setCanStop(isPlaying);
+		},
+		[tempoBpm, isPlaying],
 	);
 
 	const handleClickPlay = useCallback(function handleClickPlay() {
@@ -153,7 +155,7 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 
 	const handleChangeTempoBpm = useCallback(function handleChangeTempoBpm(e: any) {
 		setTempoBpm((curTempo) => {
-			return isNaN(e.target.value) ? curTempo : Number(e.target.value);
+			return isNaN(e.target.value) ? curTempo : Math.max(0, Math.min(999, Number(e.target.value)));
 		});
 	}, []);
 
