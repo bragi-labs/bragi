@@ -156,4 +156,33 @@ export class Music implements MusicModel {
 	static getExampleMeasure(u: MusicModel) {
 		return u.measures[0].isPickup && u.measures.length > 1 ? u.measures[1] : u.measures[0];
 	}
+
+	static getNotesForPlayer(u: MusicModel, startMeasureId: string): any[] {
+		if (u.measures.length === 0) {
+			return [];
+		}
+		const notes: any[] = [];
+		let ok = !startMeasureId;
+		let measureStartTime = 0;
+		u.measures.forEach((m) => {
+			ok = ok || m.id === startMeasureId;
+			if (ok) {
+				m.parts.forEach((p) => {
+					if (p.partType === PartType.FN_LVL_1 && Music.isPartVisible(u, p.partInfoId)) {
+						p.notes.forEach((n) => {
+							if (!n.isRest) {
+								notes.push({
+									fullName: n.fullName,
+									durationDivs: n.durationDivs,
+									divsFromFirstMeasureMusicStart: measureStartTime + n.startDiv,
+								});
+							}
+						});
+					}
+				});
+				measureStartTime += m.durationDivs;
+			}
+		});
+		return notes;
+	}
 }

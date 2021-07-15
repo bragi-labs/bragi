@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton, TextField, Typography } from '@material-ui/core';
@@ -6,16 +7,18 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import StopIcon from '@material-ui/icons/Stop';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { ScoreModel } from '../../model/scoreModel';
+import { MusicModel, MeasureModel } from '../../model/scoreModel';
+import { selectionAtom } from '../../atoms/selectionAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { Music } from '../../model/music';
+import { SoundHelper } from '../../services/soundHelper';
 
 export interface PlayerPanelProps {
-	score: ScoreModel;
+	music: MusicModel;
 }
 
-export const PlayerPanel = ({ score }: PlayerPanelProps) => {
+export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			position: 'absolute',
@@ -99,6 +102,7 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 	}));
 	const classes = useStyles();
 
+	const selection = useRecoilValue(selectionAtom);
 	const [isPlaying, setIsPLaying] = useState(false);
 	const [canPlay, setCanPlay] = useState(false);
 	const [canStop, setCanStop] = useState(false);
@@ -113,31 +117,40 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 		setIsExpanded(false);
 	}, []);
 
-	// const getSelectedMeasures = useCallback(
-	// 	function getSelectedMeasures() {
-	// 		if (!score || !selection) {
-	// 			return [];
-	// 		}
-	// 		const measures: MeasureModel[] = [];
-	// 		selection.forEach((item) => {
-	// 			const m = Score.findMeasure(score, item.measureId);
-	// 			if (m) {
-	// 				measures.push(m);
-	// 			}
-	// 		});
-	// 		return measures;
-	// 	},
-	// 	[score, selection],
-	// );
+	const getSelectedMeasures = useCallback(
+		function getSelectedMeasures() {
+			if (!selection) {
+				return [];
+			}
+			const measures: MeasureModel[] = [];
+			selection.forEach((item) => {
+				const m = Music.findMeasure(music, item.measureId);
+				if (m) {
+					measures.push(m);
+				}
+			});
+			return measures;
+		},
+		[music, selection],
+	);
+
+	const getNotesForPlayer = useCallback(
+		function getNotesForPlayer() {
+			const selectedMeasures: MeasureModel[] = getSelectedMeasures();
+			const startMeasureId = selectedMeasures.length > 0 ? selectedMeasures[0].id : '';
+			return Music.getNotesForPlayer(music, startMeasureId);
+		},
+		[music, getSelectedMeasures],
+	);
 
 	useEffect(
-		function enableMeasurePanelActions() {
-			if (score && score.music && score.music.measures) {
-				const exampleMeasure = Music.getExampleMeasure(score.music);
+		function setTempo() {
+			if (music.measures) {
+				const exampleMeasure = Music.getExampleMeasure(music);
 				setTempoBpm(exampleMeasure.tempoBpm);
 			}
 		},
-		[score],
+		[music],
 	);
 
 	useEffect(
@@ -145,15 +158,27 @@ export const PlayerPanel = ({ score }: PlayerPanelProps) => {
 			setCanPlay(!isPlaying);
 			setCanStop(isPlaying);
 		},
-		[tempoBpm, isPlaying],
+		[isPlaying],
 	);
 
-	const handleClickPlay = useCallback(function handleClickPlay() {
-		setIsPLaying(true);
-	}, []);
+	const handleClickPlay = useCallback(
+		function handleClickPlay() {
+			if (tempoBpm <= 0) {
+				return;
+			}
+			const notesForPlayer: any[] = getNotesForPlayer();
+			if (notesForPlayer.length === 0) {
+				return;
+			}
+			setIsPLaying(true);
+			SoundHelper.playMusic(notesForPlayer, tempoBpm);
+		},
+		[tempoBpm, getNotesForPlayer],
+	);
 
 	const handleClickStop = useCallback(function handleClickPlay() {
 		setIsPLaying(false);
+		SoundHelper.stopMusic();
 	}, []);
 
 	const handleChangeTempoBpm = useCallback(function handleChangeTempoBpm(e: any) {
