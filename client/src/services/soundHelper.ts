@@ -16,11 +16,16 @@ export class SoundHelper {
 		SoundHelper.synth.triggerRelease(noteFullName);
 	}
 	static playMusic(notesForPlayer: any[], tempoBpm: number) {
+		let durationSecs: number = 0;
+		let startTimeSecs: number = 0;
 		const q = 60 / 24 / tempoBpm;
 		const time = Tone.now();
 		notesForPlayer.forEach((n) => {
-			SoundHelper.synth.triggerAttackRelease(n.fullName, q * n.durationDivs, time + q * n.divsFromFirstMeasureMusicStart);
+			durationSecs = q * n.durationDivs;
+			startTimeSecs = q * n.divsFromFirstMeasureMusicStart;
+			SoundHelper.synth.triggerAttackRelease(n.fullName, durationSecs, time + startTimeSecs);
 		});
+		return startTimeSecs + durationSecs;
 	}
 	static stopMusic() {
 		const time = Tone.now();

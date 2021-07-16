@@ -57,7 +57,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 			height: 32,
 			borderRadius: 16,
 			backgroundColor: '#333',
-			padding: '0 16px 0 4px',
+			padding: '0 4px 0 4px',
 		},
 		buttonsRow: {
 			display: 'flex',
@@ -93,6 +93,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 		panelText: {
 			marginLeft: 8,
 			color: '#aaa',
+			marginRight: 8,
 			transition: 'all 0.2s ease-in-out',
 			'&.disabled': {
 				color: '#666',
@@ -103,7 +104,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 	const classes = useStyles();
 
 	const selection = useRecoilValue(selectionAtom);
-	const [isPlaying, setIsPLaying] = useState(false);
+	const [isPlaying, setIsPlaying] = useState(false);
 	const [canPlay, setCanPlay] = useState(false);
 	const [canStop, setCanStop] = useState(false);
 	const [tempoBpm, setTempoBpm] = useState<number>(120);
@@ -170,14 +171,17 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 			if (notesForPlayer.length === 0) {
 				return;
 			}
-			setIsPLaying(true);
-			SoundHelper.playMusic(notesForPlayer, tempoBpm);
+			setIsPlaying(true);
+			const musicDurationSecs = SoundHelper.playMusic(notesForPlayer, tempoBpm);
+			setTimeout(() => {
+				setIsPlaying(false);
+			}, (musicDurationSecs + 0.5) * 1000);
 		},
 		[tempoBpm, getNotesForPlayer],
 	);
 
 	const handleClickStop = useCallback(function handleClickPlay() {
-		setIsPLaying(false);
+		setIsPlaying(false);
 		SoundHelper.stopMusic();
 	}, []);
 
@@ -198,7 +202,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 						<IconButton onClick={handleClickPlay} disabled={!canPlay} className={classes.actionButton}>
 							<PlayArrowIcon titleAccess="Play" />
 						</IconButton>
-						<IconButton onClick={handleClickStop} disabled={!canStop} className={classes.actionButton} style={{ marginLeft: '4px' }}>
+						<IconButton onClick={handleClickStop} disabled={!canStop} className={classes.actionButton} style={{ marginLeft: '4px', display: 'none' }}>
 							<StopIcon titleAccess="Stop" />
 						</IconButton>
 					</Box>
