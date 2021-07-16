@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import * as Tone from 'tone';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { Typography } from '@material-ui/core';
@@ -196,7 +195,6 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 
 	const [powerOn, setPowerOn] = useState(true);
 	const [fnSymbolsOn, setFnSymbolsOn] = useState(true);
-	const [synth, setSynth] = useState<any>(null);
 	const [octaves, setOctaves] = useState<boolean[]>([false, true, true, true, false]);
 
 	const draggedItem = useRecoilValue(draggedItemAtom);
@@ -209,17 +207,6 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const handleClickCollapse = useCallback(function handleClickCollapse() {
 		setIsExpanded(false);
 	}, []);
-
-	useEffect(
-		function setPianoSynth() {
-			if (powerOn) {
-				setSynth(new Tone.PolySynth().toDestination());
-			} else {
-				setSynth(null);
-			}
-		},
-		[powerOn],
-	);
 
 	const whiteKeys = MusicalHelper.getWhiteIndices().map((i, index) => {
 		return {
@@ -258,20 +245,17 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	const startNote = useCallback(
 		function startNote(noteName: string, octaveNumber: number) {
 			const noteFullName = noteName + octaveNumber;
-			SoundHelper.startNote(noteFullName, synth);
+			SoundHelper.startNote(noteFullName);
 			if (onPianoNote) {
 				onPianoNote(noteFullName);
 			}
 		},
-		[synth, onPianoNote],
+		[onPianoNote],
 	);
 
-	const stopNote = useCallback(
-		function stopNote(noteName: string, octaveNumber: number) {
-			SoundHelper.stopNote(noteName + octaveNumber, synth);
-		},
-		[synth],
-	);
+	const stopNote = useCallback(function stopNote(noteName: string, octaveNumber: number) {
+		SoundHelper.stopNote(noteName + octaveNumber);
+	}, []);
 
 	const handleMouseDown = useCallback(
 		function handleMouseDown(e) {
