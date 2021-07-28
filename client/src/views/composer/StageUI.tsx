@@ -34,6 +34,8 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 			},
 		},
 		content: {
+			display: 'grid',
+			justifyItems: 'center',
 			backgroundColor: '#fff',
 			color: '#000',
 		},
