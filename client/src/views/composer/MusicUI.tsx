@@ -67,21 +67,27 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music],
 	);
 
-	function getRows() {
-		if (music.measures.length === 0) {
-			return [];
-		}
-		const rows: number[][] = [];
-		let row: number[] = [];
-		music.measures.forEach((m, i) => {
-			row.push(i);
-			if (m.isPickup || m.number % sizeVars.numberOfMeasuresPerRow === 0) {
-				rows.push(row);
-				row = [];
+	const getRows = useCallback(
+		function getRows() {
+			if (music.measures.length === 0) {
+				return [];
 			}
-		});
-		return rows;
-	}
+			const rows: number[][] = [];
+			let row: number[] = [];
+			music.measures.forEach((m, i) => {
+				row.push(i);
+				if (m.isPickup || m.number % sizeVars.numberOfMeasuresPerRow === 0) {
+					rows.push(row);
+					row = [];
+				}
+			});
+			if (row.length) {
+				rows.push(row);
+			}
+			return rows;
+		},
+		[music, sizeVars.numberOfMeasuresPerRow],
+	);
 
 	return (
 		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
