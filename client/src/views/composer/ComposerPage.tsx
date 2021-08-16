@@ -89,7 +89,7 @@ export const ComposerPage = () => {
 			resetCopiedMeasureId();
 			setScore(changedScore);
 		},
-		[resetSelection],
+		[resetSelection, resetCopiedMeasureId],
 	);
 
 	const handleScoreUpdated = useCallback(function handleScoreUpdated() {
