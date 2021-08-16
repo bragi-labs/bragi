@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import { ScoreModel } from '../../model/scoreModel';
 import { Score } from '../../model/score';
 import { selectionAtom } from '../../atoms/selectionAtom';
+import { copiedMeasureIdAtom } from '../../atoms/copiedMeasureIdAtom';
 import { ComposerToolbar } from './ComposerToolbar';
 import { StageUI } from './StageUI';
 import { Piano } from '../../components/Piano';
@@ -80,10 +81,12 @@ export const ComposerPage = () => {
 	const [score, setScore] = useState<ScoreModel | null>(null);
 	const selection = useRecoilValue(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
+	const resetCopiedMeasureId = useResetRecoilState(copiedMeasureIdAtom);
 
 	const handleScoreChanged = useCallback(
 		function handleScoreChanged(changedScore: Score) {
 			resetSelection();
+			resetCopiedMeasureId();
 			setScore(changedScore);
 		},
 		[resetSelection],

@@ -1,10 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
+// import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -12,6 +14,7 @@ import { MeasureModel, PartType, ScoreModel } from '../../model/scoreModel';
 import { Music } from '../../model/music';
 import { Score } from '../../model/score';
 import { selectionAtom } from '../../atoms/selectionAtom';
+import { copiedMeasureIdAtom } from '../../atoms/copiedMeasureIdAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
 
@@ -88,8 +91,11 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 
 	const selection = useRecoilValue(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
+	const [copiedMeasureId, setCopiedMeasureId] = useRecoilState(copiedMeasureIdAtom);
 	const [canAdd, setCanAdd] = useState(false);
-	const [canDuplicate, setCanDuplicate] = useState(false);
+	// const [canDuplicate, setCanDuplicate] = useState(false);
+	const [canCopy, setCanCopy] = useState(false);
+	const [canPaste, setCanPaste] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
 	const draggablePanelContentRef = useRef(null);
 
@@ -121,7 +127,9 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	useEffect(
 		function enableMeasurePanelActions() {
 			setCanAdd(false);
-			setCanDuplicate(false);
+			// setCanDuplicate(false);
+			setCanCopy(false);
+			setCanPaste(false);
 			setCanDelete(false);
 			if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
 				const m = Score.findMeasure(score, selection[0].measureId);
@@ -130,11 +138,13 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				}
 				const p = Score.findPart(score, selection[0].partId);
 				setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
-				setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
+				// setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
+				setCanCopy(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
+				setCanPaste(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup && copiedMeasureId));
 				setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup && score.music.measures.length > 1));
 			}
 		},
-		[selection, score],
+		[score, selection, copiedMeasureId],
 	);
 
 	const handleClickAdd = useCallback(
@@ -149,16 +159,40 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		[score, getSelectedMeasures, onUpdateScore],
 	);
 
-	const handleClickDuplicate = useCallback(
-		function handleClickDuplicate() {
+	// const handleClickDuplicate = useCallback(
+	// 	function handleClickDuplicate() {
+	// 		const measures: MeasureModel[] = getSelectedMeasures();
+	// 		if (!score || measures.length !== 1) {
+	// 			return;
+	// 		}
+	// 		Music.duplicateMeasure(score.music, measures[0].id);
+	// 		onUpdateScore();
+	// 	},
+	// 	[score, getSelectedMeasures, onUpdateScore],
+	// );
+
+	const handleClickCopy = useCallback(
+		function handleClickCopy() {
 			const measures: MeasureModel[] = getSelectedMeasures();
 			if (!score || measures.length !== 1) {
 				return;
 			}
-			Music.duplicateMeasure(score.music, measures[0].id);
+			setCopiedMeasureId(measures[0].id);
 			onUpdateScore();
 		},
-		[score, getSelectedMeasures, onUpdateScore],
+		[score, getSelectedMeasures, setCopiedMeasureId, onUpdateScore],
+	);
+
+	const handleClickPaste = useCallback(
+		function handleClickPaste() {
+			const measures: MeasureModel[] = getSelectedMeasures();
+			if (!score || measures.length !== 1 || !copiedMeasureId) {
+				return;
+			}
+			Music.pasteMeasure(score.music, copiedMeasureId, measures[0].id);
+			onUpdateScore();
+		},
+		[score, getSelectedMeasures, copiedMeasureId, onUpdateScore],
 	);
 
 	const handleClickDelete = useCallback(
@@ -183,10 +217,16 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				<Box className={classes.buttonsRow}>
 					<Box className={classes.panel}>
 						<IconButton onClick={handleClickAdd} disabled={!canAdd} className={classes.actionButton}>
-							<AddCircleOutlineIcon titleAccess="Add measure" />
+							<AddCircleOutlineIcon titleAccess="Add empty measure" />
 						</IconButton>
-						<IconButton onClick={handleClickDuplicate} disabled={!canDuplicate} className={classes.actionButton} style={{ marginLeft: '12px' }}>
-							<AddToPhotosIcon titleAccess="Duplicate measure" />
+						{/*<IconButton onClick={handleClickDuplicate} disabled={!canDuplicate} className={classes.actionButton} style={{ marginLeft: '12px' }}>*/}
+						{/*	<AddToPhotosIcon titleAccess="Duplicate measure" />*/}
+						{/*</IconButton>*/}
+						<IconButton onClick={handleClickCopy} disabled={!canCopy} className={classes.actionButton} style={{ marginLeft: '12px' }}>
+							<FileCopyIcon titleAccess="Copy measure" />
+						</IconButton>
+						<IconButton onClick={handleClickPaste} disabled={!canPaste} className={classes.actionButton} style={{ marginLeft: '12px' }}>
+							<AssignmentIcon titleAccess="Paste measure" />
 						</IconButton>
 					</Box>
 					<Box className={`${classes.panel} ${classes.panelButtonOnly}`}>
