@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { TextField } from '@material-ui/core';
@@ -88,7 +88,6 @@ export const TextPartUI = ({ partInfo, part, isLastPart }: TextPartUIProps) => {
 	const classes = useStyles();
 
 	const setSelection = useSetRecoilState(selectionAtom);
-	const resetSelection = useResetRecoilState(selectionAtom);
 
 	const handleTextFocus = useCallback(
 		function handleTextFocus() {
@@ -108,9 +107,9 @@ export const TextPartUI = ({ partInfo, part, isLastPart }: TextPartUIProps) => {
 
 	const handleTextBlur = useCallback(
 		function handleTextBlur() {
-			resetSelection();
+			setSelection([{ partInfoId: (partInfo && partInfo.id) || '', measureId: part.measureId, partId: part.id, noteId: '' }]);
 		},
-		[resetSelection],
+		[partInfo, part.measureId, part.id, setSelection],
 	);
 
 	return (

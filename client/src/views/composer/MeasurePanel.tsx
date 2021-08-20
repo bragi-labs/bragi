@@ -137,11 +137,11 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 					return;
 				}
 				const p = Score.findPart(score, selection[0].partId);
-				setCanAdd(!!(p && p.partType === PartType.FN_LVL_1));
+				setCanAdd(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT)));
 				// setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
-				setCanCopy(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
-				setCanPaste(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup && copiedMeasureId));
-				setCanDelete(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup && score.music.measures.length > 1));
+				setCanCopy(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup));
+				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && copiedMeasureId));
+				setCanDelete(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && score.music.measures.length > 1));
 			}
 		},
 		[score, selection, copiedMeasureId],
