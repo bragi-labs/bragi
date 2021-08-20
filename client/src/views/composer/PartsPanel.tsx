@@ -338,7 +338,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 
 	return (
 		<div id="PartsPanel" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed}`}>
-			<DraggablePanel title="Parts" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.PARTS_PANEL} initialZIndex={10} />
+			<DraggablePanel title="Parts" contentRef={draggablePanelContentRef} draggedItemType={DraggedItemType.PARTS_PANEL} />
 			{!isExpanded && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
 			{isExpanded && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>

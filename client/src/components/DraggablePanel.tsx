@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect, useCallback, MutableRefObject } from 'react';
-import { useResetRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Typography } from '@material-ui/core';
 import { DraggedItemType, draggedItemAtom } from '../atoms/draggedItemAtom';
+import { draggedItemZIndexAtom } from '../atoms/draggedItemZIndexAtom';
 
 export interface DraggablePanelProps {
 	contentRef: MutableRefObject<HTMLDivElement | null>;
 	title: string;
 	draggedItemType: DraggedItemType;
-	initialZIndex: number;
 }
 
-export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, initialZIndex }: DraggablePanelProps) => {
+export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType }: DraggablePanelProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			backgroundColor: '#222',
@@ -32,6 +32,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 	const panelRef = useRef<HTMLDivElement | null>(null);
 	const setDraggedItem = useSetRecoilState(draggedItemAtom);
 	const resetDraggedItem = useResetRecoilState(draggedItemAtom);
+	const [draggedItemZIndex, setDraggedItemZIndex] = useRecoilState(draggedItemZIndexAtom);
 
 	const handleMouseDown = useCallback(
 		function handleMouseDown(e) {
@@ -44,7 +45,7 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 			e.stopPropagation();
 			e.preventDefault();
 			if (contentRef.current) {
-				contentRef.current.style.zIndex = '100';
+				contentRef.current.style.zIndex = '1000000';
 			}
 		},
 		[setDraggedItem, draggedItemType, contentRef],
@@ -80,10 +81,11 @@ export const DraggablePanel = React.memo(({ contentRef, title, draggedItemType, 
 			e.stopPropagation();
 			e.preventDefault();
 			if (contentRef.current) {
-				contentRef.current.style.zIndex = initialZIndex.toString();
+				contentRef.current.style.zIndex = draggedItemZIndex.toString();
+				setDraggedItemZIndex(draggedItemZIndex + 10);
 			}
 		},
-		[isDragging, resetDraggedItem, contentRef, initialZIndex],
+		[isDragging, resetDraggedItem, contentRef, draggedItemZIndex, setDraggedItemZIndex],
 	);
 
 	useEffect(

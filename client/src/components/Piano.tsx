@@ -290,7 +290,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 
 	return (
 		<div id="Piano" ref={draggablePanelContentRef} className={`${classes.root} ${isExpanded ? '' : classes.rootCollapsed} ${smallPiano ? 'small-piano' : ''}`}>
-			{smallPiano && smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} initialZIndex={50} />}
+			{smallPiano && smallPiano && <DraggablePanel contentRef={draggablePanelContentRef} title="Piano" draggedItemType={DraggedItemType.PIANO_PANEL} />}
 			{!isExpanded && smallPiano && <ExpandMoreIcon onClick={handleClickExpand} className={classes.expandCollapseButton} />}
 			{isExpanded && smallPiano && <ExpandLessIcon onClick={handleClickCollapse} className={classes.expandCollapseButton} />}
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
