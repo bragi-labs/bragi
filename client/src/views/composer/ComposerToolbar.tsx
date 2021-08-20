@@ -139,6 +139,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 	}, []);
 
 	const handleClickPrint = useCallback(function handleClickPrint() {
+		alert('IMPORTANT: Please make sure background graphics are enabled in the browser print settings dialog.');
 		window.print();
 	}, []);
 
