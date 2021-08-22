@@ -80,7 +80,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			display: 'flex',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-			height: 28,
+			height: 26,
 			backgroundColor: '#333',
 			padding: '0 4px',
 		},
