@@ -1,3 +1,4 @@
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 import React, { useCallback, useRef, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
@@ -97,6 +98,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		function handleDoneNewScoreDialog(newScore: Score | null) {
 			setNewScoreDialogVisible(false);
 			if (newScore) {
+				AnalyticsHelper.sendEvent(EventCategory.SCORE, 'new score', newScore.scoreInfo.scoreTitle);
 				onChangeScore(newScore);
 			}
 		},
@@ -122,6 +124,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			fileReader.onload = () => {
 				if (fileReader.result) {
 					const openedScore = Score.createFromModel(JSON.parse(fileReader.result.toString()));
+					AnalyticsHelper.sendEvent(EventCategory.SCORE, 'open score', openedScore.scoreInfo.scoreTitle);
 					onChangeScore(openedScore);
 				}
 			};
@@ -134,14 +137,26 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		setGoSaveScore(true);
 	}, []);
 
-	const handleSaveScoreDone = useCallback(function handleSaveScoreDone() {
-		setGoSaveScore(false);
-	}, []);
+	const handleSaveScoreDone = useCallback(
+		function handleSaveScoreDone() {
+			setGoSaveScore(false);
+			if (score) {
+				AnalyticsHelper.sendEvent(EventCategory.SCORE, 'save score', score.scoreInfo.scoreTitle);
+			}
+		},
+		[score],
+	);
 
-	const handleClickPrint = useCallback(function handleClickPrint() {
-		alert('IMPORTANT: Please make sure background graphics are enabled in the browser print settings dialog.');
-		window.print();
-	}, []);
+	const handleClickPrint = useCallback(
+		function handleClickPrint() {
+			alert('IMPORTANT: Please make sure background graphics are enabled in the browser print settings dialog.');
+			window.print();
+			if (score) {
+				AnalyticsHelper.sendEvent(EventCategory.SCORE, 'print score', score.scoreInfo.scoreTitle);
+			}
+		},
+		[score],
+	);
 
 	const handleClickExample = useCallback(
 		function handleClickExample() {
