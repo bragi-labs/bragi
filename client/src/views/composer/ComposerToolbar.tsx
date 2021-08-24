@@ -162,6 +162,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		function handleClickExample() {
 			SoundHelper.start();
 			const openedScore = Score.createFromModel(ExampleScore.getExampleScore());
+			AnalyticsHelper.sendEvent(EventCategory.SCORE, 'example score', openedScore.scoreInfo.scoreTitle);
 			onChangeScore(openedScore);
 		},
 		[onChangeScore],
