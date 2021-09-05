@@ -17,6 +17,7 @@ import { Part } from '../../model/part';
 import { selectionAtom } from '../../atoms/selectionAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 export interface NotePanelProps {
 	score: ScoreModel | null;
@@ -237,6 +238,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			if (!notes.length) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.NOTE, 'delete note');
 			notes.forEach((n) => {
 				n.fullName = '';
 				n.isRest = true;
@@ -254,6 +256,11 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			const notes: NoteModel[] = getSelectedNotes(true);
 			if (!notes.length) {
 				return;
+			}
+			if (e.currentTarget.dataset.amount === 'octave') {
+				AnalyticsHelper.sendEvent(EventCategory.NOTE, 'change note by octave');
+			} else {
+				AnalyticsHelper.sendEvent(EventCategory.NOTE, 'change note by semitone');
 			}
 			notes.forEach((n) => {
 				const measure = Music.findMeasure(score.music, n.measureId);
@@ -282,6 +289,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 			if (!notes.length) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.NOTE, 'set note duration', e.currentTarget.dataset['durationDivs']);
 			notes.forEach((n) => {
 				const m = Music.findMeasure(score.music, n.measureId);
 				if (!m) {

@@ -10,6 +10,7 @@ import { SoundHelper } from '../services/soundHelper';
 import { FigurenotesHelper } from '../services/figurenotesHelper';
 import { draggedItemAtom, DraggedItemType } from '../atoms/draggedItemAtom';
 import { DraggablePanel } from './DraggablePanel';
+import { AnalyticsHelper, EventCategory } from '../services/analyticsHelper';
 
 export interface PianoProps {
 	smallPiano: boolean;
@@ -222,10 +223,12 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 	});
 
 	const togglePower = useCallback(function togglePower() {
+		AnalyticsHelper.sendEvent(EventCategory.PIANO, 'toggle piano power');
 		setPowerOn((status) => !status);
 	}, []);
 
 	const toggleFnSymbols = useCallback(function toggleFnSymbols() {
+		AnalyticsHelper.sendEvent(EventCategory.PIANO, 'toggle piano symbols');
 		setFnSymbolsOn((status) => !status);
 	}, []);
 
@@ -234,6 +237,7 @@ export const Piano = React.memo(({ smallPiano, onPianoNote }: PianoProps) => {
 			if (!powerOn) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PIANO, 'toggle piano octave');
 			const newOctaves = [...octaves];
 			const index = e.currentTarget.dataset['octaveIndex'];
 			newOctaves[index] = !newOctaves[index];

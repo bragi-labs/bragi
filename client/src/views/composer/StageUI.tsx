@@ -8,6 +8,7 @@ import { TunePageDialog } from './TunePageDialog';
 import { StageHeaderUI } from './StageHeaderUI';
 import { MusicUI } from './MusicUI';
 import { StageFooterUI } from './StageFooterUI';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 export interface StageUIProps {
 	score: ScoreModel;
@@ -69,6 +70,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 	const [tuneStageDialogVisible, setTuneStageDialogVisible] = useState(false);
 
 	const handleClickTune = useCallback(function handleClickTune() {
+		AnalyticsHelper.sendEvent(EventCategory.SCORE, 'print score', score.scoreInfo.scoreTitle);
 		setTuneStageDialogVisible(true);
 	}, []);
 

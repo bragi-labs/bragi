@@ -17,6 +17,7 @@ import { selectionAtom } from '../../atoms/selectionAtom';
 import { copiedMeasureIdAtom } from '../../atoms/copiedMeasureIdAtom';
 import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 export interface MeasurePanelProps {
 	score: ScoreModel;
@@ -153,6 +154,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			if (!score || measures.length !== 1) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.MEASURE, 'add empty measure');
 			Music.addMeasure(score.music, measures[0].id);
 			onUpdateScore();
 		},
@@ -177,6 +179,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			if (!score || measures.length !== 1) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.MEASURE, 'copy measure');
 			setCopiedMeasureId(measures[0].id);
 			onUpdateScore();
 		},
@@ -189,6 +192,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			if (!score || measures.length !== 1 || !copiedMeasureId) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.MEASURE, 'paste measure');
 			Music.pasteMeasure(score.music, copiedMeasureId, measures[0].id);
 			onUpdateScore();
 		},
@@ -201,6 +205,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			if (!score || measures.length !== 1) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.MEASURE, 'delete measure');
 			Music.deleteMeasure(score.music, measures[0].id);
 			resetSelection();
 			onUpdateScore();

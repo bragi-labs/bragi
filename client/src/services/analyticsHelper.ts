@@ -1,5 +1,11 @@
 export enum EventCategory {
 	SCORE = 'score',
+	PAGE = 'page',
+	PIANO = 'piano',
+	NOTE = 'note',
+	MEASURE = 'measure',
+	PLAYER = 'player',
+	PARTS = 'parts',
 	NA = 'NA',
 }
 

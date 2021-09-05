@@ -37,6 +37,7 @@ import {
 	// grey,
 	// blueGrey,
 } from '@material-ui/core/colors';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 export interface PartsPanelProps {
 	music: Music;
@@ -213,6 +214,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'reorder part');
 			const isUp = e.currentTarget.dataset.direction === 'up';
 			Music.movePart(music, partInfoId, isUp);
 			onUpdateScore();
@@ -226,6 +228,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, pi.fontSize === 0 ? 'show note names' : 'hide note names');
 			pi.fontSize = pi.fontSize === 0 ? 12 : 0;
 			onUpdateScore();
 		},
@@ -238,6 +241,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, pi.isBold ? 'use regular text' : 'use bold text');
 			pi.isBold = !pi.isBold;
 			onUpdateScore();
 		},
@@ -250,6 +254,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, pi.isVisible ? 'hide part' : 'show part');
 			pi.isVisible = !pi.isVisible;
 			onUpdateScore();
 		},
@@ -263,6 +268,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi || pi.fontSize === value) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'change part text size', value);
 			pi.fontSize = value;
 			onUpdateScore();
 		},
@@ -275,6 +281,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'change part background color');
 			const bgColors = [
 				'#f6f6f6',
 				'#fff',
@@ -314,6 +321,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 			if (!pi) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'delete part');
 			Music.deletePart(music, pi.id);
 			onUpdateScore();
 		},
@@ -322,6 +330,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 
 	const handleClickAddMelodyPart = useCallback(
 		function handleClickAddMelodyPart() {
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'add melody part');
 			Music.addPart(music, PartType.FN_LVL_1, 'Melody', true);
 			onUpdateScore();
 		},
@@ -330,6 +339,7 @@ export const PartsPanel = ({ music, onUpdateScore }: PartsPanelProps) => {
 
 	const handleClickAddTextPart = useCallback(
 		function handleClickAddTextPart() {
+			AnalyticsHelper.sendEvent(EventCategory.PARTS, 'add text part');
 			Music.addPart(music, PartType.TEXT, 'Text', true);
 			onUpdateScore();
 		},

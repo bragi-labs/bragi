@@ -13,6 +13,7 @@ import { DraggedItemType } from '../../atoms/draggedItemAtom';
 import { DraggablePanel } from '../../components/DraggablePanel';
 import { Music } from '../../model/music';
 import { SoundHelper } from '../../services/soundHelper';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 export interface PlayerPanelProps {
 	music: MusicModel;
@@ -171,6 +172,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 			if (notesForPlayer.length === 0) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PLAYER, 'start player');
 			setIsPlaying(true);
 			const musicDurationSecs = SoundHelper.playMusic(notesForPlayer, tempoBpm);
 			setTimeout(() => {
@@ -181,11 +183,13 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 	);
 
 	const handleClickStop = useCallback(function handleClickPlay() {
+		AnalyticsHelper.sendEvent(EventCategory.PLAYER, 'stop player');
 		setIsPlaying(false);
 		SoundHelper.stopMusic();
 	}, []);
 
 	const handleChangeTempoBpm = useCallback(function handleChangeTempoBpm(e: any) {
+		AnalyticsHelper.sendEvent(EventCategory.PLAYER, 'set tempo');
 		setTempoBpm((curTempo) => {
 			return isNaN(e.target.value) ? curTempo : Math.max(0, Math.min(999, Number(e.target.value)));
 		});

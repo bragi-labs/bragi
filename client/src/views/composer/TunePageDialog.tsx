@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import { Button, Checkbox, FormControlLabel, Slider, Typography } from '@material-ui/core';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { Score } from '../../model/score';
+import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
 
 interface TunePageDialogProps {
 	score: Score;
@@ -98,6 +99,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 			if (score.scoreSettings.musicWidth === value) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PAGE, 'change page width', value);
 			score.scoreSettings.musicWidth = value;
 			onUpdateScore();
 		},
@@ -109,6 +111,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 			if (score.scoreSettings.rowGap === value) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PAGE, 'change row gap', value);
 			score.scoreSettings.rowGap = value;
 			onUpdateScore();
 		},
@@ -120,6 +123,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 			if (score.scoreSettings.quarterSize === value) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PAGE, 'change quarter size', value);
 			score.scoreSettings.quarterSize = value;
 			onUpdateScore();
 		},
@@ -131,6 +135,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 			if (score.scoreSettings.measureNumbers === value) {
 				return;
 			}
+			AnalyticsHelper.sendEvent(EventCategory.PAGE, value ? 'show measure numbers' : 'hide measure numbers');
 			score.scoreSettings.measureNumbers = value;
 			onUpdateScore();
 		},
