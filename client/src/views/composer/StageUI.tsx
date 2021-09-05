@@ -72,7 +72,7 @@ export const StageUI = ({ score, onUpdateScore }: StageUIProps) => {
 	const handleClickTune = useCallback(function handleClickTune() {
 		AnalyticsHelper.sendEvent(EventCategory.SCORE, 'print score', score.scoreInfo.scoreTitle);
 		setTuneStageDialogVisible(true);
-	}, []);
+	}, [score.scoreInfo.scoreTitle]);
 
 	const handleScoreUpdated = useCallback(
 		function handleScoreUpdated() {
