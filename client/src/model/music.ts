@@ -132,17 +132,17 @@ export class Music implements MusicModel {
 		Music.renumberAllMeasures(u);
 	}
 
-	static duplicateMeasure(u: MusicModel, curMeasureId: string) {
-		const curMeasureIndex = u.measures.findIndex((m) => m.id === curMeasureId);
-		if (curMeasureIndex === -1) {
-			return;
-		}
-		const curMeasure = u.measures[curMeasureIndex];
-		const m = Measure.createFromModel(curMeasure);
-		Measure.resetIds(m);
-		u.measures.splice(curMeasureIndex + 1, 0, m);
-		Music.renumberAllMeasures(u);
-	}
+	// static duplicateMeasure(u: MusicModel, curMeasureId: string) {
+	// 	const curMeasureIndex = u.measures.findIndex((m) => m.id === curMeasureId);
+	// 	if (curMeasureIndex === -1) {
+	// 		return;
+	// 	}
+	// 	const curMeasure = u.measures[curMeasureIndex];
+	// 	const m = Measure.createFromModel(curMeasure);
+	// 	Measure.resetIds(m);
+	// 	u.measures.splice(curMeasureIndex + 1, 0, m);
+	// 	Music.renumberAllMeasures(u);
+	// }
 
 	static pasteMeasure(u: MusicModel, srcMeasureId: string, trgMeasureId: string) {
 		const srcMeasureIndex = u.measures.findIndex((m) => m.id === srcMeasureId);
@@ -153,7 +153,7 @@ export class Music implements MusicModel {
 		const srcMeasure = u.measures[srcMeasureIndex];
 		const m = Measure.createFromModel(srcMeasure);
 		Measure.resetIds(m);
-		u.measures.splice(trgMeasureIndex + 1, 0, m);
+		u.measures[trgMeasureIndex] = m;
 		Music.renumberAllMeasures(u);
 	}
 

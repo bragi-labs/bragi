@@ -141,7 +141,7 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				setCanAdd(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT)));
 				// setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 				setCanCopy(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup));
-				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && copiedMeasureId));
+				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && copiedMeasureId && copiedMeasureId !== m.id));
 				setCanDelete(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && score.music.measures.length > 1));
 			}
 		},
