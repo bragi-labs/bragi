@@ -16,7 +16,7 @@ export class PartInfo implements PartInfoModel {
 
 	static createNew(partType: PartType, name: string, isVisible: boolean) {
 		const id = CommonHelper.getRandomId();
-		const fontSize = 12;
+		const fontSize = partType === PartType.TEXT ? 12 : 0;
 		const isBold = false;
 		const bgColor = partType === PartType.TEXT ? '#f6f6f6' : '#fff';
 		return new PartInfo(id, partType, name, isVisible, fontSize, isBold, bgColor);
