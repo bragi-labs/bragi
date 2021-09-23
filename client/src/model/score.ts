@@ -16,14 +16,15 @@ export class Score implements ScoreModel {
 		arrangerName: string,
 		timeSignature: string,
 		tempoBpm: number,
-		musicalScale: string,
+		scaleRoot: string,
+		scaleMode: string,
 		hasPickupMeasure: boolean,
 		numberOfMeasures: number,
 	) {
 		const id = CommonHelper.getRandomId();
 		const scoreInfo = ScoreInfo.createNew(scoreTitle, scoreCredits, arrangerName);
 		const scoreSettings = ScoreSettings.createNew();
-		const music = Music.createNew(timeSignature, tempoBpm, hasPickupMeasure, numberOfMeasures, musicalScale);
+		const music = Music.createNew(timeSignature, tempoBpm, hasPickupMeasure, numberOfMeasures, scaleRoot, scaleMode);
 		return new Score(id, scoreInfo, scoreSettings, music);
 	}
 

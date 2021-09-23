@@ -111,7 +111,7 @@ export const ComposerPage = () => {
 			note.fullName = noteFullName;
 			if (MusicalHelper.parseNote(noteFullName).alter === '#') {
 				const measure = Score.findMeasure(score, note.measureId);
-				if (measure && !MusicalHelper.isScaleUsesSharps(measure.musicalScale)) {
+				if (measure && !MusicalHelper.isScaleUsesSharps(measure.scaleRoot, measure.scaleMode)) {
 					note.fullName = MusicalHelper.toggleSharpAndFlat(note.fullName);
 				}
 			}

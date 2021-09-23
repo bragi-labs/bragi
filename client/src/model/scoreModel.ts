@@ -72,7 +72,8 @@ export interface MeasureModel {
 	timeSignature: string; //e.g. "4/4"
 	durationDivs: number; //e.g. 96
 	tempoBpm: number; //e.g. 120
-	musicalScale: string; //e.g. "Am"
+	scaleRoot: string; //e.g. "C"
+	scaleMode: string; //e.g. "Ionian"
 	parts: PartModel[];
 }
 export interface PartInfoModel {

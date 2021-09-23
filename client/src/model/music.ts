@@ -9,15 +9,15 @@ export class Music implements MusicModel {
 
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
-	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, musicalScale: string) {
+	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, scaleRoot: string, scaleMode: string) {
 		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true), PartInfo.createNew(PartType.TEXT, 'Text', true)];
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
-			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, musicalScale);
+			const pickupMeasure = Measure.createNew(true, 0, partsInfo, timeSignature, tempoBpm, scaleRoot, scaleMode);
 			measures.push(pickupMeasure);
 		}
 		for (let i = 1; i <= numberOfMeasures; i++) {
-			const measure = Measure.createNew(false, i, partsInfo, timeSignature, tempoBpm, musicalScale);
+			const measure = Measure.createNew(false, i, partsInfo, timeSignature, tempoBpm, scaleRoot, scaleMode);
 			measures.push(measure);
 		}
 		return new Music(partsInfo, measures);
@@ -127,7 +127,7 @@ export class Music implements MusicModel {
 			return;
 		}
 		const curMeasure = u.measures[curMeasureIndex];
-		const m = Measure.createNew(false, curMeasure.number + 1, u.partsInfo, curMeasure.timeSignature, curMeasure.tempoBpm, curMeasure.musicalScale);
+		const m = Measure.createNew(false, curMeasure.number + 1, u.partsInfo, curMeasure.timeSignature, curMeasure.tempoBpm, curMeasure.scaleRoot, curMeasure.scaleMode);
 		u.measures.splice(curMeasureIndex + 1, 0, m);
 		Music.renumberAllMeasures(u);
 	}

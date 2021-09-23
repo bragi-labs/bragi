@@ -67,7 +67,8 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 	const [arrangerName, setArrangerName] = useState('');
 	const [timeSignature, setTimeSignature] = useState('4/4');
 	const [tempoBpm, setTempoBpm] = useState<string>('120');
-	const [musicalScale, setMusicalScale] = useState<string>('C');
+	const [scaleRoot, setScaleRoot] = useState<string>('C');
+	const [scaleMode, setScaleMode] = useState<string>('Ionian');
 	const [pickupMeasure, setPickupMeasure] = useState('no');
 	const [numberOfMeasures, setNumberOfMeasures] = useState<string>('16');
 
@@ -92,8 +93,12 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 		setTempoBpm(e.target.value);
 	};
 
-	const handleChangeMusicalScale = (e: any) => {
-		setMusicalScale(e.target.value);
+	const handleChangeScaleRoot = (e: any) => {
+		setScaleRoot(e.target.value);
+	};
+
+	const handleChangeScaleMode = (e: any) => {
+		setScaleMode(e.target.value);
 	};
 
 	const handleChangePickupMeasure = (e: any) => {
@@ -119,13 +124,14 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 				arrangerName,
 				timeSignature,
 				Number(tempoBpm) || 120,
-				(musicalScale || 'C').toUpperCase(),
+				scaleRoot,
+				scaleMode,
 				pickupMeasure === 'yes',
 				Number(numberOfMeasures) || 16,
 			);
 			onDoneNewScoreDialog(newScore);
 		},
-		[scoreTitle, scoreCredits, arrangerName, timeSignature, tempoBpm, musicalScale, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog],
+		[scoreTitle, scoreCredits, arrangerName, timeSignature, tempoBpm, scaleRoot, scaleMode, pickupMeasure, numberOfMeasures, onDoneNewScoreDialog],
 	);
 
 	return (
@@ -136,8 +142,11 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 			<Box className={classes.body}>
 				<form className={classes.form} noValidate autoComplete="off">
 					<TextField label="Score Title" value={scoreTitle} onChange={handleChangeScoreTitle} placeholder="e.g. Bohemian Rhapsody" autoFocus={true} />
+
 					<TextField label="Score Credits" value={scoreCredits} onChange={handleChangeScoreCredits} placeholder="e.g. Freddie Mercury & Queen" />
+
 					<TextField label="Arranger Name" value={arrangerName} onChange={handleChangeArrangerName} placeholder="Your name" />
+
 					<FormControl className={classes.formControl}>
 						<InputLabel id="time-signature-label">Time Signature</InputLabel>
 						<Select id="time-signature" value={timeSignature} onChange={handleChangeTimeSignature}>
@@ -157,8 +166,7 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 							<MenuItem value="8/8">8/8</MenuItem>
 						</Select>
 					</FormControl>
-					<TextField label="Tempo (bpm)" value={tempoBpm} onChange={handleChangeTempoBpm} placeholder="e.g. 120" />
-					<TextField label="Musical Scale" value={musicalScale} onChange={handleChangeMusicalScale} placeholder="e.g. C" />
+
 					<FormControl className={classes.formControl}>
 						<InputLabel id="pickup-measure-label">Pickup Measure (initial bar)</InputLabel>
 						<Select id="pickup-measure" value={pickupMeasure} onChange={handleChangePickupMeasure}>
@@ -166,7 +174,46 @@ export const NewScoreDialog = React.forwardRef(({ onDoneNewScoreDialog }: NewSco
 							<MenuItem value="no">No</MenuItem>
 						</Select>
 					</FormControl>
+
 					<TextField label="Number of Measurements" value={numberOfMeasures} onChange={handleChangeNumberOfMeasurements} placeholder="e.g. 16" />
+
+					<FormControl className={classes.formControl}>
+						<InputLabel id="scale-root-label">Scale Root</InputLabel>
+						<Select id="scale-root" value={scaleRoot} onChange={handleChangeScaleRoot}>
+							<MenuItem value="C">C</MenuItem>
+							<MenuItem value="C#">C#</MenuItem>
+							<MenuItem value="Db">Db</MenuItem>
+							<MenuItem value="D">D</MenuItem>
+							<MenuItem value="D#">D#</MenuItem>
+							<MenuItem value="Eb">Eb</MenuItem>
+							<MenuItem value="E">E</MenuItem>
+							<MenuItem value="F">F</MenuItem>
+							<MenuItem value="F#">F#</MenuItem>
+							<MenuItem value="Gb">Gb</MenuItem>
+							<MenuItem value="G">G</MenuItem>
+							<MenuItem value="G#">G#</MenuItem>
+							<MenuItem value="Ab">Ab</MenuItem>
+							<MenuItem value="A">A</MenuItem>
+							<MenuItem value="A#">A#</MenuItem>
+							<MenuItem value="Bb">Bb</MenuItem>
+							<MenuItem value="B">B</MenuItem>
+						</Select>
+					</FormControl>
+
+					<FormControl className={classes.formControl}>
+						<InputLabel id="scale-mode-label">Scale Mode</InputLabel>
+						<Select id="scale-mode" value={scaleMode} onChange={handleChangeScaleMode}>
+							<MenuItem value="Ionian">Ionian (major)</MenuItem>
+							<MenuItem value="Aeolian">Aeolian (minor)</MenuItem>
+							<MenuItem value="Dorian">Dorian</MenuItem>
+							<MenuItem value="Phrygian">Phrygian </MenuItem>
+							<MenuItem value="Lydian">Lydian</MenuItem>
+							<MenuItem value="Mixolydian">Mixolydian</MenuItem>
+							<MenuItem value="Locrian">Locrian</MenuItem>
+						</Select>
+					</FormControl>
+
+					<TextField label="Tempo (bpm)" value={tempoBpm} onChange={handleChangeTempoBpm} placeholder="e.g. 120" />
 				</form>
 			</Box>
 			<Box className={classes.footer}>

@@ -75,21 +75,14 @@ export class MusicalHelper {
 			beatDurationDivs,
 		};
 	}
-	static isScaleUsesSharps(musicalScale: string): boolean {
-		if (!musicalScale) {
+	static isScaleUsesSharps(scaleRoot: string, _scaleMode: string): boolean {
+		if (!scaleRoot) {
 			return true;
 		}
-		if (['C', 'Am'].includes(musicalScale)) {
-			return true;
-		}
-		if (musicalScale.length === 1) {
-			return musicalScale !== 'F';
-		} else if (musicalScale.length === 2) {
-			return ['Em', 'Bm'].includes(musicalScale);
-		} else if (musicalScale.length === 3) {
-			return musicalScale[1] === '#';
+		if (scaleRoot.length === 2) {
+			return scaleRoot[1] === '#';
 		} else {
-			return true;
+			return scaleRoot[0] !== 'F';
 		}
 	}
 	static toggleSharpAndFlat(noteFullName: string) {
@@ -105,14 +98,14 @@ export class MusicalHelper {
 			octave: noteDetails.octave,
 		});
 	}
-	static changePitch(noteFullName: string, musicalScale: string, pitchUp: boolean): string {
+	static changePitch(noteFullName: string, scaleRoot: string, scaleMode: string, pitchUp: boolean): string {
 		const noteDetails = MusicalHelper.parseNote(noteFullName);
 		const curIndex = MusicalHelper.getIndexByNoteName(noteDetails.step + noteDetails.alter);
 		if ((pitchUp && noteDetails.octave === MusicalHelper.maxOctave && curIndex === 11) || (!pitchUp && noteDetails.octave === MusicalHelper.minOctave && curIndex === 0)) {
 			return noteFullName;
 		}
 		const newIndex = (curIndex + (pitchUp ? 1 : -1) + 12) % 12;
-		const useSharps = MusicalHelper.isScaleUsesSharps(musicalScale);
+		const useSharps = MusicalHelper.isScaleUsesSharps(scaleRoot, scaleMode);
 		const newNoteName = MusicalHelper.getNoteNameByIndex(newIndex, useSharps);
 		let newOctave = noteDetails.octave;
 		if (pitchUp && curIndex === 11) {
