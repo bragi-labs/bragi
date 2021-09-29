@@ -271,7 +271,7 @@ export const NotePanel = ({ score, onUpdateScore }: NotePanelProps) => {
 					const noteDetails = MusicalHelper.parseNote(n.fullName);
 					n.fullName = `${noteDetails.step}${noteDetails.alter}${e.currentTarget.dataset.direction === 'up' ? noteDetails.octave + 1 : noteDetails.octave - 1}`;
 				} else {
-					n.fullName = MusicalHelper.changePitch(n.fullName, measure.scaleRoot, measure.scaleMode, e.currentTarget.dataset.direction === 'up');
+					n.fullName = MusicalHelper.changePitch(n.fullName, measure.useSharps, e.currentTarget.dataset.direction === 'up');
 				}
 				SoundHelper.playShortNote(n.fullName);
 			});

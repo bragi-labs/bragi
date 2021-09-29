@@ -16,10 +16,20 @@ export class Measure implements MeasureModel {
 		public tempoBpm: number,
 		public scaleRoot: string,
 		public scaleMode: string,
+		public useSharps: boolean,
 		public parts: Part[],
 	) {}
 
-	static createNew(isPickupMeasure: boolean, measureNumber: number, partsInfo: PartInfo[], timeSignature: string, tempoBpm: number, scaleRoot: string, scaleMode: string) {
+	static createNew(
+		isPickupMeasure: boolean,
+		measureNumber: number,
+		partsInfo: PartInfo[],
+		timeSignature: string,
+		tempoBpm: number,
+		scaleRoot: string,
+		scaleMode: string,
+		useSharps: boolean,
+	) {
 		const id = CommonHelper.getRandomId();
 		const durationDivs = MusicalHelper.parseTimeSignature(timeSignature).measureDurationDivs;
 		const parts: Part[] = [];
@@ -27,7 +37,7 @@ export class Measure implements MeasureModel {
 			const part = Part.createNew(id, pi, timeSignature);
 			parts.push(part);
 		});
-		return new Measure(id, measureNumber, isPickupMeasure, timeSignature, durationDivs, tempoBpm, scaleRoot, scaleMode, parts);
+		return new Measure(id, measureNumber, isPickupMeasure, timeSignature, durationDivs, tempoBpm, scaleRoot, scaleMode, useSharps, parts);
 	}
 
 	static createFromModel(m: MeasureModel) {
@@ -48,11 +58,12 @@ export class Measure implements MeasureModel {
 			scaleRoot = m.scaleRoot || 'C';
 			scaleMode = m.scaleMode || 'Ionian';
 		}
+		const useSharps: boolean = m.useSharps ?? MusicalHelper.isScaleUsesSharps(scaleRoot, scaleMode);
 		m.parts.forEach((p) => {
 			const part = Part.createFromModel(p);
 			parts.push(part);
 		});
-		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, scaleRoot, scaleMode, parts);
+		return new Measure(m.id, m.number, m.isPickup, m.timeSignature, m.durationDivs, m.tempoBpm, scaleRoot, scaleMode, useSharps, parts);
 	}
 
 	static findPart(m: MeasureModel, partId: string): PartModel | null {
@@ -79,6 +90,13 @@ export class Measure implements MeasureModel {
 			return false;
 		}
 		return Part.canChangeNoteDuration(p, noteId, newDurationDivs, m.durationDivs);
+	}
+
+	static toggleSharps(m: MeasureModel) {
+		m.useSharps = !m.useSharps;
+		m.parts.forEach((p) => {
+			Part.toggleNotesAlter(p, m.useSharps);
+		});
 	}
 
 	static movePart(m: MeasureModel, partInfoId: string, isUp: boolean) {

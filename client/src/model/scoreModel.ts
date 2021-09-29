@@ -74,6 +74,7 @@ export interface MeasureModel {
 	tempoBpm: number; //e.g. 120
 	scaleRoot: string; //e.g. "C"
 	scaleMode: string; //e.g. "Ionian"
+	useSharps: boolean;
 	parts: PartModel[];
 }
 export interface PartInfoModel {

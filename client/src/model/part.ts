@@ -106,6 +106,15 @@ export class Part implements PartModel {
 		}
 	}
 
+	static toggleNotesAlter(p: PartModel, useSharps: boolean) {
+		if (p.partType !== PartType.FN_LVL_1) {
+			return;
+		}
+		p.notes.forEach((n) => {
+			Note.toggleAlter(n, useSharps);
+		});
+	}
+
 	static resetIds(p: PartModel, measureId: string) {
 		p.id = CommonHelper.getRandomId();
 		p.measureId = measureId;

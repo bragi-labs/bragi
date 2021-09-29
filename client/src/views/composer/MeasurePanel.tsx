@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Typography } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 // import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -11,6 +11,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { MeasureModel, PartType, ScoreModel } from '../../model/scoreModel';
+import { Measure } from '../../model/measure';
 import { Music } from '../../model/music';
 import { Score } from '../../model/score';
 import { selectionAtom } from '../../atoms/selectionAtom';
@@ -87,6 +88,14 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				color: '#666',
 			},
 		},
+		toggleSharpsButton: {
+			width: 20,
+			color: '#ccc',
+			'&:hover': {
+				color: '#fff',
+			},
+			cursor: 'pointer',
+		},
 	}));
 	const classes = useStyles();
 
@@ -98,6 +107,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 	const [canCopy, setCanCopy] = useState(false);
 	const [canPaste, setCanPaste] = useState(false);
 	const [canDelete, setCanDelete] = useState(false);
+	const [canUseFlats, setCanUseFlats] = useState(false);
+	const [canUseSharps, setCanUseSharps] = useState(false);
 	const draggablePanelContentRef = useRef(null);
 
 	const [isExpanded, setIsExpanded] = useState(true);
@@ -131,6 +142,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 			// setCanDuplicate(false);
 			setCanCopy(false);
 			setCanPaste(false);
+			setCanUseFlats(false);
+			setCanUseSharps(false);
 			setCanDelete(false);
 			if (score && selection && selection.length === 1 && selection[0].measureId && selection[0].partId) {
 				const m = Score.findMeasure(score, selection[0].measureId);
@@ -142,6 +155,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				// setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
 				setCanCopy(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup));
 				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && copiedMeasureId && copiedMeasureId !== m.id));
+				setCanUseFlats(!!(p && p.partType === PartType.FN_LVL_1 && m.useSharps));
+				setCanUseSharps(!!(p && p.partType === PartType.FN_LVL_1 && !m.useSharps));
 				setCanDelete(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && score.music.measures.length > 1));
 			}
 		},
@@ -199,6 +214,19 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 		[score, getSelectedMeasures, copiedMeasureId, onUpdateScore],
 	);
 
+	const handleClickToggleSharps = useCallback(
+		function handleClickToggleSharps() {
+			const measures: MeasureModel[] = getSelectedMeasures();
+			if (!score || measures.length !== 1) {
+				return;
+			}
+			AnalyticsHelper.sendEvent(EventCategory.MEASURE, 'toggle sharps');
+			Measure.toggleSharps(measures[0]);
+			onUpdateScore();
+		},
+		[score, getSelectedMeasures, onUpdateScore],
+	);
+
 	const handleClickDelete = useCallback(
 		function handleClickDelete() {
 			const measures: MeasureModel[] = getSelectedMeasures();
@@ -233,6 +261,11 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 						<IconButton onClick={handleClickPaste} disabled={!canPaste} className={classes.actionButton} style={{ marginLeft: '12px' }}>
 							<AssignmentIcon titleAccess="Paste measure" />
 						</IconButton>
+					</Box>
+					<Box className={classes.panel} style={{ visibility: canUseSharps || canUseFlats ? 'visible' : 'hidden' }}>
+						<Typography variant="body1" title="Toggle flats/sharps" onClick={handleClickToggleSharps} className={classes.toggleSharpsButton}>
+							b/#
+						</Typography>
 					</Box>
 					<Box className={`${classes.panel} ${classes.panelButtonOnly}`}>
 						<IconButton onClick={handleClickDelete} disabled={!canDelete} className={classes.actionButton}>
