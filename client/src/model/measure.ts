@@ -32,8 +32,22 @@ export class Measure implements MeasureModel {
 
 	static createFromModel(m: MeasureModel) {
 		const parts: Part[] = [];
-		const scaleRoot = m.scaleRoot || 'C';
-		const scaleMode = m.scaleMode || 'Ionian';
+		let scaleRoot;
+		let scaleMode;
+		// @ts-ignore
+		const oldScale = m.musicalScale;
+		if (oldScale) {
+			if (oldScale[oldScale.length - 1] === 'm') {
+				scaleRoot = oldScale.length === 2 ? oldScale[0] : oldScale[0] + oldScale[1];
+				scaleMode = 'Aeolian';
+			} else {
+				scaleRoot = oldScale;
+				scaleMode = 'Ionian';
+			}
+		} else {
+			scaleRoot = m.scaleRoot || 'C';
+			scaleMode = m.scaleMode || 'Ionian';
+		}
 		m.parts.forEach((p) => {
 			const part = Part.createFromModel(p);
 			parts.push(part);
