@@ -161,7 +161,9 @@ export class Music implements MusicModel {
 			return;
 		}
 		const srcMeasure = u.measures[srcMeasureIndex];
+		const trgMeasure = u.measures[trgMeasureIndex];
 		const m = Measure.createFromModel(srcMeasure);
+		m.isPickup = trgMeasure.isPickup;
 		Measure.resetIds(m);
 		u.measures[trgMeasureIndex] = m;
 		Music.renumberAllMeasures(u);

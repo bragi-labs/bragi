@@ -153,8 +153,8 @@ export const MeasurePanel = ({ score, onUpdateScore }: MeasurePanelProps) => {
 				const p = Score.findPart(score, selection[0].partId);
 				setCanAdd(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT)));
 				// setCanDuplicate(!!(p && p.partType === PartType.FN_LVL_1 && !m.isPickup));
-				setCanCopy(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup));
-				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && copiedMeasureId && copiedMeasureId !== m.id));
+				setCanCopy(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT)));
+				setCanPaste(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && copiedMeasureId && copiedMeasureId !== m.id));
 				setCanUseFlats(!!(p && p.partType === PartType.FN_LVL_1 && m.useSharps));
 				setCanUseSharps(!!(p && p.partType === PartType.FN_LVL_1 && !m.useSharps));
 				setCanDelete(!!(p && (p.partType === PartType.FN_LVL_1 || p.partType === PartType.TEXT) && !m.isPickup && score.music.measures.length > 1));
