@@ -27,7 +27,7 @@ export const TunePageDialog = React.forwardRef(({ score, onUpdateScore, onDoneTu
 			backgroundColor: '#222',
 			padding: 24,
 			color: '#fff',
-			//opacity: 0.9,
+			opacity: 0.75,
 		},
 		header: {},
 		title: {
