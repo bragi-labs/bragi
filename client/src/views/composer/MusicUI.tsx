@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
-import { Typography } from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { MusicModel, PartType } from '../../model/scoreModel';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { Music } from '../../model/music';
 import { MelodyPartUI } from './MelodyPartUI';
-import { TextPartUI } from './TextPartUI';
+import { useSetRecoilState } from 'recoil';
+import { selectionAtom } from '../../atoms/selectionAtom';
 
 export interface MusicUIProps {
 	music: MusicModel;
@@ -42,8 +43,80 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			fontSize: '14px',
 			fontWeight: 700,
 		},
+		textPartRoot: {
+			display: 'flex',
+			width: '100%',
+			'& .MuiTextField-root': {
+				width: '100%',
+				'& .MuiInput-formControl': {
+					width: '100%',
+					'& .MuiInput-input': {
+						width: '100%',
+						padding: 2,
+						fontFamily: 'Arial, sans-serif',
+						color: '#000',
+					},
+				},
+				'&.font-weight-bold .MuiInput-input': {
+					fontWeight: 900,
+				},
+				'&.textSize-8 .MuiInput-input': {
+					fontSize: '8px',
+				},
+				'&.textSize-9 .MuiInput-input': {
+					fontSize: '9px',
+				},
+				'&.textSize-10 .MuiInput-input': {
+					fontSize: '10px',
+				},
+				'&.textSize-11 .MuiInput-input': {
+					fontSize: '11px',
+				},
+				'&.textSize-12 .MuiInput-input': {
+					fontSize: '12px',
+				},
+				'&.textSize-13 .MuiInput-input': {
+					fontSize: '13px',
+				},
+				'&.textSize-14 .MuiInput-input': {
+					fontSize: '14px',
+				},
+				'&.textSize-15 .MuiInput-input': {
+					fontSize: '15px',
+				},
+				'&.textSize-16 .MuiInput-input': {
+					fontSize: '16px',
+				},
+				'&.textSize-17 .MuiInput-input': {
+					fontSize: '17px',
+				},
+				'&.textSize-18 .MuiInput-input': {
+					fontSize: '18px',
+				},
+				'&.textSize-19 .MuiInput-input': {
+					fontSize: '19px',
+				},
+				'&.textSize-20 .MuiInput-input': {
+					fontSize: '20px',
+				},
+				'&.textSize-21 .MuiInput-input': {
+					fontSize: '21px',
+				},
+				'&.textSize-22 .MuiInput-input': {
+					fontSize: '22px',
+				},
+				'&.textSize-23 .MuiInput-input': {
+					fontSize: '23px',
+				},
+				'&.textSize-24 .MuiInput-input': {
+					fontSize: '24px',
+				},
+			},
+		},
 	}));
 	const classes = useStyles();
+
+	const setSelection = useSetRecoilState(selectionAtom);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = Music.getExampleMeasure(music);
@@ -89,6 +162,44 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		[music, sizeVars.numberOfMeasuresPerRow],
 	);
 
+	const handleTextFocus = useCallback(
+		function handleTextFocus(e) {
+			setSelection([
+				{
+					partInfoId: e.target.parentElement.parentElement.dataset.partInfoId,
+					measureId: e.target.parentElement.parentElement.dataset.msrId,
+					partId: e.target.parentElement.parentElement.dataset.partId,
+					noteId: '',
+				},
+			]);
+		},
+		[setSelection],
+	);
+
+	const handleTextChange = useCallback(
+		function handleTextChange(e) {
+			const part = Music.findPart(music, e.target.parentElement.parentElement.dataset.partId);
+			if (part) {
+				part.text = e.target.value;
+			}
+		},
+		[music],
+	);
+
+	const handleTextBlur = useCallback(
+		function handleTextBlur(e) {
+			setSelection([
+				{
+					partInfoId: e.target.parentElement.parentElement.dataset.partInfoId,
+					measureId: e.target.parentElement.parentElement.dataset.msrId,
+					partId: e.target.parentElement.parentElement.dataset.partId,
+					noteId: '',
+				},
+			]);
+		},
+		[setSelection],
+	);
+
 	return (
 		<Box id="MusicUI" className={classes.root} style={{ width: `${scoreSettings.musicWidth}px` }}>
 			{getRows().map((row, rIndex) => (
@@ -110,7 +221,20 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 										<MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
 									)}
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.TEXT && (
-										<TextPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isLastPart={pIndex === music.measures[mIndex].parts.length - 1} />
+										<Box id="TextPartUI" className={classes.textPartRoot} style={{ backgroundColor: `${getPartInfo(p.partInfoId)?.bgColor || '#fff'}` }}>
+											<TextField
+												data-part-info-id={p.partInfoId}
+												data-part-id={p.id}
+												data-msr-id={p.measureId}
+												defaultValue={p.text}
+												onFocus={handleTextFocus}
+												onChange={handleTextChange}
+												onBlur={handleTextBlur}
+												label=""
+												className={`textSize-${getPartInfo(p.partInfoId)?.fontSize || '12'} ${getPartInfo(p.partInfoId)?.isBold ? 'font-weight-bold' : ''}`}
+												style={{ borderBottom: `${pIndex === music.measures[mIndex].parts.length - 1 ? 0 : 1}px solid #eee` }}
+											/>
+										</Box>
 									)}
 								</Box>
 							))}
