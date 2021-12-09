@@ -25,6 +25,7 @@ export const StageHeaderUI = ({ scoreInfo, onUpdateScore }: StageHeaderUIProps) 
 			'& .MuiInput-input': {
 				color: '#000',
 				fontSize: 34,
+				width: 650,
 			},
 		},
 		scoreCredits: {
@@ -38,6 +39,7 @@ export const StageHeaderUI = ({ scoreInfo, onUpdateScore }: StageHeaderUIProps) 
 			'& .MuiInput-input': {
 				color: '#000',
 				fontSize: 20,
+				width: 650,
 			},
 		},
 	}));
