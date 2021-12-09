@@ -182,7 +182,7 @@ export class Music implements MusicModel {
 		return u.measures[0].isPickup && u.measures.length > 1 ? u.measures[1] : u.measures[0];
 	}
 
-	static getNotesForPlayer(u: MusicModel, startMeasureId: string): any[] {
+	static getNotesForPlayer(u: MusicModel, startMeasureId: string, stopMeasureId: string | null): any[] {
 		if (u.measures.length === 0) {
 			return [];
 		}
@@ -206,6 +206,9 @@ export class Music implements MusicModel {
 					}
 				});
 				measureStartTime += m.durationDivs;
+			}
+			if (stopMeasureId === startMeasureId) {
+				ok = false;
 			}
 		});
 		return notes;

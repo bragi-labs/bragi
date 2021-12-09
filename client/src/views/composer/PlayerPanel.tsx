@@ -3,7 +3,8 @@ import { useRecoilValue } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton, TextField, Typography } from '@material-ui/core';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SkipNextOutlinedIcon from '@material-ui/icons/SkipNextOutlined';
+import PlayArrowOutlinedIcon from '@material-ui/icons/PlayArrowOutlined';
 import StopIcon from '@material-ui/icons/Stop';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
@@ -136,15 +137,6 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 		[music, selection],
 	);
 
-	const getNotesForPlayer = useCallback(
-		function getNotesForPlayer() {
-			const selectedMeasures: MeasureModel[] = getSelectedMeasures();
-			const startMeasureId = selectedMeasures.length > 0 ? selectedMeasures[0].id : '';
-			return Music.getNotesForPlayer(music, startMeasureId);
-		},
-		[music, getSelectedMeasures],
-	);
-
 	useEffect(
 		function setTempo() {
 			if (music.measures) {
@@ -164,11 +156,14 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 	);
 
 	const handleClickPlay = useCallback(
-		function handleClickPlay() {
+		function handleClickPlay(e) {
 			if (tempoBpm <= 0) {
 				return;
 			}
-			const notesForPlayer: any[] = getNotesForPlayer();
+			const selectedMeasures: MeasureModel[] = getSelectedMeasures();
+			const startMeasureId = selectedMeasures.length > 0 ? selectedMeasures[0].id : '';
+			const kind = e.currentTarget.dataset.kind;
+			const notesForPlayer: any[] = Music.getNotesForPlayer(music, startMeasureId, kind === 'playOnlyCurrent' ? startMeasureId : null);
 			if (notesForPlayer.length === 0) {
 				return;
 			}
@@ -179,7 +174,7 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 				setIsPlaying(false);
 			}, (musicDurationSecs + 0.5) * 1000);
 		},
-		[tempoBpm, getNotesForPlayer],
+		[music, getSelectedMeasures, tempoBpm],
 	);
 
 	const handleClickStop = useCallback(function handleClickPlay() {
@@ -203,8 +198,16 @@ export const PlayerPanel = ({ music }: PlayerPanelProps) => {
 			<Box className={`${classes.content} ${isExpanded ? '' : classes.contentCollapsed}`}>
 				<Box className={classes.buttonsRow}>
 					<Box className={classes.panel}>
-						<IconButton onClick={handleClickPlay} disabled={!canPlay} className={classes.actionButton}>
-							<PlayArrowIcon titleAccess="Play" />
+						<IconButton
+							data-kind="playOnlyCurrent"
+							onClick={handleClickPlay}
+							disabled={!canPlay || getSelectedMeasures().length === 0}
+							className={classes.actionButton}
+						>
+							<PlayArrowOutlinedIcon titleAccess="Play only current measure" />
+						</IconButton>
+						<IconButton data-kind="playFromCurrent" onClick={handleClickPlay} disabled={!canPlay} className={classes.actionButton} style={{ marginLeft: '8px' }}>
+							<SkipNextOutlinedIcon titleAccess="Play on from current measure" />
 						</IconButton>
 						<IconButton onClick={handleClickStop} disabled={!canStop} className={classes.actionButton} style={{ marginLeft: '4px', display: 'none' }}>
 							<StopIcon titleAccess="Stop" />
