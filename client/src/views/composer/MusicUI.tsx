@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { useRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { TextField, Typography } from '@material-ui/core';
@@ -6,9 +7,10 @@ import { MusicalHelper } from '../../services/musicalHelper';
 import { MusicModel, PartType } from '../../model/scoreModel';
 import { ScoreSettings } from '../../model/scoreSettings';
 import { Music } from '../../model/music';
-import { MelodyPartUI } from './MelodyPartUI';
-import { useSetRecoilState } from 'recoil';
 import { selectionAtom } from '../../atoms/selectionAtom';
+import { SoundHelper } from '../../services/soundHelper';
+import { FigurenotesHelper } from '../../services/figurenotesHelper';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
 export interface MusicUIProps {
 	music: MusicModel;
@@ -42,6 +44,53 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 		measureNumberText: {
 			fontSize: '14px',
 			fontWeight: 700,
+		},
+		melodyPartRoot: {
+			display: 'flex',
+		},
+		partSpaceAbove: {
+			marginTop: 10,
+		},
+		note: {
+			position: 'relative',
+			fontSize: 10,
+			border: '1px solid #eee',
+			'&.selected': {
+				backgroundColor: '#ddf',
+				border: '1px solid #3f51b5',
+			},
+			'@media print': {
+				backgroundColor: 'transparent !important',
+				border: '1px solid #ddd !important',
+			},
+		},
+		fnSymbolContainer: {
+			position: 'absolute',
+			left: 0,
+			top: 0,
+		},
+		fnSymbol: {
+			position: 'absolute',
+		},
+		longNoteTail: {
+			position: 'absolute',
+		},
+		noteName: {
+			position: 'absolute',
+			fontFamily: 'Arial, sans-serif',
+			color: '#fff',
+		},
+		alter: {
+			position: 'absolute',
+			top: -16,
+			transformOrigin: 'center',
+			'&.sharp': {
+				transform: 'rotate(-45deg)',
+			},
+			'&.flat': {
+				transform: 'rotate(-135deg)',
+			},
+			zIndex: -1,
 		},
 		textPartRoot: {
 			display: 'flex',
@@ -116,7 +165,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 	}));
 	const classes = useStyles();
 
-	const setSelection = useSetRecoilState(selectionAtom);
+	const [selection, setSelection] = useRecoilState(selectionAtom);
 
 	const sizeVars = useMemo(() => {
 		const exampleMeasure = Music.getExampleMeasure(music);
@@ -160,6 +209,31 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 			return rows;
 		},
 		[music, sizeVars.numberOfMeasuresPerRow],
+	);
+
+	const getPartFontSize = useCallback(
+		function getPartFontSize(partInfoId: string) {
+			const partInfo = Music.findPartInfo(music, partInfoId);
+			return partInfo?.fontSize || 0;
+		},
+		[music],
+	);
+
+	const handleClickNote = useCallback(
+		function handleClickNote(e) {
+			const note = Music.findNote(music, e.currentTarget.dataset.noteId);
+			if (note) {
+				const part = Music.findPart(music, note.partId);
+				if (!part) {
+					return;
+				}
+				setSelection([{ partInfoId: part.partInfoId, measureId: note.measureId, partId: note.partId, noteId: note.id }]);
+				if (!note.isRest) {
+					SoundHelper.playShortNote(note.fullName);
+				}
+			}
+		},
+		[music, setSelection],
 	);
 
 	const handleTextFocus = useCallback(
@@ -218,10 +292,95 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 							{music.measures[mIndex].parts.map((p, pIndex) => (
 								<Box key={`${rIndex}-${mIndex}-${p.id}`} style={{ width: `${sizeVars.partWidth}px` }}>
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.FN_LVL_1 && (
-										<MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
+										<Box className={`${classes.melodyPartRoot} ${pIndex === 0 ? '' : classes.partSpaceAbove}`}>
+											{p.notes.map((n) => (
+												<Box
+													key={n.id}
+													data-note-id={n.id}
+													onClick={handleClickNote}
+													className={`${classes.note} ${selection.find((si) => si.noteId === n.id) ? 'selected' : ''}`}
+													style={{ flex: `${n.durationDivs} 0 0`, height: `${scoreSettings.quarterSize}px` }}
+												>
+													{n.fullName && (
+														<Box
+															className={classes.fnSymbolContainer}
+															style={{
+																transform: `scaleX(${n.durationDivs >= 24 ? 1 : n.durationDivs / 24})`,
+															}}
+														>
+															<Box
+																className={classes.fnSymbol}
+																style={{
+																	...FigurenotesHelper.getSymbolStyle(
+																		`${MusicalHelper.parseNote(n.fullName).step}${MusicalHelper.parseNote(n.fullName).octave}`,
+																		scoreSettings.quarterSize - 2,
+																		'px',
+																	),
+																}}
+															/>
+															{n.durationDivs > 24 && (
+																<Box
+																	className={classes.longNoteTail}
+																	style={{
+																		backgroundColor: `${FigurenotesHelper.getNoteColor(MusicalHelper.parseNote(n.fullName).step)}`,
+																		top: `${scoreSettings.quarterSize - 12}px`,
+																		height: `10px`,
+																		left:
+																			MusicalHelper.parseNote(n.fullName).octave <= 3
+																				? `${scoreSettings.quarterSize - 2}px`
+																				: `${scoreSettings.quarterSize / 2 - 1}px`,
+																		width:
+																			MusicalHelper.parseNote(n.fullName).octave <= 3
+																				? `${((n.durationDivs - 24) * scoreSettings.quarterSize) / 24 - 1}px`
+																				: `${
+																						scoreSettings.quarterSize / 2 -
+																						1 +
+																						((n.durationDivs - 24) * scoreSettings.quarterSize) / 24 -
+																						1
+																				  }px`,
+																	}}
+																/>
+															)}
+															{n.fullName.length >= 2 && n.fullName[1] === '#' && (
+																<ArrowRightAltIcon
+																	className={`${classes.alter} sharp`}
+																	style={{ left: `${scoreSettings.quarterSize / 2 - 8}px` }}
+																/>
+															)}
+															{n.fullName.length >= 2 && n.fullName[1] === 'b' && (
+																<ArrowRightAltIcon
+																	className={`${classes.alter} flat`}
+																	style={{ left: `${scoreSettings.quarterSize / 2 - 18}px` }}
+																/>
+															)}
+															{getPartFontSize(p.partInfoId) > 0 && (
+																<Box
+																	className={classes.noteName}
+																	style={{
+																		top: `${scoreSettings.quarterSize / 2 - 9}px`,
+																		left: `${
+																			MusicalHelper.parseNote(n.fullName).alter
+																				? scoreSettings.quarterSize / 2 - 9
+																				: scoreSettings.quarterSize / 2 - 5.5
+																		}px`,
+																		fontSize: `${getPartFontSize(p.partInfoId) || 12}px`,
+																	}}
+																>
+																	{MusicalHelper.parseNote(n.fullName).step}
+																	{MusicalHelper.parseNote(n.fullName).alter}
+																</Box>
+															)}
+														</Box>
+													)}
+													{!n.fullName && <Box>{``}</Box>}
+												</Box>
+											))}
+										</Box>
+
+										// <MelodyPartUI partInfo={getPartInfo(p.partInfoId)} part={p} isFirstPart={pIndex === 0} scoreSettings={scoreSettings} />
 									)}
 									{Music.isPartVisible(music, p.partInfoId) && p.partType === PartType.TEXT && (
-										<Box id="TextPartUI" className={classes.textPartRoot} style={{ backgroundColor: `${getPartInfo(p.partInfoId)?.bgColor || '#fff'}` }}>
+										<Box className={classes.textPartRoot} style={{ backgroundColor: `${getPartInfo(p.partInfoId)?.bgColor || '#fff'}` }}>
 											<TextField
 												data-part-info-id={p.partInfoId}
 												data-part-id={p.id}
@@ -231,7 +390,7 @@ export const MusicUI = ({ music, scoreSettings }: MusicUIProps) => {
 												onChange={handleTextChange}
 												onBlur={handleTextBlur}
 												label=""
-												className={`textSize-${getPartInfo(p.partInfoId)?.fontSize || '12'} ${getPartInfo(p.partInfoId)?.isBold ? 'font-weight-bold' : ''}`}
+												className={`textSize-${getPartFontSize(p.partInfoId) || 12} ${getPartInfo(p.partInfoId)?.isBold ? 'font-weight-bold' : ''}`}
 												style={{ borderBottom: `${pIndex === music.measures[mIndex].parts.length - 1 ? 0 : 1}px solid #eee` }}
 											/>
 										</Box>
