@@ -98,6 +98,15 @@ export const ComposerPage = () => {
 		});
 	}, []);
 
+	const handleScoreClosed = useCallback(
+		function handleScoreClosed() {
+			resetSelection();
+			resetCopiedMeasureId();
+			setScore(null);
+		},
+		[resetSelection, resetCopiedMeasureId],
+	);
+
 	const handlePianoNote = useCallback(
 		function handlePianoNote(noteFullName: string) {
 			if (!score || selection.length !== 1) {
@@ -123,7 +132,7 @@ export const ComposerPage = () => {
 	return (
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
-				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} />
+				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} onCloseScore={handleScoreClosed} />
 			</Box>
 			{score && (
 				<>

@@ -7,6 +7,7 @@ import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOut
 import FolderOpenOutlinedIcon from '@material-ui/icons/FolderOpenOutlined';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import PrintIcon from '@material-ui/icons/Print';
+import CloseIcon from '@material-ui/icons/Close';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import { AppDataHelper } from '../../services/appDataHelper';
 import { SoundHelper } from '../../services/soundHelper';
@@ -19,9 +20,10 @@ import { ExampleScore } from '../../services/exampleScore';
 export interface ComposerToolbarProps {
 	score: ScoreModel | null;
 	onChangeScore: (score: Score) => void;
+	onCloseScore: () => void;
 }
 
-export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToolbarProps) => {
+export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -37,7 +39,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 			border: '1px solid #666',
 			borderRadius: 16,
 			backgroundColor: '#444',
-			padding: '0 12px 0 4px',
+			padding: '0 4px 0 4px',
 			//opacity: 0.9,
 			marginLeft: 16,
 			'&:first-of-type': {
@@ -158,6 +160,13 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 		[score],
 	);
 
+	const handleClickClose = useCallback(
+		function handleClickClose() {
+			onCloseScore();
+		},
+		[onCloseScore],
+	);
+
 	const handleClickExample = useCallback(
 		function handleClickExample() {
 			SoundHelper.start();
@@ -171,37 +180,28 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore }: ComposerToo
 	return (
 		<Box id="ComposerToolbar" className={classes.root}>
 			<Box className={classes.panel}>
-				<IconButton onClick={handleClickNew} className={classes.actionButton}>
+				<IconButton onClick={handleClickNew} className={classes.actionButton} disabled={!!score}>
 					<AddCircleOutlineOutlinedIcon titleAccess="New" />
 				</IconButton>
-				{/*<Typography onClick={handleClickNew} variant="body1" className={`${classes.panelText} clickable`}>*/}
-				{/*	New*/}
-				{/*</Typography>*/}
 				<Modal open={newScoreDialogVisible} onClose={handleCloseNewScoreDialog}>
 					<NewScoreDialog onDoneNewScoreDialog={handleDoneNewScoreDialog} />
 				</Modal>
-				<IconButton onClick={handleClickOpen} className={classes.actionButton}>
+				<IconButton onClick={handleClickOpen} className={classes.actionButton} disabled={!!score}>
 					<FolderOpenOutlinedIcon titleAccess="Open" />
 				</IconButton>
-				{/*<Typography onClick={handleClickOpen} variant="body1" className={`${classes.panelText} clickable`}>*/}
-				{/*	Open*/}
-				{/*</Typography>*/}
+				<IconButton onClick={handleClickExample} className={classes.actionButton} disabled={!!score}>
+					<MenuBookIcon titleAccess="Example" />
+				</IconButton>
 				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score}>
 					<SaveOutlinedIcon titleAccess="Save" />
 				</IconButton>
-				{/*<Typography onClick={handleClickSave} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>*/}
-				{/*	Save*/}
-				{/*</Typography>*/}
 				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
 				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 				<IconButton onClick={handleClickPrint} className={classes.actionButton} disabled={!score}>
 					<PrintIcon titleAccess="Print" />
 				</IconButton>
-				{/*<Typography onClick={handleClickPrint} variant="body1" className={`${classes.panelText} clickable ${score ? '' : 'disabled'}`}>*/}
-				{/*	Print*/}
-				{/*</Typography>*/}
-				<IconButton onClick={handleClickExample} className={classes.actionButton} disabled={!!score}>
-					<MenuBookIcon titleAccess="Example" />
+				<IconButton onClick={handleClickClose} className={classes.actionButton} disabled={!score}>
+					<CloseIcon titleAccess="Close" />
 				</IconButton>
 			</Box>
 		</Box>
