@@ -1,5 +1,5 @@
 import { AnalyticsHelper, EventCategory } from '../../services/analyticsHelper';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { IconButton, Modal } from '@material-ui/core';
@@ -84,7 +84,6 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 	const classes = useStyles();
 
 	const [newScoreDialogVisible, setNewScoreDialogVisible] = useState(false);
-	const openInputRef = useRef<any>();
 	const [goSaveScore, setGoSaveScore] = useState(false);
 
 	const handleClickNew = useCallback(function handleClickNew() {
@@ -107,19 +106,10 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 		[onChangeScore],
 	);
 
-	const handleClickOpen = useCallback(
-		function handleClickOpen() {
-			SoundHelper.start();
-			const openInput: HTMLInputElement = openInputRef.current;
-			openInput.click();
-		},
-		[openInputRef],
-	);
-
 	const handleChangeOpenFile = useCallback(
 		function handleChangeOpenFile() {
-			const openInput: HTMLInputElement = openInputRef.current;
-			if (!openInput.files || openInput.files.length !== 1) {
+			let inputElm = document.getElementById('open-score-input-elm') as HTMLInputElement;
+			if (!inputElm || !inputElm.files || inputElm.files.length !== 1) {
 				return;
 			}
 			const fileReader = new FileReader();
@@ -130,9 +120,29 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 					onChangeScore(openedScore);
 				}
 			};
-			fileReader.readAsText(openInput.files[0]);
+			fileReader.readAsText(inputElm.files[0]);
 		},
-		[openInputRef, onChangeScore],
+		[onChangeScore],
+	);
+
+	const handleClickOpen = useCallback(
+		function handleClickOpen() {
+			SoundHelper.start();
+
+			let inputElm = document.getElementById('open-score-input-elm');
+			if (inputElm) {
+				document.body.removeChild(inputElm);
+			}
+			inputElm = document.createElement('input');
+			inputElm.setAttribute('id', 'open-score-input-elm');
+			inputElm.setAttribute('type', 'file');
+			inputElm.setAttribute('accept', `.${AppDataHelper.scoreFileExt}`);
+			inputElm.style.display = 'none';
+			inputElm.addEventListener('change', handleChangeOpenFile);
+			document.body.append(inputElm);
+			inputElm.click();
+		},
+		[handleChangeOpenFile],
 	);
 
 	const handleClickSave = useCallback(function handleClickSave() {
@@ -195,7 +205,7 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score}>
 					<SaveOutlinedIcon titleAccess="Save" />
 				</IconButton>
-				<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />
+				{/*<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />*/}
 				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 				<IconButton onClick={handleClickPrint} className={classes.actionButton} disabled={!score}>
 					<PrintIcon titleAccess="Print" />
