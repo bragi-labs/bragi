@@ -20,10 +20,11 @@ import { ExampleScore } from '../../services/exampleScore';
 export interface ComposerToolbarProps {
 	score: ScoreModel | null;
 	onChangeScore: (score: Score) => void;
+	onSaveScore: () => void;
 	onCloseScore: () => void;
 }
 
-export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore }: ComposerToolbarProps) => {
+export const ComposerToolbar = React.memo(({ score, onChangeScore, onSaveScore, onCloseScore }: ComposerToolbarProps) => {
 	const useStyles = makeStyles(() => ({
 		root: {
 			display: 'flex',
@@ -46,21 +47,6 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 				marginLeft: 0,
 			},
 		},
-		// panelText: {
-		// 	marginLeft: 2,
-		// 	color: '#999',
-		// 	transition: 'all 0.2s ease-in-out',
-		// 	'&.clickable:not(.disabled)': {
-		// 		cursor: 'pointer',
-		// 	},
-		// 	'&.clickable:not(.disabled):hover': {
-		// 		color: '#fff',
-		// 	},
-		// 	'&.disabled': {
-		// 		color: '#666',
-		// 		pointerEvents: 'none',
-		// 	},
-		// },
 		actionButton: {
 			width: 24,
 			height: 24,
@@ -155,8 +141,9 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 			if (score) {
 				AnalyticsHelper.sendEvent(EventCategory.SCORE, 'save score', score.scoreInfo.scoreTitle);
 			}
+			onSaveScore();
 		},
-		[score],
+		[score, onSaveScore],
 	);
 
 	const handleClickPrint = useCallback(
@@ -202,10 +189,9 @@ export const ComposerToolbar = React.memo(({ score, onChangeScore, onCloseScore 
 				<IconButton onClick={handleClickExample} className={classes.actionButton} disabled={!!score}>
 					<MenuBookIcon titleAccess="Example" />
 				</IconButton>
-				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score}>
+				<IconButton onClick={handleClickSave} className={classes.actionButton} disabled={!score} id="save-btn">
 					<SaveOutlinedIcon titleAccess="Save" />
 				</IconButton>
-				{/*<input ref={openInputRef} onChange={handleChangeOpenFile} type="file" accept={`.${AppDataHelper.scoreFileExt}`} style={{ display: 'none' }} />*/}
 				<SaveScore score={score} goSaveScore={goSaveScore} onSaveScoreDone={handleSaveScoreDone} />
 				<IconButton onClick={handleClickPrint} className={classes.actionButton} disabled={!score}>
 					<PrintIcon titleAccess="Print" />

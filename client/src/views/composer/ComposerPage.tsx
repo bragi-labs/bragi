@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Box from '@material-ui/core/Box';
 import { ScoreModel } from '../../model/scoreModel';
@@ -14,6 +14,7 @@ import { MeasurePanel } from './MeasurePanel';
 import { PartsPanel } from './PartsPanel';
 import { MusicalHelper } from '../../services/musicalHelper';
 import { PlayerPanel } from './PlayerPanel';
+import { diskSaveTimeAtom } from '../../atoms/diskSaveTimeAtom';
 
 export const ComposerPage = () => {
 	const useStyles = makeStyles(() => ({
@@ -82,29 +83,66 @@ export const ComposerPage = () => {
 	const selection = useRecoilValue(selectionAtom);
 	const resetSelection = useResetRecoilState(selectionAtom);
 	const resetCopiedMeasureId = useResetRecoilState(copiedMeasureIdAtom);
+	const [diskSaveTime, setDiskSaveTime] = useRecoilState(diskSaveTimeAtom);
+
+	const setSaveNotification = useCallback(function setSaveNotification(isActive: boolean) {
+		const flashAnimationClassName = 'animate-flash';
+		const saveBtnElm = document.getElementById('save-btn');
+		if (saveBtnElm) {
+			if (isActive) {
+				setTimeout(() => {
+					saveBtnElm.classList.add(flashAnimationClassName);
+				}, 0);
+			} else if (!isActive) {
+				setTimeout(() => {
+					saveBtnElm.classList.remove(flashAnimationClassName);
+				}, 0);
+			}
+		}
+	}, []);
 
 	const handleScoreChanged = useCallback(
 		function handleScoreChanged(changedScore: Score) {
 			resetSelection();
 			resetCopiedMeasureId();
 			setScore(changedScore);
+			setDiskSaveTime(new Date().getTime());
+			setSaveNotification(false);
 		},
-		[resetSelection, resetCopiedMeasureId],
+		[resetSelection, resetCopiedMeasureId, setDiskSaveTime, setSaveNotification],
 	);
 
-	const handleScoreUpdated = useCallback(function handleScoreUpdated() {
-		setScore((s) => {
-			return { ...s } as ScoreModel;
-		});
-	}, []);
+	const handleScoreUpdated = useCallback(
+		function handleScoreUpdated() {
+			setScore((s) => {
+				return { ...s } as ScoreModel;
+			});
+			const nowTime = new Date().getTime();
+			const delayMilliseconds = 1000 * 60 * 5;
+			if (nowTime > diskSaveTime + delayMilliseconds) {
+				setSaveNotification(true);
+			}
+		},
+		[diskSaveTime, setSaveNotification],
+	);
+
+	const handleScoreSaved = useCallback(
+		function handleScoreSaved() {
+			setDiskSaveTime(new Date().getTime());
+			setSaveNotification(false);
+		},
+		[setDiskSaveTime, setSaveNotification],
+	);
 
 	const handleScoreClosed = useCallback(
 		function handleScoreClosed() {
 			resetSelection();
 			resetCopiedMeasureId();
 			setScore(null);
+			setDiskSaveTime(0);
+			setSaveNotification(false);
 		},
-		[resetSelection, resetCopiedMeasureId],
+		[resetSelection, resetCopiedMeasureId, setDiskSaveTime, setSaveNotification],
 	);
 
 	const handlePianoNote = useCallback(
@@ -132,7 +170,7 @@ export const ComposerPage = () => {
 	return (
 		<Box id="ComposerPage" className={classes.root}>
 			<Box className={classes.toolbarContainer}>
-				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} onCloseScore={handleScoreClosed} />
+				<ComposerToolbar score={score} onChangeScore={handleScoreChanged} onSaveScore={handleScoreSaved} onCloseScore={handleScoreClosed} />
 			</Box>
 			{score && (
 				<>

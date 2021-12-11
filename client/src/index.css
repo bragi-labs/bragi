@@ -78,6 +78,18 @@ code {
 	}
 }
 
+@keyframes flash-animation {
+	0% {
+		color: #444;
+	}
+	100% {
+		color: #ccc;
+	}
+}
+.animate-flash {
+	animation: flash-animation 0.5s ease-in-out infinite alternate;
+}
+
 .mono {
 	font-family: "Share Tech Mono", Consolas, monospace !important;
 }
