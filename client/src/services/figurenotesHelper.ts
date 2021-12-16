@@ -20,13 +20,14 @@ export class FigurenotesHelper {
 	static getNoteColor(noteName: string): string {
 		return (
 			{
-				C: '#d00',
-				D: '#850',
-				E: '#999',
-				F: '#09c',
-				G: '#333',
-				A: '#da0',
-				B: '#690',
+				C: '#ef2f2c',
+				D: '#8b5e37',
+				E: '#bbbbb9',
+				F: '#1e8ece',
+				G: '#0c0d11',
+				//A: '#f0e52b',
+				A: '#e7db10',
+				B: '#38ac49',
 			}[noteName[0]] || ''
 		);
 	}
