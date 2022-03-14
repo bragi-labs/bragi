@@ -40,7 +40,7 @@ export const AboutPage = React.memo(() => {
 				</Box>
 				<Box className={classes.text}>
 					Developed by Uri Kalish for{' '}
-					<a href="https://www.imagine.org.il/" target="_blank" className={classes.link}>
+					<a href="https://www.imagine.org.il/" target="_blank" rel="noreferrer" className={classes.link}>
 						imagine.org.il
 					</a>
 				</Box>
