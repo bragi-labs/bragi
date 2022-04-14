@@ -10,7 +10,7 @@ export class Music implements MusicModel {
 	constructor(public partsInfo: PartInfo[], public measures: Measure[]) {}
 
 	static createNew(timeSignature: string, tempoBpm: number, hasPickupMeasure: boolean, numberOfMeasures: number, scaleRoot: string, scaleMode: string) {
-		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true), PartInfo.createNew(PartType.TEXT, 'Text', true)];
+		const partsInfo: PartInfo[] = [PartInfo.createNew(PartType.FN_LVL_1, 'Melody', true)];
 		const useSharps: boolean = MusicalHelper.isScaleUsesSharps(scaleRoot, scaleMode);
 		const measures: Measure[] = [];
 		if (hasPickupMeasure) {
